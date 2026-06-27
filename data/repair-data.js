@@ -194,17 +194,45 @@ window.AUDI80_REPAIR = {
     alimentationApresContact: {
       title: "Contrôler l'alimentation après contact",
       tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
-      where: "Sortie après contact du Neiman, boîte à fusibles, circuits alimentés contact mis.",
+      where: "Sortie après contact du Neiman, borne 15, borne X/accessoires, boîte à fusibles et circuits alimentés contact mis.",
       how: [
         "Mettre le contact sans démarrer.",
-        "Vérifier si d'autres consommateurs après contact fonctionnent : ventilation, essuie-glace, clignotants selon équipement.",
+        "Vérifier si les voyants du tableau de bord s'allument et si le buzzer réagit quand il devrait.",
+        "Vérifier si d'autres consommateurs après contact fonctionnent : ventilation, essuie-glace, clignotants, vitres électriques selon équipement.",
         "Mesurer la tension batterie pour confirmer une alimentation générale correcte.",
-        "Mesurer la présence du + après contact sur les fusibles concernés.",
-        "Si aucun circuit après contact n'est alimenté, remonter vers contacteur de Neiman, alimentation de boîte à fusibles ou connecteur principal."
+        "Mesurer la présence du + après contact sur les fusibles concernés. Pour les instruments, commencer par le fusible instruments indiqué par la RTA.",
+        "Comparer contact mis sans démarrer, pendant démarrage, puis moteur tournant.",
+        "Si un circuit fonctionne seulement moteur tournant ou seulement moteur arrêté, contrôler la borne X et le contacteur de Neiman avant de remplacer l'organe."
       ],
       expected: "Contact mis, les circuits après contact reçoivent une tension proche de la batterie.",
-      bad: "Aucun + après contact : suspecter contacteur de Neiman, alimentation amont, connecteur principal ou coupure dans la boîte à fusibles.",
+      bad: "Aucun + après contact : suspecter contacteur de Neiman, alimentation amont, connecteur principal ou coupure dans la boîte à fusibles. Si seuls les accessoires X sont incohérents, contrôler le relais de délestage X/J18.",
       rta: ["fusibles", "instruments", "masses"]
+    },
+    controleRelaisDelestageX: {
+      title: "Tester le relais de délestage X / relais automobile",
+      tools: ["Multimètre", "Lampe témoin", "Fil de test protégé par fusible", "Schéma RTA"],
+      where: "Platine relais / boîte à fusibles. Le relais de délestage X est le relais J18 sur les schémas VAG ; sa position exacte doit être confirmée sur la platine de la voiture.",
+      how: [
+        "Ne pas commencer par ce relais si seul le combiné est mort : contrôler d'abord batterie, fusibles instruments, + après contact et masses.",
+        "Le tester en priorité si plusieurs accessoires X sont incohérents : vitres électriques, ventilation, essuie-glace, dégivrage ou accessoires qui changent de comportement entre contact mis et moteur tournant.",
+        "Sur le relais, repérer les bornes normalisées : 85 et 86 pour la bobine, 30 pour l'alimentation, 87 pour la sortie, 87a si relais 5 broches.",
+        "Sur le socle du relais, vérifier que la borne 30 reçoit une alimentation conforme au schéma.",
+        "Contact mis sans lancer le démarreur, vérifier que la commande de bobine arrive sur 85/86 et que la sortie 87 alimente les accessoires X.",
+        "Pendant l'action démarreur, la sortie X peut être coupée brièvement : c'est le rôle normal du délestage. Elle doit revenir quand la clé revient en position contact/marche.",
+        "Relais déposé sur établi : mesurer 85-86, alimenter la bobine en 12 V avec un fil protégé, écouter le clic, puis contrôler que 30 et 87 deviennent passants.",
+        "Si un symbole de diode est dessiné sur le relais, respecter la polarité 85/86 pendant le test."
+      ],
+      expected: "Les accessoires X sont alimentés contact mis, coupés seulement pendant l'action démarreur, puis réalimentés moteur tournant.",
+      bad: "Pas d'alimentation sur 30 : circuit amont. Pas de commande sur 85/86 : contacteur de Neiman, borne X ou faisceau. Commande présente mais pas de sortie 87 : relais ou socle suspect.",
+      rta: ["fusibles", "commandesMoteursOptions", "essuieGlace", "chauffage"],
+      photo: {
+        title: "Photo de repère",
+        src: "images/automotive-relay.jpg",
+        alt: "Relais automobile standard",
+        caption: "Relais automobile standard : les numéros de bornes sont souvent moulés sous le relais.",
+        source: "https://commons.wikimedia.org/wiki/File:AutomotiveRelay.jpg"
+      },
+      diagram: "relay5pin"
     },
     alimentationCombine: {
       title: "Contrôler alimentation du combiné d'instruments",
@@ -235,6 +263,23 @@ window.AUDI80_REPAIR = {
       expected: "Connecteur bien verrouillé, broches propres, pistes visuellement intactes.",
       bad: "Connecteur mal engagé ou piste fissurée : réparer avant remplacement du combiné.",
       rta: ["instruments", "masses"]
+    },
+    compteurKilometrique: {
+      title: "Contrôler compteur kilométrique et compteur de vitesse",
+      tools: ["Lampe", "Tournevis adaptés", "Marqueur ou note kilométrage", "Schéma RTA"],
+      where: "Combiné d'instruments, câble de compteur et mécanisme d'odomètre.",
+      how: [
+        "Noter si l'aiguille de vitesse fonctionne pendant roulage.",
+        "Si l'aiguille fonctionne mais que le kilométrage total ou journalier n'avance pas, suspecter d'abord le mécanisme interne de l'odomètre.",
+        "Si l'aiguille de vitesse et le kilométrage sont tous les deux morts, contrôler câble de compteur, entraînement côté boîte et fixation derrière le combiné.",
+        "Déposer le combiné sans tirer brutalement sur le câble.",
+        "Contrôler que le câble est bien verrouillé, non cassé et non arrondi.",
+        "Si le câble entraîne bien l'aiguille mais pas les kilomètres, chercher pignon/engrenage d'odomètre fissuré ou mécanisme bloqué."
+      ],
+      expected: "L'aiguille de vitesse et les rouleaux kilométriques avancent ensemble quand le câble entraîne le compteur.",
+      bad: "Vitesse OK mais kilomètres immobiles : panne interne d'odomètre probable. Vitesse et kilomètres morts : câble, entraînement de boîte ou fixation compteur.",
+      rta: ["instruments"],
+      missing: "Il manque encore une photo interne fiable du compteur ouvert pour identifier précisément le pignon d'odomètre de ce combiné."
     },
     etincelleAllumage: {
       title: "Contrôler l'étincelle d'allumage",
@@ -559,7 +604,7 @@ window.AUDI80_REPAIR = {
       title: "Combiné d'instruments",
       location: "Derrière le volant, dans le tableau de bord.",
       role: "Affiche température, vitesse, témoins, voyants et kilométrage.",
-      tests: ["alimentationApresContact", "alimentationCombine", "masseChuteTension", "connecteurCombine"],
+      tests: ["alimentationApresContact", "alimentationCombine", "masseChuteTension", "connecteurCombine", "compteurKilometrique"],
       repair: [
         "Contrôler batterie, + après contact, fusibles et masses avant dépose.",
         "Déposer sans tirer sur le faisceau.",
@@ -571,14 +616,28 @@ window.AUDI80_REPAIR = {
     contacteurNeiman: {
       title: "Contacteur de Neiman / + après contact",
       location: "Derrière le barillet de contact, en amont des circuits alimentés contact mis.",
-      role: "Distribue l'alimentation après contact vers les circuits tableau de bord et accessoires.",
-      tests: ["alimentationApresContact", "fusibleDeuxCotes"],
+      role: "Distribue l'alimentation après contact et la borne X/accessoires vers les circuits tableau de bord et accessoires.",
+      tests: ["alimentationApresContact", "controleRelaisDelestageX", "fusibleDeuxCotes"],
       repair: [
         "Confirmer l'absence de + après contact avant toute dépose.",
+        "Comparer la position contact mis, la position démarreur et la position moteur tournant.",
         "Contrôler connecteur et alimentation amont.",
-        "Remplacer le contacteur seulement si la sortie après contact est absente malgré une alimentation correcte."
+        "Remplacer le contacteur seulement si la sortie après contact ou la sortie X est absente malgré une alimentation correcte."
       ],
       rta: ["fusibles", "instruments"]
+    },
+    relaisDelestageX: {
+      title: "Relais de délestage X / J18",
+      location: "Platine relais près de la boîte à fusibles. Sur les documents VAG, il est appelé relais de délestage X ou J18 ; confirmer l'emplacement exact avec le couvercle de platine et la RTA.",
+      role: "Coupe temporairement des accessoires pendant l'action démarreur pour soulager la batterie, puis les réalimente en position contact/marche.",
+      tests: ["controleRelaisDelestageX", "alimentationApresContact", "fusibleDeuxCotes"],
+      repair: [
+        "Ne pas le remplacer uniquement parce que le compteur est mort : il n'est pas le relais principal du combiné.",
+        "Le suspecter si plusieurs accessoires X changent de comportement entre contact mis, démarrage et moteur tournant.",
+        "Tester alimentation, commande et sortie sur le socle avant remplacement.",
+        "Contrôler le contacteur de Neiman si la commande du relais n'arrive pas correctement."
+      ],
+      rta: ["fusibles", "commandesMoteursOptions", "essuieGlace", "chauffage"]
     },
     faisceauTableauBord: {
       title: "Faisceau tableau de bord / boîte à fusibles",
@@ -794,23 +853,34 @@ window.AUDI80_REPAIR = {
       id: "compteur-inactif",
       title: "Tableau de bord / instruments totalement inactifs",
       category: "Instruments / électricité",
-      keywords: ["compteur", "instrument", "voyant", "jauge", "combiné", "tableau de bord mort", "aucun voyant", "aucun son", "buzzer", "plus de voyant", "voyants eteints", "contact mis rien"],
-      symptom: "Aucun voyant au contact, aucune jauge, aucun signal sonore ou combiné totalement éteint.",
-      controls: ["tensionBatterieCharge", "alimentationApresContact", "fusibleDeuxCotes", "alimentationCombine", "masseChuteTension", "connecteurCombine"],
-      suspects: ["contacteurNeiman", "faisceauTableauBord", "combine"],
+      keywords: ["compteur", "instrument", "voyant", "jauge", "combiné", "tableau de bord mort", "aucun voyant", "aucun son", "buzzer", "plus de voyant", "voyants eteints", "contact mis rien", "relais", "j18", "relais x", "délestage", "delestage", "compteur kilométrique", "kilometrage"],
+      symptom: "Aucun voyant au contact, aucune jauge, aucun signal sonore ou combiné totalement éteint. Le compteur kilométrique peut aussi avoir une panne interne séparée.",
+      controls: ["tensionBatterieCharge", "alimentationApresContact", "fusibleDeuxCotes", "alimentationCombine", "masseChuteTension", "connecteurCombine", "controleRelaisDelestageX"],
+      suspects: ["contacteurNeiman", "faisceauTableauBord", "combine", "relaisDelestageX"],
       rta: ["instruments", "masses", "fusibles"],
-      emergency: "Si aucun voyant ne s'allume contact mis, contrôler l'alimentation et les masses avant de déposer ou remplacer le combiné."
+      emergency: "Traiter la panne totale en premier : alimentation, fusibles et masses. Le compteur kilométrique déjà HS avant la panne totale peut être une deuxième panne du combiné."
+    },
+    {
+      id: "compteur-kilometrique",
+      title: "Compteur kilométrique qui n'avance plus",
+      category: "Instruments / compteur",
+      keywords: ["compteur kilometrique", "compteur kilométrique", "kilometrage", "kilométrage", "odomètre", "odometre", "totalisateur", "journalier", "compteur km", "km ne marche pas", "vitesse fonctionne"],
+      symptom: "L'aiguille de vitesse fonctionne encore, mais le kilométrage total ou journalier ne bouge plus.",
+      controls: ["compteurKilometrique", "connecteurCombine"],
+      suspects: ["combine"],
+      rta: ["instruments"],
+      emergency: "Noter le kilométrage réel estimé avant toute intervention sur le compteur."
     },
     {
       id: "leve-vitre-electrique",
       title: "Lève-vitre électrique en panne",
       category: "Commandes et moteurs options",
-      keywords: ["leve vitre", "lève vitre", "vitre electrique", "vitre électrique", "glace electrique", "moteur vitre", "interrupteur vitre", "faisceau porte", "vitre ne monte pas", "vitre ne descend pas"],
-      symptom: "Une vitre ne monte/descend plus, fonctionne seulement moteur tournant, force ou reste bloquée.",
-      controls: ["batterieSousCharge", "commandeInterrupteur", "faisceauPorte", "moteurLeveVitre"],
-      suspects: ["leveVitre", "combine"],
+      keywords: ["leve vitre", "lève vitre", "vitre electrique", "vitre électrique", "glace electrique", "moteur vitre", "interrupteur vitre", "faisceau porte", "vitre ne monte pas", "vitre ne descend pas", "contact mis", "moteur eteint", "moteur tournant", "relais x", "j18", "délestage", "delestage"],
+      symptom: "Une vitre ne monte/descend plus, fonctionne seulement contact mis moteur arrêté, seulement moteur tournant, force ou reste bloquée.",
+      controls: ["alimentationApresContact", "controleRelaisDelestageX", "batterieSousCharge", "commandeInterrupteur", "faisceauPorte", "moteurLeveVitre"],
+      suspects: ["contacteurNeiman", "relaisDelestageX", "leveVitre", "faisceauTableauBord"],
       rta: ["commandesMoteursOptions", "fusibles", "masses"],
-      emergency: "Si la vitre reste ouverte, protéger l'habitacle avant roulage ou stationnement."
+      emergency: "Si toutes les vitres changent de comportement selon contact/moteur, chercher d'abord alimentation X, relais de délestage et contacteur de Neiman avant de déposer une porte."
     },
     {
       id: "essuie-glace-inactif",

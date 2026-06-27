@@ -28,6 +28,57 @@
     ).join("");
   }
 
+  function relayDiagram() {
+    return `
+      <svg class="relay-diagram" viewBox="0 0 420 260" role="img" aria-label="Schéma normalisé d'un relais automobile 4 ou 5 broches">
+        <rect x="32" y="24" width="356" height="212" rx="10"></rect>
+        <line x1="104" y1="190" x2="104" y2="76"></line>
+        <line x1="316" y1="190" x2="316" y2="76"></line>
+        <path d="M122 146 C154 114, 186 114, 218 146 S282 178, 314 146"></path>
+        <circle cx="104" cy="190" r="12"></circle>
+        <circle cx="316" cy="190" r="12"></circle>
+        <text x="82" y="224">85</text>
+        <text x="294" y="224">86</text>
+        <line x1="204" y1="190" x2="204" y2="138"></line>
+        <line x1="204" y1="138" x2="278" y2="104"></line>
+        <line x1="204" y1="190" x2="204" y2="218"></line>
+        <circle cx="204" cy="218" r="12"></circle>
+        <circle cx="306" cy="92" r="12"></circle>
+        <circle cx="306" cy="138" r="12"></circle>
+        <text x="184" y="252">30</text>
+        <text x="326" y="96">87</text>
+        <text x="326" y="142">87a</text>
+        <text x="138" y="56">bobine</text>
+        <text x="222" y="56">contact</text>
+      </svg>
+      <ul class="terminal-list">
+        <li><strong>85 / 86</strong> : bobine de commande du relais.</li>
+        <li><strong>30</strong> : alimentation d'entrée.</li>
+        <li><strong>87</strong> : sortie quand le relais colle.</li>
+        <li><strong>87a</strong> : sortie au repos sur relais 5 broches, absente sur relais 4 broches.</li>
+      </ul>`;
+  }
+
+  function technicalMedia(item) {
+    const blocks = [];
+    if (item.photo) {
+      blocks.push(`
+        <div class="panel media-panel">
+          <h3>${esc(item.photo.title || "Photo")}</h3>
+          <img class="tech-photo" src="${esc(item.photo.src)}" alt="${esc(item.photo.alt || item.photo.title || "Photo technique")}">
+          ${item.photo.caption ? `<p>${esc(item.photo.caption)}${item.photo.source ? ` <a href="${esc(item.photo.source)}" target="_blank">Source</a>` : ""}</p>` : ""}
+        </div>`);
+    }
+    if (item.diagram === "relay5pin") {
+      blocks.push(`
+        <div class="panel media-panel">
+          <h3>Schéma des bornes</h3>
+          ${relayDiagram()}
+        </div>`);
+    }
+    return blocks.length ? `<section class="grid two technical-media">${blocks.join("")}</section>` : "";
+  }
+
   function setActive(route) {
     navLinks.forEach(link => link.classList.toggle("active", link.dataset.route === route));
   }
@@ -280,6 +331,7 @@
         <div class="page-head">
           <h1>${esc(control.title)}</h1>
         </div>
+        ${technicalMedia(control)}
         <section class="grid two">
           <div class="panel detail">
             <h2>Où regarder</h2>
