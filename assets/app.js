@@ -127,7 +127,7 @@
       );
       const directMatch = titlePhraseMatch || primaryPhraseMatch || allTermsInPrimary;
       const broadSingleTerm = terms.length === 1 && (directMatch || (terms[0].length >= 5 && score >= 3));
-      const usefulMultiTerm = terms.length > 1 && allTermsSomewhere && score >= (terms.length * 6);
+      const usefulMultiTerm = terms.length > 1 && allTermsSomewhere && score >= (terms.length * 8);
       return { problem, score, include: directMatch || broadSingleTerm || usefulMultiTerm };
     }).filter(item => item.include && item.score > 0)
       .sort((a, b) => b.score - a.score || a.problem.title.localeCompare(b.problem.title))

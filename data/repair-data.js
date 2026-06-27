@@ -191,6 +191,51 @@ window.AUDI80_REPAIR = {
       bad: "Si la chute dépasse quelques dixièmes de volt, nettoyer/resserrer la masse et contrôler le câble.",
       rta: ["masses"]
     },
+    alimentationApresContact: {
+      title: "Contrôler l'alimentation après contact",
+      tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
+      where: "Sortie après contact du Neiman, boîte à fusibles, circuits alimentés contact mis.",
+      how: [
+        "Mettre le contact sans démarrer.",
+        "Vérifier si d'autres consommateurs après contact fonctionnent : ventilation, essuie-glace, clignotants selon équipement.",
+        "Mesurer la tension batterie pour confirmer une alimentation générale correcte.",
+        "Mesurer la présence du + après contact sur les fusibles concernés.",
+        "Si aucun circuit après contact n'est alimenté, remonter vers contacteur de Neiman, alimentation de boîte à fusibles ou connecteur principal."
+      ],
+      expected: "Contact mis, les circuits après contact reçoivent une tension proche de la batterie.",
+      bad: "Aucun + après contact : suspecter contacteur de Neiman, alimentation amont, connecteur principal ou coupure dans la boîte à fusibles.",
+      rta: ["fusibles", "instruments", "masses"]
+    },
+    alimentationCombine: {
+      title: "Contrôler alimentation du combiné d'instruments",
+      tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
+      where: "Connecteur arrière du combiné d'instruments, sans tirer brutalement sur le faisceau.",
+      how: [
+        "Déposer le combiné seulement après avoir contrôlé batterie, + après contact et fusibles.",
+        "Identifier sur la RTA les alimentations permanentes, après contact, éclairage et masses du combiné.",
+        "Contact mis, mesurer la tension entre alimentation du combiné et borne - batterie.",
+        "Mesurer ensuite entre alimentation du combiné et masse locale du combiné.",
+        "Comparer les deux mesures pour distinguer perte d'alimentation et mauvaise masse."
+      ],
+      expected: "Le combiné reçoit son alimentation et sa masse contact mis.",
+      bad: "Alimentation absente : fusible, contacteur, faisceau ou connecteur. Alimentation présente mais masse mauvaise : réparer masse/faisceau. Alimentation et masse bonnes mais combiné mort : combiné suspect.",
+      rta: ["instruments", "fusibles", "masses"]
+    },
+    connecteurCombine: {
+      title: "Contrôler connecteur et pistes du combiné",
+      tools: ["Lampe", "Multimètre", "Nettoyant contact"],
+      where: "Arrière du combiné d'instruments et connecteur du faisceau tableau de bord.",
+      how: [
+        "Débrancher la batterie si une dépose complète est nécessaire.",
+        "Déposer le combiné sans forcer le câble de compteur ni le faisceau.",
+        "Inspecter broches tordues, oxydation, connecteur mal verrouillé ou piste fissurée.",
+        "Nettoyer les contacts si oxydés.",
+        "Reposer et tester avant de conclure au combiné HS."
+      ],
+      expected: "Connecteur bien verrouillé, broches propres, pistes visuellement intactes.",
+      bad: "Connecteur mal engagé ou piste fissurée : réparer avant remplacement du combiné.",
+      rta: ["instruments", "masses"]
+    },
     etincelleAllumage: {
       title: "Contrôler l'étincelle d'allumage",
       tools: ["Testeur d'étincelle", "Gants isolants", "Clé à bougie"],
@@ -513,15 +558,39 @@ window.AUDI80_REPAIR = {
     combine: {
       title: "Combiné d'instruments",
       location: "Derrière le volant, dans le tableau de bord.",
-      role: "Affiche température, vitesse, témoins et kilométrage.",
-      tests: ["fusibleDeuxCotes", "masseChuteTension", "sondeTemperatureMesure"],
+      role: "Affiche température, vitesse, témoins, voyants et kilométrage.",
+      tests: ["alimentationApresContact", "alimentationCombine", "masseChuteTension", "connecteurCombine"],
       repair: [
-        "Contrôler fusibles et masses avant dépose.",
+        "Contrôler batterie, + après contact, fusibles et masses avant dépose.",
         "Déposer sans tirer sur le faisceau.",
         "Contrôler connecteur, pistes, régulateur interne et ampoules.",
         "Documenter le kilométrage si intervention sur compteur."
       ],
       rta: ["instruments", "masses"]
+    },
+    contacteurNeiman: {
+      title: "Contacteur de Neiman / + après contact",
+      location: "Derrière le barillet de contact, en amont des circuits alimentés contact mis.",
+      role: "Distribue l'alimentation après contact vers les circuits tableau de bord et accessoires.",
+      tests: ["alimentationApresContact", "fusibleDeuxCotes"],
+      repair: [
+        "Confirmer l'absence de + après contact avant toute dépose.",
+        "Contrôler connecteur et alimentation amont.",
+        "Remplacer le contacteur seulement si la sortie après contact est absente malgré une alimentation correcte."
+      ],
+      rta: ["fusibles", "instruments"]
+    },
+    faisceauTableauBord: {
+      title: "Faisceau tableau de bord / boîte à fusibles",
+      location: "Entre batterie, Neiman, boîte à fusibles, masses et combiné d'instruments.",
+      role: "Distribue les alimentations et masses des instruments, voyants et signaux sonores.",
+      tests: ["fusibleDeuxCotes", "alimentationCombine", "masseChuteTension", "connecteurCombine"],
+      repair: [
+        "Rechercher d'abord un fusible non alimenté, un connecteur mal engagé ou une masse oxydée.",
+        "Contrôler continuité seulement après avoir identifié le fil sur la RTA.",
+        "Réparer avec section de fil adaptée et protection mécanique correcte."
+      ],
+      rta: ["fusibles", "instruments", "masses"]
     },
     alternateur: {
       title: "Alternateur / régulateur",
@@ -723,14 +792,14 @@ window.AUDI80_REPAIR = {
     },
     {
       id: "compteur-inactif",
-      title: "Compteur ou instruments inactifs",
+      title: "Tableau de bord / instruments totalement inactifs",
       category: "Instruments / électricité",
-      keywords: ["compteur", "instrument", "voyant", "jauge", "combiné"],
-      symptom: "Compteur, jauges ou voyants absents/incohérents.",
-      controls: ["fusibleDeuxCotes", "masseChuteTension", "sondeTemperatureMesure"],
-      suspects: ["combine", "sondeTemperature"],
+      keywords: ["compteur", "instrument", "voyant", "jauge", "combiné", "tableau de bord mort", "aucun voyant", "aucun son", "buzzer", "plus de voyant", "voyants eteints", "contact mis rien"],
+      symptom: "Aucun voyant au contact, aucune jauge, aucun signal sonore ou combiné totalement éteint.",
+      controls: ["tensionBatterieCharge", "alimentationApresContact", "fusibleDeuxCotes", "alimentationCombine", "masseChuteTension", "connecteurCombine"],
+      suspects: ["contacteurNeiman", "faisceauTableauBord", "combine"],
       rta: ["instruments", "masses", "fusibles"],
-      emergency: "Si plusieurs circuits électriques sont incohérents, contrôler masses et alimentation avant dépose."
+      emergency: "Si aucun voyant ne s'allume contact mis, contrôler l'alimentation et les masses avant de déposer ou remplacer le combiné."
     },
     {
       id: "leve-vitre-electrique",
