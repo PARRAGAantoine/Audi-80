@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audi 80 B3 1.8S 1988 - Atelier</title>
+  <link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#accueil">
+      <span>Audi 80 B3</span>
+      <small>1.8S 1988 / millésime 1989</small>
+    </a>
+
+    <label class="search">
+      <span>Recherche de panne</span>
+      <input id="search-input" type="search" placeholder="Symptôme, organe ou panne">
+    </label>
+
+    <nav class="nav" aria-label="Navigation">
+      <a href="#accueil" data-route="accueil">Accueil</a>
+      <a href="#reparation" data-route="reparation">Mode réparation</a>
+      <a href="#entretien" data-route="entretien">Mode suivi d'entretien</a>
+    </nav>
+
+    <button id="theme-toggle" class="theme-toggle" type="button">Mode clair / sombre</button>
+  </aside>
+
+  <main>
+    <section id="results" class="results" hidden></section>
+    <section id="app"></section>
+  </main>
+
+  <script src="data/repair-data.js?v=2"></script>
+  <script src="data/history.js?v=2"></script>
+  <script src="assets/app.js?v=10"></script>
+</body>
+</html>
