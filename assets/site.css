@@ -400,6 +400,20 @@ p {
 
 .results[hidden] { display: none; }
 
+.result-group {
+  display: grid;
+  gap: 10px;
+}
+
+.result-group + .result-group {
+  margin-top: 8px;
+}
+
+.result-group h2 {
+  font-size: 1.25rem;
+  margin-top: 6px;
+}
+
 .repair-sheet {
   display: grid;
   gap: 18px;

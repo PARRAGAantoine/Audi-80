@@ -1,4 +1,4 @@
-window.AUDI80_HISTORY = [
+export const history = [
   {
     "date": "08.10.1988",
     "mileage": "Neuf",

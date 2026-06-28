@@ -1,12 +1,21 @@
+import { repairData as repair, history } from "../data/index.js";
+
 (function () {
-  const repair = window.AUDI80_REPAIR;
-  const history = window.AUDI80_HISTORY || [];
   const app = document.querySelector("#app");
   const results = document.querySelector("#results");
   const search = document.querySelector("#search-input");
   const navLinks = [...document.querySelectorAll(".nav a")];
 
   const state = { route: "accueil", problem: null };
+
+  if (!repair?.vehicle || !repair?.problems || !repair?.controls || !repair?.pieces) {
+    app.innerHTML = `
+      <section class="panel missing">
+        <h1>Chargement impossible</h1>
+        <p>Les données atelier ne sont pas disponibles. Vérifier le chargement des fichiers dans le dossier data.</p>
+      </section>`;
+    return;
+  }
 
   function esc(value) {
     return String(value ?? "")
@@ -172,72 +181,119 @@
       (term.length >= 5 && text.includes(term));
   }
 
-  function searchProblems(query) {
+  function scoreSearch(fields, query) {
     const terms = termsFrom(query);
-    if (!terms.length) return [];
     const phrase = normalize(query);
+    if (!terms.length) return 0;
+    const titleText = normalize(fields.title || "");
+    const primaryText = normalize((fields.primary || []).join(" "));
+    const secondaryText = normalize((fields.secondary || []).join(" "));
+    const allText = `${titleText} ${primaryText} ${secondaryText}`.trim();
+    const titleWords = titleText.split(/\s+/);
+    const primaryWords = `${titleText} ${primaryText}`.trim().split(/\s+/);
+    const words = allText.split(/\s+/);
+    let score = terms.reduce((total, term) => {
+      if (titleWords.includes(term)) return total + 16;
+      if (titleWords.some(word => word.startsWith(term))) return total + 10;
+      if (primaryWords.includes(term)) return total + 7;
+      if (primaryWords.some(word => word.startsWith(term))) return total + 4;
+      if (words.includes(term)) return total + 2;
+      if (words.some(word => word.startsWith(term))) return total + 1;
+      return total;
+    }, 0);
+    const titlePhraseMatch = phraseMatches(titleText, phrase, terms);
+    const primaryPhraseMatch = phraseMatches(`${titleText} ${primaryText}`, phrase, terms);
+    if (titlePhraseMatch) score += 90;
+    if (primaryPhraseMatch) score += 35;
+    const allTermsInPrimary = terms.every(term => termMatchesText(term, primaryWords, `${titleText} ${primaryText}`));
+    const allTermsSomewhere = terms.every(term => termMatchesText(term, words, allText));
+    if (allTermsInPrimary) score += 18;
+    if (!allTermsSomewhere) return 0;
+    if (terms.length === 1 && terms[0].length < 3 && !titlePhraseMatch) return 0;
+    return score;
+  }
+
+  function searchProblemItems(query) {
     return repair.problems.map(problem => {
       const suspects = (problem.suspects || []).map(id => pieceById(id)).filter(Boolean);
       const controls = (problem.controls || []).map(id => controlById(id)).filter(Boolean);
-      const titleText = normalize([problem.title, problem.category, (problem.keywords || []).join(" ")].join(" "));
-      const primary = [
-        problem.title,
-        problem.symptom,
-        problem.emergency,
-        problem.category,
-        (problem.keywords || []).join(" ")
-      ].join(" ");
-      const secondary = [
+      const score = scoreSearch({
+        title: [problem.title, problem.category, (problem.keywords || []).join(" ")].join(" "),
+        primary: [problem.title, problem.symptom, problem.emergency, problem.category, (problem.keywords || []).join(" ")],
+        secondary: [
         suspects.map(piece => [piece.title, piece.location, piece.role].join(" ")).join(" "),
         controls.map(control => [control.title, control.where, control.expected, control.bad].join(" ")).join(" ")
-      ].join(" ");
-      const primaryText = normalize(primary);
-      const secondaryText = normalize(secondary);
-      const allText = `${primaryText} ${secondaryText}`.trim();
-      const words = allText.split(/\s+/);
-      const primaryWords = primaryText.split(/\s+/);
-      let score = terms.reduce((total, term) => {
-        if (primaryWords.includes(term)) return total + 12;
-        if (primaryWords.some(word => word.startsWith(term))) return total + 8;
-        if (words.includes(term)) return total + 3;
-        if (words.some(word => word.startsWith(term))) return total + 1;
-        return total;
-      }, 0);
-      const titlePhraseMatch = phraseMatches(titleText, phrase, terms);
-      const primaryPhraseMatch = phraseMatches(primaryText, phrase, terms);
-      if (titlePhraseMatch) score += 80;
-      if (primaryPhraseMatch) score += 35;
-      const titleWords = titleText.split(/\s+/);
-      if (terms.every(term => termMatchesText(term, titleWords, titleText))) score += 25;
-      const allTermsInPrimary = terms.every(term =>
-        termMatchesText(term, primaryWords, primaryText)
-      );
-      const allTermsSomewhere = terms.every(term =>
-        termMatchesText(term, words, allText)
-      );
-      const directMatch = titlePhraseMatch || primaryPhraseMatch || allTermsInPrimary;
-      const broadSingleTerm = terms.length === 1 && (directMatch || (terms[0].length >= 5 && score >= 3));
-      const usefulMultiTerm = terms.length > 1 && allTermsSomewhere && score >= (terms.length * 8);
-      return { problem, score, include: directMatch || broadSingleTerm || usefulMultiTerm };
-    }).filter(item => item.include && item.score > 0)
+        ]
+      }, query);
+      return { problem, score };
+    }).filter(item => item.score > 0)
       .sort((a, b) => b.score - a.score || a.problem.title.localeCompare(b.problem.title))
-      .map(item => item.problem);
+      .slice(0, 8);
+  }
+
+  function searchControlItems(query) {
+    return Object.entries(repair.controls).map(([id, control]) => {
+      const score = scoreSearch({
+        title: control.title,
+        primary: [control.title, control.where, control.expected, control.bad, (control.tools || []).join(" ")],
+        secondary: [
+          (control.how || []).join(" "),
+          (control.meter || []).map(mode => [mode.title, ...(mode.steps || [])].join(" ")).join(" "),
+          control.schematic ? [...(control.schematic.refs || []), ...(control.schematic.flow || []), ...(control.schematic.tests || []), control.schematic.note || ""].join(" ") : ""
+        ]
+      }, query);
+      return { id, control, score };
+    }).filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score || a.control.title.localeCompare(b.control.title))
+      .slice(0, 8);
+  }
+
+  function searchPieceItems(query) {
+    return Object.entries(repair.pieces).map(([id, piece]) => {
+      const linkedControls = (piece.tests || []).map(controlId => controlById(controlId)).filter(Boolean);
+      const score = scoreSearch({
+        title: piece.title,
+        primary: [piece.title, piece.role, piece.location],
+        secondary: [(piece.repair || []).join(" "), linkedControls.map(control => control.title).join(" ")]
+      }, query);
+      return { id, piece, score };
+    }).filter(item => item.score > 0)
+      .sort((a, b) => b.score - a.score || a.piece.title.localeCompare(b.piece.title))
+      .slice(0, 8);
+  }
+
+  function searchAll(query) {
+    return {
+      problems: searchProblemItems(query),
+      controls: searchControlItems(query),
+      pieces: searchPieceItems(query)
+    };
   }
 
   function renderResults(query) {
-    const matches = searchProblems(query);
+    const matches = searchAll(query);
     if (!query.trim()) {
       results.hidden = true;
       results.innerHTML = "";
       app.hidden = false;
       return;
     }
+    const total = matches.problems.length + matches.controls.length + matches.pieces.length;
     app.hidden = true;
     results.hidden = false;
     results.innerHTML = `
-      <h1>${matches.length} résultat(s)</h1>
-      ${matches.length ? matches.map(problemCard).join("") : `<p>Aucune fiche de réparation disponible pour cette recherche.</p>`}
+      <h1>${total} résultat(s)</h1>
+      ${total ? `
+        ${resultSection("Pannes", matches.problems, item => problemCard(item.problem))}
+        ${resultSection("Contrôles", matches.controls, item => controlCard(item.id, item.control))}
+        ${resultSection("Pièces", matches.pieces, item => pieceCard(item.id, item.piece))}
+      ` : `<p>Aucune fiche de réparation disponible pour cette recherche.</p>`}
     `;
+  }
+
+  function resultSection(title, items, renderer) {
+    if (!items.length) return "";
+    return `<section class="result-group"><h2>${esc(title)}</h2>${items.map(renderer).join("")}</section>`;
   }
 
   function problemCard(problem) {
@@ -245,6 +301,22 @@
       <div class="tag-row"><span class="tag">${esc(problemCategory(problem))}</span></div>
       <h3>${esc(problem.title)}</h3>
       <p>${esc(problem.symptom)}</p>
+    </a>`;
+  }
+
+  function controlCard(id, control) {
+    return `<a class="card" href="#controle/${id}">
+      <div class="tag-row"><span class="tag ok">Contrôle</span></div>
+      <h3>${esc(control.title)}</h3>
+      <p>${esc(control.where)}</p>
+    </a>`;
+  }
+
+  function pieceCard(id, piece) {
+    return `<a class="card" href="#piece/${id}">
+      <div class="tag-row"><span class="tag">Pièce</span></div>
+      <h3>${esc(piece.title)}</h3>
+      <p>${esc(piece.role)}</p>
     </a>`;
   }
 
@@ -423,13 +495,15 @@
 
   function renderControl(id, problemId) {
     const control = controlById(id);
-    if (!control) return renderProblem(problemId);
+    if (!control) return problemId ? renderProblem(problemId) : renderRepairHome();
     setActive("reparation");
     search.value = "";
     renderResults("");
+    const backLink = problemId ? `#panne/${problemId}` : "#reparation";
+    const backLabel = problemId ? "Retour à la panne" : "Retour au mode réparation";
     app.innerHTML = `
       <article class="repair-sheet">
-        <a href="#panne/${problemId}">Retour à la panne</a>
+        <a href="${backLink}">${backLabel}</a>
         <div class="page-head">
           <h1>${esc(control.title)}</h1>
         </div>
@@ -459,13 +533,15 @@
 
   function renderPiece(id, problemId) {
     const piece = pieceById(id);
-    if (!piece) return renderProblem(problemId);
+    if (!piece) return problemId ? renderProblem(problemId) : renderRepairHome();
     setActive("reparation");
     search.value = "";
     renderResults("");
+    const backLink = problemId ? `#panne/${problemId}` : "#reparation";
+    const backLabel = problemId ? "Retour à la panne" : "Retour au mode réparation";
     app.innerHTML = `
       <article class="repair-sheet">
-        <a href="#panne/${problemId}">Retour à la panne</a>
+        <a href="${backLink}">${backLabel}</a>
         <div class="page-head">
           <h1>${esc(piece.title)}</h1>
           <p>${esc(piece.role)}</p>
@@ -477,7 +553,8 @@
             <h2>Comment tester</h2>
             <ol class="steps">${piece.tests.map(controlId => {
               const control = controlById(controlId);
-              return `<li><a href="#controle/${controlId}/${problemId}"><span>${esc(control?.title || controlId)}</span></a></li>`;
+              const href = problemId ? `#controle/${controlId}/${problemId}` : `#controle/${controlId}`;
+              return `<li><a href="${href}"><span>${esc(control?.title || controlId)}</span></a></li>`;
             }).join("")}</ol>
           </div>
           <div class="panel">
