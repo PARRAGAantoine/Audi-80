@@ -543,6 +543,142 @@ window.AUDI80_REPAIR = {
         tests: ["Si aucune vitesse : vérifier alimentation et masse moteur.", "Si seule la grande vitesse marche : suspecter résistance de vitesses.", "Mesurer 12 V au moteur sur chaque position.", "Si la tension arrive mais le moteur ne tourne pas : moteur ou blocage mécanique."]
       }
     },
+    controleAntibrouillardArriere: {
+      title: "Contrôler l'antibrouillard arrière",
+      tools: ["Multimètre", "Lampe témoin", "Ampoule connue bonne", "Nettoyant contact"],
+      where: "Interrupteur d'antibrouillard, fusible, faisceau vers l'arrière, porte-ampoule et masse du feu arrière.",
+      how: [
+        "Mettre les feux dans la condition où l'antibrouillard arrière est autorisé.",
+        "Vérifier que le voyant de l'interrupteur réagit si présent.",
+        "Contrôler l'ampoule et l'état du porte-ampoule arrière.",
+        "Mesurer la tension au porte-ampoule antibrouillard commande activée.",
+        "Mesurer ensuite avec la masse locale du feu arrière pour isoler une mauvaise masse.",
+        "Si la tension n'arrive pas, remonter vers interrupteur, fusible et connecteurs de faisceau."
+      ],
+      expected: "Commande activée, le feu antibrouillard reçoit une tension proche batterie et la masse locale reste bonne sous charge.",
+      bad: "Tension absente : fusible/interrupteur/faisceau. Tension présente mais feu éteint : ampoule, porte-ampoule ou masse arrière.",
+      rta: ["antibrouillard", "fusibles", "masses"],
+      schematic: {
+        refs: ["S = fusible", "E = interrupteur", "T = connecteur", "31 = masse", "Feu arrière = porte-ampoule à contrôler physiquement"],
+        flow: ["Alimentation éclairage", "Fusible", "Interrupteur antibrouillard", "Faisceau vers arrière", "Porte-ampoule antibrouillard", "Masse du feu arrière"],
+        tests: ["Mesurer au porte-ampoule commande activée.", "Si 12 V présent avec masse batterie mais pas avec masse locale, nettoyer la masse arrière.", "Si pas de 12 V, remonter vers interrupteur/fusible.", "Si le schéma RTA ne correspond pas à la voiture, se fier au test de tension étape par étape."],
+        note: "La page RTA disponible est à utiliser avec prudence : elle doit être recoupée avec la voiture et les mesures, car l'image scannée ne montre pas clairement tout le chemin antibrouillard."
+      }
+    },
+    reglageProjecteurs: {
+      title: "Contrôler et régler les projecteurs",
+      tools: ["Mur plat", "Sol plat", "Mètre", "Tournevis adapté", "Pression pneus correcte"],
+      where: "Projecteurs avant, vis de réglage horizontal et vertical, mur à quelques mètres devant la voiture.",
+      how: [
+        "Gonfler les pneus correctement et vider les charges inutiles du coffre.",
+        "Placer la voiture sur sol plat face à un mur vertical.",
+        "Mesurer la hauteur du centre des optiques et reporter cette hauteur sur le mur.",
+        "Allumer les feux de croisement.",
+        "Régler verticalement pour que la coupure lumineuse soit légèrement sous la hauteur des optiques.",
+        "Régler horizontalement pour que les deux faisceaux soient symétriques et non croisés.",
+        "Finir idéalement au régloscope avant contrôle technique."
+      ],
+      expected: "Deux faisceaux à hauteur cohérente, symétriques, sans éblouissement.",
+      bad: "Réglage impossible : fixation de phare cassée, correcteur/vis grippée, optique mal montée ou ampoule mal positionnée.",
+      rta: ["projecteursEssuieCombine", "fusibles"],
+      missing: "La RTA montre les vis de réglage, mais le réglage final précis doit être confirmé au régloscope pour le contrôle technique."
+    },
+    niveauHuileMoteur: {
+      title: "Contrôler niveau et état d'huile moteur",
+      tools: ["Chiffon", "Lampe", "Huile adaptée"],
+      where: "Jauge d'huile moteur, bouchon de remplissage, dessous moteur.",
+      how: [
+        "Mettre la voiture à plat et attendre quelques minutes moteur arrêté.",
+        "Sortir la jauge, l'essuyer, la remettre puis relire le niveau.",
+        "Contrôler la couleur, l'odeur et une éventuelle mayonnaise.",
+        "Regarder sous le moteur et autour du filtre à huile.",
+        "Compléter seulement avec une huile adaptée si le niveau est bas."
+      ],
+      expected: "Niveau entre mini et maxi, huile sans odeur d'essence forte ni mayonnaise.",
+      bad: "Niveau très bas : ne pas rouler avant appoint et recherche de fuite/consommation. Mayonnaise ou niveau qui monte : diagnostic moteur prioritaire.",
+      rta: ["graissage", "moteurDonnees"]
+    },
+    pressionHuileManometre: {
+      title: "Mesurer la pression d'huile au manomètre",
+      tools: ["Manomètre de pression d'huile", "Adaptateur filetage sonde", "Clé adaptée", "Chiffons"],
+      where: "Emplacement de la sonde ou du contacteur de pression d'huile sur le circuit de graissage moteur.",
+      how: [
+        "Contrôler d'abord le niveau d'huile.",
+        "Identifier le contacteur/point de mesure sur le moteur avec la RTA graissage.",
+        "Déposer le contacteur moteur froid si possible et monter le manomètre avec adaptateur correct.",
+        "Démarrer et relever la pression au ralenti puis à régime stabilisé moteur chaud.",
+        "Comparer aux valeurs RTA si disponibles pour ce moteur.",
+        "Remonter le contacteur avec étanchéité correcte puis vérifier l'absence de fuite."
+      ],
+      expected: "Pression cohérente avec la RTA, voyant éteint et pas de bruit de graissage.",
+      bad: "Pression réellement faible : arrêter le moteur et chercher pompe, crépine, usure moteur ou huile inadaptée. Pression bonne mais voyant allumé : contacteur, fil ou combiné.",
+      rta: ["graissage", "moteurDonnees"],
+      missing: "Il faut confirmer sur la voiture l'emplacement exact du contacteur de pression d'huile et les valeurs RTA applicables au moteur NE."
+    },
+    rechercheFuiteHuile: {
+      title: "Rechercher une fuite d'huile moteur",
+      tools: ["Lampe", "Nettoyant dégraissant", "Chiffons", "Carton propre", "Gants"],
+      where: "Haut moteur, cache-culbuteurs, filtre à huile, carter, joints, bouchon de vidange et dessous moteur.",
+      how: [
+        "Nettoyer les zones grasses sans noyer les connecteurs électriques.",
+        "Faire un court trajet ou laisser tourner, puis réinspecter immédiatement.",
+        "Chercher le point le plus haut humide : l'huile descend et trompe souvent le diagnostic.",
+        "Placer un carton propre sous la voiture pour localiser l'égouttement.",
+        "Contrôler filtre à huile, bouchon de vidange, joint de cache-culbuteurs et périphérie moteur.",
+        "Photographier la zone propre puis la zone qui redevient humide."
+      ],
+      expected: "Zone sèche après nettoyage et essai, niveau stable.",
+      bad: "Fuite haute : joint/cache/durite ou reniflard. Fuite basse : carter, bouchon, filtre, joint spi ou coulure venant du haut.",
+      rta: ["graissage", "moteurDonnees"]
+    },
+    controleRouesPneusJeu: {
+      title: "Contrôler pneus, roues, roulements et équilibrage",
+      tools: ["Cric", "Chandelles", "Lampe", "Clé de roue", "Manomètre pneus"],
+      where: "Pneus avant/arrière, jantes, roulements, moyeux et serrage des roues.",
+      how: [
+        "Contrôler pression des pneus à froid.",
+        "Inspecter usure intérieure/extérieure, hernie, coupure, craquelure et date DOT.",
+        "Lever la roue et sécuriser sur chandelles.",
+        "Faire tourner la roue à la main : écouter bruit de roulement ou frottement.",
+        "Chercher du jeu en tenant la roue à 12h/6h puis 3h/9h.",
+        "Si vibration à vitesse précise sans jeu, suspecter équilibrage ou jante voilée."
+      ],
+      expected: "Pneus en bon état, usure régulière, pas de jeu perceptible, rotation sans grondement.",
+      bad: "Jeu ou grondement : roulement/rotule à isoler. Usure irrégulière : géométrie, pression, amortisseur ou jeu de train.",
+      rta: ["trainAvant", "jambeForce", "direction", "freins"]
+    },
+    controleEmbrayageCommande: {
+      title: "Contrôler commande d'embrayage hydraulique",
+      tools: ["Lampe", "Liquide adapté", "Clé de purge", "Tuyau transparent", "Bocal"],
+      where: "Pédale d'embrayage, émetteur, récepteur, durite hydraulique et purge.",
+      how: [
+        "Contrôler la course et le retour de pédale.",
+        "Chercher fuite au niveau émetteur, durite et récepteur.",
+        "Vérifier le niveau de liquide du circuit concerné.",
+        "Si pédale molle ou vitesses qui craquent, purger le circuit selon la RTA.",
+        "Observer si le récepteur actionne correctement la fourchette.",
+        "Si la commande est bonne mais ça patine, suspecter disque/mécanisme d'embrayage."
+      ],
+      expected: "Pédale régulière, pas de fuite, commande qui débraye franchement.",
+      bad: "Fuite ou pédale molle : émetteur/récepteur/purge. Débrayage bon mais patinage : embrayage mécanique.",
+      rta: ["embrayage"]
+    },
+    controleTrainAvantJeux: {
+      title: "Contrôler rotules, silentblocs et train avant",
+      tools: ["Cric", "Chandelles", "Lampe", "Levier adapté", "Aide pour bouger le volant"],
+      where: "Rotules, bras, silentblocs, biellettes, soufflets, jambes de force et direction.",
+      how: [
+        "Lever et sécuriser la voiture sur chandelles.",
+        "Inspecter soufflets de rotules et direction : déchirure, graisse, jeu.",
+        "Chercher du jeu roue tenue à 3h/9h pour direction/biellettes.",
+        "Chercher du jeu à 12h/6h pour rotules/roulement selon réaction.",
+        "Utiliser un levier modérément pour observer silentblocs fissurés ou décollés.",
+        "Faire bouger le volant par une aide et observer les retards ou claquements."
+      ],
+      expected: "Aucun jeu franc, soufflets intacts, silentblocs non déchirés, direction sans point dur.",
+      bad: "Jeu perceptible ou soufflet déchiré : pièce à remplacer avant géométrie. Claquement sans jeu visible : contrôler fixation amortisseur/barre stabilisatrice.",
+      rta: ["trainAvant", "jambeForce", "direction"]
+    },
     controleChauffageHabitacle: {
       title: "Contrôler chauffage habitacle",
       tools: ["Main protégée", "Lampe", "Thermomètre infrarouge si disponible"],
@@ -888,11 +1024,10 @@ window.AUDI80_REPAIR = {
       category: "Graissage",
       keywords: ["huile", "pression", "voyant huile", "graissage"],
       symptom: "Voyant huile ou doute sur graissage moteur.",
-      controls: ["fusibleDeuxCotes", "masseChuteTension"],
+      controls: ["niveauHuileMoteur", "pressionHuileManometre", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: [],
-      rta: ["graissage"],
-      emergency: "Si voyant pression d'huile persistant : couper le moteur immédiatement.",
-      missing: "Il manque encore un protocole spécifique de mesure de pression d'huile avec manomètre et valeurs RTA exactes."
+      rta: ["graissage", "moteurDonnees"],
+      emergency: "Si voyant pression d'huile persistant : couper le moteur immédiatement."
     },
     {
       id: "freinage",
@@ -911,7 +1046,7 @@ window.AUDI80_REPAIR = {
       category: "Éclairage / habitacle",
       keywords: ["antibrouillard", "feu arrière", "éclairage", "ampoule"],
       symptom: "Feu antibrouillard arrière défectueux ou absent.",
-      controls: ["controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
+      controls: ["controleAntibrouillardArriere", "controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: [],
       rta: ["antibrouillard", "fusibles", "masses"],
       emergency: "Défaut de contrôle technique : réparer avant contre-visite.",
@@ -989,7 +1124,7 @@ window.AUDI80_REPAIR = {
       category: "Éclairage / signalisation",
       keywords: ["phare", "feu", "veilleuse", "stop", "feu stop", "feu arriere", "feu arrière", "ampoule", "eclairage", "éclairage", "plaque", "marche arrière"],
       symptom: "Un feu ne s'allume pas, éclaire faiblement, clignote avec un autre feu ou déclenche un défaut CT.",
-      controls: ["controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
+      controls: ["controleAmpouleAlimMasse", "reglageProjecteurs", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: ["eclairage"],
       rta: ["fusibles", "masses", "instruments", "feuxReculClignotants", "projecteursEssuieCombine", "antibrouillard"],
       emergency: "Un éclairage de sécurité absent doit être réparé avant roulage de nuit."
@@ -1033,11 +1168,10 @@ window.AUDI80_REPAIR = {
       category: "Graissage / moteur",
       keywords: ["fuite huile", "huile moteur", "suintement", "joint cache culbuteur", "carter huile", "tache huile"],
       symptom: "Trace d'huile au sol, moteur gras, odeur d'huile chaude ou niveau qui baisse.",
-      controls: ["fusibleDeuxCotes"],
+      controls: ["niveauHuileMoteur", "rechercheFuiteHuile"],
       suspects: [],
       rta: ["graissage", "moteurDonnees"],
-      emergency: "Si le niveau baisse vite ou voyant huile apparaît, couper le moteur.",
-      missing: "À détailler avec photos moteur : zones de fuite typiques et méthode de nettoyage/traçage."
+      emergency: "Si le niveau baisse vite ou voyant huile apparaît, couper le moteur."
     },
     {
       id: "fumee-echappement",
@@ -1056,11 +1190,10 @@ window.AUDI80_REPAIR = {
       category: "Trains roulants / pneus",
       keywords: ["vibration", "tremblement", "volant vibre", "tirage", "voiture tire", "pneu", "usure pneu", "equilibrage", "équilibrage", "geometrie", "géométrie"],
       symptom: "Vibration au volant, voiture qui tire, usure irrégulière ou bruit de roulement.",
-      controls: ["controleFreinsVisuel"],
+      controls: ["controleRouesPneusJeu", "controleTrainAvantJeux", "controleFreinsVisuel"],
       suspects: [],
       rta: ["trainAvant", "jambeForce", "direction", "freins"],
-      emergency: "Si vibration forte ou jeu ressenti, contrôler roues/trains avant de continuer à rouler.",
-      missing: "À détailler : contrôle roulement, rotules, équilibrage et géométrie avec photos/points de levage."
+      emergency: "Si vibration forte ou jeu ressenti, contrôler roues/trains avant de continuer à rouler."
     },
     {
       id: "embrayage-vitesses",
@@ -1068,11 +1201,10 @@ window.AUDI80_REPAIR = {
       category: "Transmission / embrayage",
       keywords: ["embrayage", "vitesse", "boite", "pédale", "craque"],
       symptom: "Vitesses qui craquent, pédale molle, embrayage qui patine ou commande dure.",
-      controls: [],
+      controls: ["controleEmbrayageCommande"],
       suspects: [],
       rta: ["embrayage"],
-      emergency: "Si la pédale ne revient plus ou fuite hydraulique, éviter de rouler.",
-      missing: "À détailler : protocole de purge et diagnostic émetteur/récepteur avec photos de la voiture."
+      emergency: "Si la pédale ne revient plus ou fuite hydraulique, éviter de rouler."
     },
     {
       id: "claquement-train-avant",
@@ -1080,11 +1212,10 @@ window.AUDI80_REPAIR = {
       category: "Train avant / direction",
       keywords: ["claquement", "train avant", "rotule", "suspension", "direction", "amortisseur"],
       symptom: "Bruit sur bosses, direction floue, jeu ou usure pneus irrégulière.",
-      controls: [],
+      controls: ["controleTrainAvantJeux", "controleRouesPneusJeu"],
       suspects: [],
       rta: ["trainAvant", "jambeForce", "direction"],
-      emergency: "Jeu important de direction/suspension = sécurité prioritaire.",
-      missing: "À détailler : protocole de contrôle rotules/silentblocs avec points de levage et photos."
+      emergency: "Jeu important de direction/suspension = sécurité prioritaire."
     }
   ]
 };

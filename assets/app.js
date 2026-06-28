@@ -299,7 +299,7 @@
           </a>
           <a href="#panne/eclairage-defaut">
             <strong>Réglage des phares</strong>
-            <span>Fiche éclairage disponible ; protocole précis de réglage optique à compléter.</span>
+            <span>Protocole de pré-réglage disponible ; contrôle final idéalement au régloscope.</span>
           </a>
           <a href="#panne/antibrouillard-arriere">
             <strong>Antibrouillard arrière</strong>
