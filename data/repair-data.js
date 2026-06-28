@@ -121,6 +121,16 @@ window.AUDI80_REPAIR = {
       title: "Contrôler la sonde de température",
       tools: ["Multimètre", "Lampe", "Nettoyant contact"],
       where: "Sondes de température sur le circuit d'eau moteur. Sur ce dossier, l'emplacement exact doit être confirmé visuellement sur le moteur NE et la RTA.",
+      meter: [
+        {
+          title: "Résistance de sonde",
+          steps: ["Contact coupé, connecteur de sonde débranché.", "Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur Ω, commencer sur 20 kΩ si le multimètre n'est pas automatique.", "Mesurer entre les bornes de la sonde, pas dans le faisceau alimenté.", "La résistance doit changer entre moteur froid et moteur chaud.", "Ne jamais mesurer en Ω sur un circuit alimenté."]
+        },
+        {
+          title: "Alimentation / faisceau",
+          steps: ["Pour chercher une tension côté faisceau, repasser sur V⎓ 20 V.", "Pointe noire sur masse, pointe rouge sur le fil à tester.", "Contact mis seulement si le contrôle demande une alimentation.", "Rebrancher proprement avant essai de jauge."]
+        }
+      ],
       how: [
         "Identifier la sonde concernée : jauge tableau de bord, thermocontact ventilateur ou commande starter selon symptôme.",
         "Contrôler connecteur : broches oxydées, fil cassé, cosse lâche.",
@@ -153,6 +163,12 @@ window.AUDI80_REPAIR = {
       title: "Mesurer la charge alternateur",
       tools: ["Multimètre"],
       where: "Bornes + et - de la batterie.",
+      meter: [
+        {
+          title: "Tension continue",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V continu : V⎓ ou V avec trait plein/pointillé.", "Choisir 20 V si le multimètre n'est pas automatique.", "Pointe rouge sur + batterie, pointe noire sur - batterie.", "Ne pas utiliser la position A/ampère pour cette mesure."]
+        }
+      ],
       how: [
         "Moteur coupé depuis quelques minutes : mesurer la batterie.",
         "Démarrer le moteur et mesurer au ralenti.",
@@ -167,6 +183,16 @@ window.AUDI80_REPAIR = {
       title: "Contrôler un fusible alimenté des deux côtés",
       tools: ["Multimètre ou lampe témoin"],
       where: "Boîte à fusibles.",
+      meter: [
+        {
+          title: "Fusible en place",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Pointe noire sur une bonne masse ou borne - batterie.", "Pointe rouge sur chaque petite languette métallique du fusible.", "Le circuit doit être dans l'état où il est censé être alimenté."]
+        },
+        {
+          title: "Fusible déposé",
+          steps: ["Couper le contact avant de déposer le fusible.", "Molette sur continuité/bip ou Ω.", "Toucher les deux pattes du fusible.", "Bip ou valeur proche de 0 Ω = fusible passant.", "Pas de bip / OL = fusible coupé."]
+        }
+      ],
       how: [
         "Identifier le fusible du circuit avec la RTA.",
         "Mettre la commande du circuit dans l'état où il doit être alimenté.",
@@ -187,6 +213,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler une masse par chute de tension",
       tools: ["Multimètre"],
       where: "Entre la masse de l'organe testé et la borne - batterie.",
+      meter: [
+        {
+          title: "Chute de tension",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Circuit allumé et organe en fonctionnement.", "Pointe noire sur borne - batterie.", "Pointe rouge sur la masse de l'organe testé.", "Valeur proche de 0 V = masse correcte ; valeur élevée = résistance dans la masse."]
+        }
+      ],
       how: [
         "Mettre le circuit en fonctionnement pour tester sous charge.",
         "Multimètre en volts continu.",
@@ -208,6 +240,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler l'alimentation après contact",
       tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
       where: "Sortie après contact du Neiman, borne 15, borne X/accessoires, boîte à fusibles et circuits alimentés contact mis.",
+      meter: [
+        {
+          title: "Recherche de +12 V",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Pointe noire sur borne - batterie ou masse sûre.", "Pointe rouge sur la borne/fusible/connecteur à tester.", "Contact mis : environ 12 V attendu sur une alimentation après contact.", "Pendant démarrage : la ligne X peut couper brièvement."]
+        }
+      ],
       how: [
         "Mettre le contact sans démarrer.",
         "Vérifier si les voyants du tableau de bord s'allument et si le buzzer réagit quand il devrait.",
@@ -231,6 +269,16 @@ window.AUDI80_REPAIR = {
       title: "Tester le relais de délestage X / relais automobile",
       tools: ["Multimètre", "Lampe témoin", "Fil de test protégé par fusible", "Schéma RTA"],
       where: "Platine relais / boîte à fusibles. Le relais de délestage X est le relais J18 sur les schémas VAG ; sa position exacte doit être confirmée sur la platine de la voiture.",
+      meter: [
+        {
+          title: "Sur le socle du relais",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Relais déposé, tester le socle côté voiture.", "Borne 30 : 12 V attendu si alimentation présente.", "Bornes 85/86 : chercher commande +/masse selon position de clé.", "Borne 87 : 12 V attendu quand le relais colle."]
+        },
+        {
+          title: "Relais sur établi",
+          steps: ["Relais déposé et non alimenté.", "Molette sur Ω ou continuité/bip.", "85-86 doit montrer une résistance de bobine, pas OL.", "30-87 doit être ouvert au repos sur relais 4 broches.", "Alimenter 85/86 en 12 V avec fil protégé : le relais clique et 30-87 devient passant.", "Respecter la polarité si un symbole de diode est dessiné."]
+        }
+      ],
       how: [
         "Ne pas commencer par ce relais si seul le combiné est mort : contrôler d'abord batterie, fusibles instruments, + après contact et masses.",
         "Le tester en priorité si plusieurs accessoires X sont incohérents : vitres électriques, ventilation, essuie-glace, dégivrage ou accessoires qui changent de comportement entre contact mis et moteur tournant.",
@@ -263,6 +311,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler alimentation du combiné d'instruments",
       tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
       where: "Connecteur arrière du combiné d'instruments, sans tirer brutalement sur le faisceau.",
+      meter: [
+        {
+          title: "Alimentation combiné",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Contact mis.", "Pointe noire sur borne - batterie, pointe rouge sur l'alimentation du connecteur combiné.", "Refaire la mesure entre alimentation combiné et masse locale du combiné.", "Si la première mesure est bonne et la seconde mauvaise : masse locale suspecte."]
+        }
+      ],
       how: [
         "Déposer le combiné seulement après avoir contrôlé batterie, + après contact et fusibles.",
         "Identifier sur la RTA les alimentations permanentes, après contact, éclairage et masses du combiné.",
@@ -284,6 +338,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler connecteur et pistes du combiné",
       tools: ["Lampe", "Multimètre", "Nettoyant contact"],
       where: "Arrière du combiné d'instruments et connecteur du faisceau tableau de bord.",
+      meter: [
+        {
+          title: "Continuité hors tension",
+          steps: ["Débrancher la batterie avant une mesure de continuité sur connecteur/piste.", "Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur continuité/bip ou Ω.", "Tester uniquement entre deux points du même fil ou de la même piste.", "Ne jamais utiliser l'ohmmètre sur un circuit alimenté."]
+        }
+      ],
       how: [
         "Débrancher la batterie si une dépose complète est nécessaire.",
         "Déposer le combiné sans forcer le câble de compteur ni le faisceau.",
@@ -396,6 +456,12 @@ window.AUDI80_REPAIR = {
       title: "Mesurer la batterie pendant action sur un consommateur",
       tools: ["Multimètre"],
       where: "Bornes de batterie, puis connecteur de l'organe qui force ou ne fonctionne pas.",
+      meter: [
+        {
+          title: "Tension sous charge",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Mesurer d'abord directement aux bornes batterie.", "Puis mesurer au connecteur de l'organe pendant qu'il est actionné.", "Comparer les deux tensions : une grosse différence indique une perte dans le circuit."]
+        }
+      ],
       how: [
         "Mesurer la batterie au repos.",
         "Actionner l'organe en panne pendant la mesure : lève-vitre, démarreur, ventilation, éclairage.",
@@ -411,6 +477,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler interrupteur, relais et alimentation de commande",
       tools: ["Multimètre", "Lampe témoin", "Schéma RTA"],
       where: "Interrupteur de commande, relais éventuel, boîte à fusibles et connecteur de l'organe.",
+      meter: [
+        {
+          title: "Entrée et sortie commande",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Pointe noire sur masse sûre.", "Mesurer l'entrée de l'interrupteur : 12 V attendu si alimenté.", "Actionner l'interrupteur et mesurer la sortie : 12 V doit apparaître.", "Si tu testes la continuité interrupteur déposé : contact coupé, connecteur débranché, molette sur Ω/bip."]
+        }
+      ],
       how: [
         "Identifier le fusible et l'alimentation avec la RTA.",
         "Contrôler le fusible alimenté des deux côtés.",
@@ -431,6 +503,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler le faisceau dans le passage de porte",
       tools: ["Multimètre", "Lampe", "Nettoyant contact"],
       where: "Soufflet entre montant de caisse et porte, connecteurs de porte, masse de porte.",
+      meter: [
+        {
+          title: "Continuité de fil",
+          steps: ["Couper le contact et débrancher les connecteurs des deux côtés du fil testé.", "Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur continuité/bip ou Ω.", "Toucher les deux extrémités du même fil.", "Bouger doucement le faisceau pendant la mesure.", "Bip qui coupe ou valeur qui saute = fil cassé/intermittent."]
+        }
+      ],
       how: [
         "Ouvrir la porte et inspecter le soufflet de faisceau.",
         "Chercher fil coupé, gaine craquelée, cosse oxydée ou connecteur humide.",
@@ -446,6 +524,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler moteur et mécanisme de lève-vitre",
       tools: ["Multimètre", "Lampe", "Garniture de porte déposée si nécessaire"],
       where: "Dans la porte : connecteur moteur, mécanisme, coulisses et fixation de vitre.",
+      meter: [
+        {
+          title: "Tension moteur de vitre",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Mesurer au connecteur moteur pendant appui sur l'interrupteur.", "En montée puis descente, la polarité peut s'inverser : une valeur négative indique simplement que les pointes sont inversées.", "Si environ 12 V arrive mais le moteur ne bouge pas : moteur/mécanisme suspect."]
+        }
+      ],
       how: [
         "Identifier si une seule vitre ou toutes les vitres sont concernées.",
         "Comparer contact coupé, contact mis et moteur tournant.",
@@ -466,6 +550,16 @@ window.AUDI80_REPAIR = {
       title: "Contrôler ampoule, alimentation et masse d'un éclairage",
       tools: ["Multimètre", "Lampe témoin", "Ampoule connue bonne"],
       where: "Optique, feu arrière, porte-ampoule, connecteur, masse locale.",
+      meter: [
+        {
+          title: "Alimentation d'un feu",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Commande du feu allumée.", "Pointe noire sur borne - batterie, pointe rouge sur le + du porte-ampoule.", "Refaire avec pointe noire sur la masse locale du porte-ampoule.", "12 V avec masse batterie mais pas avec masse locale = mauvaise masse."]
+        },
+        {
+          title: "Ampoule déposée",
+          steps: ["Ampoule sortie de son support.", "Molette sur continuité/bip ou Ω.", "Tester entre les contacts de l'ampoule.", "Pas de bip / OL = filament coupé.", "Ne pas faire ce test sur un circuit alimenté."]
+        }
+      ],
       how: [
         "Contrôler d'abord l'ampoule et l'état du porte-ampoule.",
         "Mettre la commande en position allumée.",
@@ -487,6 +581,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler essuie-glace",
       tools: ["Multimètre", "Lampe", "Schéma RTA"],
       where: "Fusible, commodo, moteur d'essuie-glace, masse et mécanisme de tringlerie.",
+      meter: [
+        {
+          title: "Tension moteur essuie-glace",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Commande d'essuie-glace activée.", "Pointe noire sur masse sûre, pointe rouge sur alimentation moteur.", "Mesurer aussi la chute de tension de masse si le moteur est lent.", "Si 12 V et masse sont bons mais moteur immobile : moteur ou tringlerie."]
+        }
+      ],
       how: [
         "Contrôler le fusible alimenté.",
         "Écouter si le moteur tente de tourner.",
@@ -507,6 +607,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler lave-glace",
       tools: ["Multimètre", "Lampe", "Aiguille fine pour gicleur"],
       where: "Réservoir, pompe de lave-glace, durites, gicleurs, commande.",
+      meter: [
+        {
+          title: "Tension pompe lave-glace",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Actionner la commande pendant la mesure.", "Mesurer au connecteur de pompe.", "12 V présent et pompe muette = pompe suspecte.", "0 V = fusible, commande ou faisceau."]
+        }
+      ],
       how: [
         "Vérifier le niveau de lave-glace.",
         "Actionner la commande et écouter la pompe.",
@@ -527,6 +633,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler ventilation habitacle",
       tools: ["Multimètre", "Lampe", "Schéma RTA"],
       where: "Commande de ventilation, fusible, résistance de vitesses, moteur de soufflante.",
+      meter: [
+        {
+          title: "Tension soufflante",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Tester chaque vitesse de ventilation.", "Mesurer l'alimentation au moteur de soufflante.", "Si seule la grande vitesse fonctionne, contrôler résistance de vitesses.", "Si 12 V arrive mais moteur muet, moteur ou masse suspect."]
+        }
+      ],
       how: [
         "Tester toutes les vitesses de ventilation.",
         "Si seule la grande vitesse fonctionne, suspecter résistance de ventilation.",
@@ -547,6 +659,12 @@ window.AUDI80_REPAIR = {
       title: "Contrôler l'antibrouillard arrière",
       tools: ["Multimètre", "Lampe témoin", "Ampoule connue bonne", "Nettoyant contact"],
       where: "Interrupteur d'antibrouillard, fusible, faisceau vers l'arrière, porte-ampoule et masse du feu arrière.",
+      meter: [
+        {
+          title: "Tension antibrouillard",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Mettre les feux et l'interrupteur antibrouillard dans la bonne position.", "Pointe noire sur borne - batterie, pointe rouge sur le + du porte-ampoule antibrouillard.", "Refaire avec la masse locale du feu arrière.", "Si la mesure change, nettoyer la masse du feu."]
+        }
+      ],
       how: [
         "Mettre les feux dans la condition où l'antibrouillard arrière est autorisé.",
         "Vérifier que le voyant de l'interrupteur réagit si présent.",
@@ -571,17 +689,23 @@ window.AUDI80_REPAIR = {
       where: "Projecteurs avant, vis de réglage horizontal et vertical, mur à quelques mètres devant la voiture.",
       how: [
         "Gonfler les pneus correctement et vider les charges inutiles du coffre.",
-        "Placer la voiture sur sol plat face à un mur vertical.",
-        "Mesurer la hauteur du centre des optiques et reporter cette hauteur sur le mur.",
+        "Placer la voiture sur sol plat, perpendiculaire à un mur vertical.",
+        "Approcher la voiture du mur et marquer au ruban la hauteur du centre de chaque optique.",
+        "Marquer aussi l'axe vertical de chaque optique sur le mur.",
+        "Reculer droit de 5 m ou 10 m selon la place disponible.",
+        "Calculer la baisse : 1 % = 5 cm à 5 m ou 10 cm à 10 m ; 1,5 % = 7,5 cm à 5 m ou 15 cm à 10 m.",
+        "Tracer une ligne horizontale plus basse selon cette valeur. Sans donnée constructeur visible, viser plutôt 1 % à 1,5 % pour ne pas éblouir.",
         "Allumer les feux de croisement.",
-        "Régler verticalement pour que la coupure lumineuse soit légèrement sous la hauteur des optiques.",
-        "Régler horizontalement pour que les deux faisceaux soient symétriques et non croisés.",
-        "Finir idéalement au régloscope avant contrôle technique."
+        "Occulter un phare pendant que tu règles l'autre.",
+        "Régler verticalement pour que la coupure du faisceau arrive sur la ligne basse.",
+        "Régler horizontalement pour que le coude du faisceau reste proche de l'axe vertical du phare.",
+        "Faire un essai de nuit : la voiture ne doit pas éclairer trop court ni éblouir les véhicules en face.",
+        "Faire confirmer au régloscope si possible avant contrôle technique."
       ],
       expected: "Deux faisceaux à hauteur cohérente, symétriques, sans éblouissement.",
       bad: "Réglage impossible : fixation de phare cassée, correcteur/vis grippée, optique mal montée ou ampoule mal positionnée.",
       rta: ["projecteursEssuieCombine", "fusibles"],
-      missing: "La RTA montre les vis de réglage, mais le réglage final précis doit être confirmé au régloscope pour le contrôle technique."
+      missing: "La méthode au mur donne un pré-réglage sérieux sans régloscope, mais le contrôle technique mesure avec appareil. À confirmer au régloscope si le doute persiste."
     },
     niveauHuileMoteur: {
       title: "Contrôler niveau et état d'huile moteur",

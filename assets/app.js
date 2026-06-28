@@ -102,6 +102,22 @@
       </section>`;
   }
 
+  function meterGuide(item) {
+    if (!item.meter?.length) return "";
+    return `
+      <section class="panel meter-guide">
+        <h2>Réglage multimètre</h2>
+        <div class="grid two">
+          ${item.meter.map(mode => `
+            <div>
+              <h3>${esc(mode.title)}</h3>
+              <ul>${mode.steps.map(step => `<li>${esc(step)}</li>`).join("")}</ul>
+            </div>
+          `).join("")}
+        </div>
+      </section>`;
+  }
+
   function setActive(route) {
     navLinks.forEach(link => link.classList.toggle("active", link.dataset.route === route));
   }
@@ -388,6 +404,7 @@
             <p>${esc(control.bad)}</p>
           </div>
         </section>
+        ${meterGuide(control)}
         ${schematicGuide(control)}
         ${control.missing ? `<section class="panel missing"><h2>Information à compléter</h2><p>${esc(control.missing)}</p></section>` : ""}
         <section class="grid two">${rtaImages(control.rta)}</section>
