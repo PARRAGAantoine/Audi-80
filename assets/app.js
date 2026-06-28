@@ -266,9 +266,55 @@
       </section>
       <section class="vehicle-strip">
         <div><span>VIN</span><strong>${esc(repair.vehicle.vin)}</strong></div>
-        <div><span>Moteur</span><strong>${esc(repair.vehicle.engine)}</strong></div>
+        <div><span>Carrosserie</span><strong>${esc(repair.vehicle.body)}</strong></div>
         <div><span>Boîte</span><strong>${esc(repair.vehicle.gearbox)}</strong></div>
         <div><span>Alimentation</span><strong>${esc(repair.vehicle.carburetor)}</strong></div>
+      </section>
+      <section class="home-profile grid two">
+        <div class="panel">
+          <h2>Présentation générale</h2>
+          <div class="spec-list">
+            <div><span>Modèle</span><strong>${esc(repair.vehicle.title)}</strong></div>
+            <div><span>Génération</span><strong>${esc(repair.vehicle.generation)}</strong></div>
+            <div><span>Fabrication du modèle</span><strong>${esc(repair.vehicle.production)}</strong></div>
+            <div><span>Année / millésime</span><strong>${esc(repair.vehicle.year)} / ${esc(repair.vehicle.modelYear)}</strong></div>
+            <div><span>Couleur</span><strong>${esc(repair.vehicle.color)}</strong></div>
+            <div><span>Transmission</span><strong>${esc(repair.vehicle.drivetrain)}</strong></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Mécanique identifiée</h2>
+          <div class="spec-list">
+            <div><span>Moteur</span><strong>${esc(repair.vehicle.engine)} · ${esc(repair.vehicle.displacement)}</strong></div>
+            <div><span>Puissance</span><strong>${esc(repair.vehicle.power)} · ${esc(repair.vehicle.fiscalPower)}</strong></div>
+            <div><span>Carburation</span><strong>${esc(repair.vehicle.carburetor)}</strong></div>
+            <div><span>Boîte</span><strong>${esc(repair.vehicle.gearbox)}</strong></div>
+            <div><span>Carburant</span><strong>${esc(repair.vehicle.fuel)}</strong></div>
+            <div><span>Roues</span><strong>${esc(repair.vehicle.tires)}</strong></div>
+          </div>
+        </div>
+      </section>
+      <section class="panel equipment-panel">
+        <h2>Options / équipements de cette voiture</h2>
+        <div class="equipment-grid">
+          <div>
+            <h3>Confirmé dans l'ancien dossier</h3>
+            <div class="equipment-list">
+              ${repair.vehicle.equipmentConfirmed.map(item => `
+                <div>
+                  <strong>${esc(item.label)}</strong>
+                  <span>${esc(item.detail)}</span>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+          <div>
+            <h3>À confirmer sur photo ou étiquette</h3>
+            <div class="chip-list">
+              ${repair.vehicle.equipmentToConfirm.map(item => `<span class="tag">${esc(item)}</span>`).join("")}
+            </div>
+          </div>
+        </div>
       </section>
       <section class="home-search panel">
         <h2>Recherche de panne</h2>

@@ -240,6 +240,71 @@ p {
   margin-bottom: 14px;
 }
 
+.home-profile {
+  margin-bottom: 14px;
+}
+
+.spec-list {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.spec-list div {
+  align-items: start;
+  background: color-mix(in srgb, var(--panel) 88%, var(--panel-2));
+  display: grid;
+  gap: 8px;
+  grid-template-columns: minmax(130px, .7fr) minmax(0, 1.3fr);
+  padding: 10px 12px;
+}
+
+.spec-list span {
+  color: var(--muted);
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.spec-list strong {
+  color: var(--text);
+}
+
+.equipment-panel {
+  margin-bottom: 14px;
+}
+
+.equipment-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, .75fr);
+}
+
+.equipment-list {
+  display: grid;
+  gap: 10px;
+}
+
+.equipment-list div {
+  background: color-mix(in srgb, var(--panel) 88%, var(--panel-2));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+}
+
+.equipment-list span {
+  color: var(--muted);
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .home-search h2,
 .action-card h2,
 .workbench-note h2 {
@@ -537,6 +602,11 @@ td strong { color: var(--text); }
   .grid.two,
   .grid.three,
   .vehicle-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-grid,
+  .spec-list div {
     grid-template-columns: 1fr;
   }
 

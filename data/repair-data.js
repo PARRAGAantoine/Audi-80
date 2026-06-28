@@ -4,9 +4,34 @@ window.AUDI80_REPAIR = {
     year: "1988",
     modelYear: "millésime 1989",
     vin: "WAUZZZ89ZKA025845",
+    generation: "B3 / Type 89",
+    production: "1986 à 1991",
+    body: "Berline 4 portes",
+    color: "Blanc Alpinweiß, code L90E à confirmer sur étiquette",
     engine: "NE",
     gearbox: "AKM",
-    carburetor: "Keihin KS2"
+    carburetor: "Keihin KS2",
+    fiscalPower: "7 CV",
+    power: "90 ch / 66 kW",
+    displacement: "1 781 cm3",
+    fuel: "Essence, carburateur",
+    drivetrain: "Traction avant",
+    tires: "175/70 R14 confirmé photo",
+    equipmentConfirmed: [
+      { label: "Vitres électriques", detail: "Présentes dans le dossier panne lève-vitre ; côté exact et moteur à identifier." },
+      { label: "Antibrouillard arrière", detail: "Interrupteur remplacé, référence visible 893 941 563." },
+      { label: "Dégivrage lunette arrière", detail: "Circuit lié à la page RTA antibrouillard/dégivrage." },
+      { label: "Combiné d'instruments analogique", detail: "Compteur, voyants et buzzer actuellement en diagnostic." }
+    ],
+    equipmentToConfirm: [
+      "Direction assistée",
+      "Rétroviseurs électriques / dégivrants",
+      "Verrouillage centralisé",
+      "Toit ouvrant électrique",
+      "Autoradio / antenne",
+      "Jantes tôle ou alliage 14 pouces",
+      "Sellerie et couleur intérieure"
+    ]
   },
 
   rta: {
