@@ -268,8 +268,29 @@
         <input id="repair-search-input" type="search" placeholder="Symptôme, organe ou panne">
       </section>
       <section class="panel workbench-note">
-        <h2>Atelier</h2>
-        <p>Chaque fiche doit mener à un contrôle concret, une pièce identifiable et la page RTA concernée.</p>
+        <h2>Travaux restants</h2>
+        <div class="todo-list">
+          <a href="#panne/vibrations-roulage-pneus">
+            <strong>Pneus avant</strong>
+            <span>Défaut relevé au contrôle technique du 30.12.2025.</span>
+          </a>
+          <a href="#panne/eclairage-defaut">
+            <strong>Réglage des phares</strong>
+            <span>Fiche éclairage disponible ; protocole précis de réglage optique à compléter.</span>
+          </a>
+          <a href="#panne/antibrouillard-arriere">
+            <strong>Antibrouillard arrière</strong>
+            <span>Bouton remplacé ; contrôler fonctionnement complet avant contre-visite.</span>
+          </a>
+          <a href="#panne/pollution-co">
+            <strong>Pollution CO</strong>
+            <span>Contrôler allumage, carburation Keihin et réglage richesse.</span>
+          </a>
+          <a href="#panne/claquement-train-avant">
+            <strong>Soufflets AV / roulement ARD</strong>
+            <span>Réparés en janvier 2026 ; contrôle visuel et essai routier à refaire.</span>
+          </a>
+        </div>
       </section>`;
     const repairSearch = document.querySelector("#repair-search-input");
     repairSearch.addEventListener("input", event => {

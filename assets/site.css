@@ -270,8 +270,33 @@ p {
 }
 
 .card:hover,
-.clickable:hover {
+.clickable:hover,
+.todo-list a:hover {
   border-color: var(--blue);
+}
+
+.todo-list {
+  display: grid;
+  gap: 10px;
+}
+
+.todo-list a {
+  background: color-mix(in srgb, var(--panel) 88%, var(--panel-2));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.todo-list strong {
+  font-size: 1rem;
+}
+
+.todo-list span {
+  color: var(--muted);
 }
 
 .tag-row,
