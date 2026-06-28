@@ -413,7 +413,7 @@
   }
 
   function historyRows(rows) {
-    return rows.map(row => `<tr>
+    return [...rows].sort((a, b) => historyTimestamp(b) - historyTimestamp(a)).map(row => `<tr>
       <td><strong>${esc(row.date)}</strong></td>
       <td>${esc(row.mileage)}</td>
       <td>${esc(row.intervention)}</td>
@@ -421,6 +421,18 @@
       <td>${esc(row.source)} ${row.files?.map(file => `<a href="${file}" target="_blank">document</a>`).join(" ") || ""}</td>
       <td>${esc(row.status)}</td>
     </tr>`).join("");
+  }
+
+  function historyTimestamp(row) {
+    const value = String(row.date || "").trim();
+    const fullDate = value.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+    if (fullDate) {
+      const [, day, month, year] = fullDate;
+      return Date.UTC(Number(year), Number(month) - 1, Number(day));
+    }
+    const yearOnly = value.match(/^(\d{4})$/);
+    if (yearOnly) return Date.UTC(Number(yearOnly[1]), 0, 1);
+    return Number.NEGATIVE_INFINITY;
   }
 
   function route() {
