@@ -21,6 +21,8 @@ window.AUDI80_REPAIR = {
     allumage: { label: "RTA allumage transistorisé", file: "docs/rta/009_allumage-transistorise-allumeur-controles.jpg" },
     miseAuPoint: { label: "RTA mise au point moteur", file: "docs/rta/008_moteur-controles-allumage-mise-au-point-couples-serrage.jpg" },
     alternateur: { label: "RTA alternateur/démarreur", file: "docs/rta/073_alternateur-demarreur.jpg" },
+    projecteursEssuieCombine: { label: "RTA essuie-glace / combiné / réglage projecteurs", file: "docs/rta/074_essuie-glace-combine-instruments-reglage-projecteurs.jpg" },
+    feuxReculClignotants: { label: "RTA feux de recul / clignotants / détresse", file: "docs/rta/088_schema-feux-recul-clignotants-feux-detresse.jpg" },
     fusibles: { label: "RTA fusibles", file: "docs/rta/072_equipement-electrique-caracteristiques-fusibles.jpg" },
     masses: { label: "RTA points de masse", file: "docs/rta/120_schema-points-masse-raccords-faisceau.jpg" },
     freins: { label: "RTA freins caractéristiques", file: "docs/rta/064_freins-caracteristiques.jpg" },
@@ -174,7 +176,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "12 V des deux côtés quand le circuit est alimenté.",
       bad: "Un seul côté alimenté = fusible HS. Aucun côté = circuit non alimenté ou commande amont.",
-      rta: ["fusibles"]
+      rta: ["fusibles"],
+      schematic: {
+        refs: ["S = fusible", "30/15/X = ligne d'alimentation", "La valeur en A est le calibre du fusible"],
+        flow: ["Alimentation", "Entrée du fusible", "Lame fusible", "Sortie du fusible", "Circuit à protéger"],
+        tests: ["Sans déposer le fusible, toucher les deux petites languettes métalliques au-dessus.", "Si 12 V des deux côtés : fusible et alimentation OK.", "Si 12 V d'un seul côté : fusible coupé.", "Si 0 V des deux côtés alors que le circuit devrait marcher : panne avant le fusible."]
+      }
     },
     masseChuteTension: {
       title: "Contrôler une masse par chute de tension",
@@ -189,7 +196,13 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Chute très faible, idéalement proche de 0 V.",
       bad: "Si la chute dépasse quelques dixièmes de volt, nettoyer/resserrer la masse et contrôler le câble.",
-      rta: ["masses"]
+      rta: ["masses"],
+      schematic: {
+        refs: ["31 = masse", "Symbole de masse = retour carrosserie", "Les numéros entourés renvoient aux points de masse RTA"],
+        flow: ["Organe électrique", "Fil de masse", "Point de masse carrosserie", "Carrosserie", "Borne - batterie"],
+        tests: ["Tester la masse sous charge, circuit allumé.", "Pointe noire sur borne - batterie, pointe rouge sur masse de l'organe.", "Une bonne masse donne presque 0 V.", "Une tension élevée indique une résistance dans la masse."],
+        note: "La page RTA des masses ne dessine pas toujours l'emplacement exact de la vis : elle montre surtout quel fil revient à quel point de masse. Pour trouver physiquement la masse, suivre le faisceau ou utiliser la page des points de masse."
+      }
     },
     alimentationApresContact: {
       title: "Contrôler l'alimentation après contact",
@@ -206,7 +219,13 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Contact mis, les circuits après contact reçoivent une tension proche de la batterie.",
       bad: "Aucun + après contact : suspecter contacteur de Neiman, alimentation amont, connecteur principal ou coupure dans la boîte à fusibles. Si seuls les accessoires X sont incohérents, contrôler le relais de délestage X/J18.",
-      rta: ["fusibles", "instruments", "masses"]
+      rta: ["fusibles", "instruments", "masses"],
+      schematic: {
+        refs: ["30 = + batterie permanent", "15 = + après contact", "X = accessoires délestés au démarrage", "31 = masse", "S = fusible", "T = connecteur"],
+        flow: ["Batterie ou alimentation générale", "Contacteur de Neiman", "Borne 15 ou borne X", "Fusible du circuit", "Organe alimenté", "Masse 31"],
+        tests: ["Contact mis : mesurer 12 V sur les deux côtés du fusible concerné.", "Comparer contact mis, action démarreur et moteur tournant.", "Si la tension disparaît seulement sur les accessoires, chercher côté X/J18.", "Si aucun voyant du combiné ne s'allume, chercher d'abord le +15 instruments et la masse."],
+        note: "Sur les schémas RTA, les grandes lignes du haut sont les alimentations. On part de ces lignes et on descend vers l'organe à tester."
+      }
     },
     controleRelaisDelestageX: {
       title: "Tester le relais de délestage X / relais automobile",
@@ -225,6 +244,12 @@ window.AUDI80_REPAIR = {
       expected: "Les accessoires X sont alimentés contact mis, coupés seulement pendant l'action démarreur, puis réalimentés moteur tournant.",
       bad: "Pas d'alimentation sur 30 : circuit amont. Pas de commande sur 85/86 : contacteur de Neiman, borne X ou faisceau. Commande présente mais pas de sortie 87 : relais ou socle suspect.",
       rta: ["fusibles", "commandesMoteursOptions", "essuieGlace", "chauffage"],
+      schematic: {
+        refs: ["J18 = relais de délestage X sur schémas VAG", "30 = entrée alimentation", "87 = sortie relais", "85/86 = bobine", "X = ligne accessoires"],
+        flow: ["Alimentation arrive sur 30", "Le contacteur de Neiman commande la bobine 85/86", "Le relais colle", "La sortie 87 alimente la ligne X", "Les accessoires reçoivent le courant"],
+        tests: ["Mesurer 12 V sur 30 du socle relais.", "Contact mis : vérifier commande 85/86.", "Contact mis : vérifier sortie 87.", "Pendant démarrage : la sortie X peut couper, puis doit revenir moteur tournant."],
+        note: "Ce relais explique surtout les accessoires qui se coupent au mauvais moment. Il n'est pas à considérer comme le relais principal du combiné d'instruments."
+      },
       photo: {
         title: "Photo de repère",
         src: "images/automotive-relay.jpg",
@@ -247,7 +272,13 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Le combiné reçoit son alimentation et sa masse contact mis.",
       bad: "Alimentation absente : fusible, contacteur, faisceau ou connecteur. Alimentation présente mais masse mauvaise : réparer masse/faisceau. Alimentation et masse bonnes mais combiné mort : combiné suspect.",
-      rta: ["instruments", "fusibles", "masses"]
+      rta: ["instruments", "fusibles", "masses"],
+      schematic: {
+        refs: ["G1 = indicateur de niveau carburant", "G3 = indicateur de température liquide de refroidissement", "J6 = stabilisateur de tension", "K1/K2/K3/K15 = voyants", "T26/T26a = connecteurs du combiné"],
+        flow: ["+ après contact 15 arrive au combiné", "Le courant passe par le connecteur T26/T26a", "Le stabilisateur J6 alimente les jauges", "Les voyants et jauges reviennent à la masse 31 ou par leurs sondes", "Le combiné fonctionne seulement si alimentation et masse sont présentes"],
+        tests: ["Contact mis : chercher 12 V sur le fusible instruments puis au connecteur du combiné.", "Mesurer entre + combiné et masse batterie.", "Mesurer entre + combiné et masse locale du combiné.", "Si + et masse sont bons mais tout reste mort, le combiné devient suspect."],
+        note: "Pour ta panne actuelle, on sépare deux choses : panne totale du combiné maintenant, et panne ancienne possible du compteur kilométrique."
+      }
     },
     connecteurCombine: {
       title: "Contrôler connecteur et pistes du combiné",
@@ -278,7 +309,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "L'aiguille de vitesse et les rouleaux kilométriques avancent ensemble quand le câble entraîne le compteur.",
       bad: "Vitesse OK mais kilomètres immobiles : panne interne d'odomètre probable. Vitesse et kilomètres morts : câble, entraînement de boîte ou fixation compteur.",
-      rta: ["instruments"],
+      rta: ["instruments", "projecteursEssuieCombine"],
+      schematic: {
+        refs: ["T26/T26a = connecteurs combiné", "Le câble mécanique de vitesse n'est pas une alimentation électrique", "Les voyants/jauges sont électriques, l'odomètre peut être mécanique selon combiné"],
+        flow: ["Si l'aiguille de vitesse fonctionne, le câble de compteur entraîne le combiné", "Si les kilomètres n'avancent pas, le défaut est probablement dans le mécanisme d'odomètre", "Si vitesse et kilomètres sont morts, vérifier câble et entraînement avant électricité"],
+        tests: ["Noter si l'aiguille de vitesse bouge en roulant.", "Si oui, ne pas chercher d'abord un fusible pour le kilométrage.", "Après dépose, vérifier câble verrouillé et mécanisme d'odomètre."]
+      },
       missing: "Il manque encore une photo interne fiable du compteur ouvert pour identifier précisément le pignon d'odomètre de ce combiné."
     },
     etincelleAllumage: {
@@ -384,7 +420,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Alimentation présente en entrée et sortie de commande lorsque l'interrupteur est actionné.",
       bad: "Entrée présente mais pas de sortie : interrupteur/relais suspect. Pas d'entrée : fusible, alimentation ou faisceau amont.",
-      rta: ["fusibles", "commandesMoteursOptions"]
+      rta: ["fusibles", "commandesMoteursOptions"],
+      schematic: {
+        refs: ["S17 30A = fusible lève-vitres sur la page options", "E9 = commande/interrupteur selon la légende RTA", "V2 = moteur de lève-vitre", "T... = connecteurs", "31 = masse"],
+        flow: ["L'alimentation arrive par le fusible", "Elle passe par la commande/interrupteur", "La commande inverse la polarité pour monter ou descendre", "Le courant arrive au moteur de vitre", "Le retour se fait par l'autre fil ou par la masse selon position de commande"],
+        tests: ["Mesurer le 12 V en entrée de commande.", "Actionner montée puis descente : la sortie doit changer.", "Si toutes les vitres réagissent mal selon contact/moteur, tester d'abord la ligne X/J18.", "Si une seule vitre est en panne, tester ensuite faisceau de porte et moteur."]
+      }
     },
     faisceauPorte: {
       title: "Contrôler le faisceau dans le passage de porte",
@@ -414,7 +455,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Tension inversée selon montée/descente, moteur qui tourne sans chute excessive ni point dur.",
       bad: "Tension absente : commande/faisceau. Tension présente mais moteur muet : moteur ou masse. Moteur force : mécanisme/coulisses.",
-      rta: ["commandesMoteursOptions", "fusibles", "masses"]
+      rta: ["commandesMoteursOptions", "fusibles", "masses"],
+      schematic: {
+        refs: ["V2 = moteur de lève-vitre sur la page options", "E9 = commande", "S17 30A = fusible alimentation", "T... = connecteur de porte ou raccord", "31 = masse"],
+        flow: ["Fusible S17", "Commande de vitre", "Connecteur de porte", "Moteur V2", "Retour par l'autre fil ou masse"],
+        tests: ["Au connecteur moteur, mesurer pendant que quelqu'un appuie sur l'interrupteur.", "En montée puis descente, la polarité doit s'inverser.", "Si le 12 V arrive mais le moteur ne bouge pas, la panne est dans la porte.", "Si le 12 V n'arrive pas, remonter vers commande, fusible ou relais."]
+      }
     },
     controleAmpouleAlimMasse: {
       title: "Contrôler ampoule, alimentation et masse d'un éclairage",
@@ -429,7 +475,13 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Tension batterie au feu, masse correcte, ampoule et porte-ampoule propres.",
       bad: "Pas de tension : fusible/commande/faisceau. Tension présente mais pas d'éclairage : masse, ampoule ou porte-ampoule.",
-      rta: ["fusibles", "masses", "instruments"]
+      rta: ["fusibles", "masses", "instruments", "feuxReculClignotants", "projecteursEssuieCombine"],
+      schematic: {
+        refs: ["S = fusible", "E = interrupteur ou commodo", "M/K/L selon schéma = lampe, voyant ou éclairage", "T = connecteur", "31 = masse"],
+        flow: ["Alimentation du circuit", "Fusible", "Commande ou commodo", "Connecteur du feu", "Ampoule", "Masse locale"],
+        tests: ["Commande allumée : mesurer 12 V au porte-ampoule.", "Mesurer avec la masse batterie puis avec la masse locale.", "Si 12 V avec masse batterie mais pas avec masse locale, la masse du feu est mauvaise.", "Si pas de 12 V, remonter vers fusible et commande."],
+        note: "Pour le réglage des phares, la RTA donne surtout la partie mécanique sur la page projecteurs ; le réglage précis au mur reste à compléter."
+      }
     },
     controleEssuieGlace: {
       title: "Contrôler essuie-glace",
@@ -444,7 +496,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Alimentation présente, masse correcte, tringlerie libre.",
       bad: "Alimentation absente : fusible/commande/faisceau. Moteur alimenté mais immobile : moteur ou tringlerie bloquée.",
-      rta: ["essuieGlace", "fusibles", "masses"]
+      rta: ["essuieGlace", "fusibles", "masses", "projecteursEssuieCombine"],
+      schematic: {
+        refs: ["E = commodo/commande", "M ou V = moteur selon page", "S = fusible", "T = connecteur", "31 = masse"],
+        flow: ["Alimentation après contact", "Fusible", "Commodo d'essuie-glace", "Connecteur moteur", "Moteur d'essuie-glace", "Masse"],
+        tests: ["Commande activée : mesurer au connecteur moteur.", "Si 12 V et masse sont bons mais moteur muet : moteur ou tringlerie.", "Si pas de 12 V : remonter vers commodo et fusible.", "Si moteur tourne mais bras immobiles : problème mécanique, voir page RTA dépose-repose."]
+      }
     },
     controleLaveGlace: {
       title: "Contrôler lave-glace",
@@ -459,7 +516,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Pompe alimentée, durites étanches, jet régulier aux gicleurs.",
       bad: "Pompe muette alimentée : pompe HS. Pompe non alimentée : fusible/commande/faisceau. Pompe tourne sans jet : durite/gicleur.",
-      rta: ["essuieGlace", "fusibles"]
+      rta: ["essuieGlace", "fusibles"],
+      schematic: {
+        refs: ["E = commande au commodo", "M/V = pompe selon schéma", "S = fusible", "T = connecteur", "31 = masse"],
+        flow: ["Alimentation", "Fusible", "Commande lave-glace", "Pompe de lave-glace", "Masse"],
+        tests: ["Actionner le lave-glace et écouter la pompe.", "Mesurer 12 V au connecteur de pompe pendant la commande.", "Si 12 V présent et pompe muette : pompe HS.", "Si pas de 12 V : fusible, commodo ou faisceau."]
+      }
     },
     controleVentilationHabitacle: {
       title: "Contrôler ventilation habitacle",
@@ -474,7 +536,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Chaque vitesse fonctionne, moteur régulier, pas d'odeur de chaud.",
       bad: "Une vitesse absente : résistance/commande. Toutes absentes : fusible, alimentation, masse ou moteur.",
-      rta: ["chauffage", "fusibles", "masses"]
+      rta: ["chauffage", "fusibles", "masses"],
+      schematic: {
+        refs: ["E = commande de ventilation", "N/R = résistance ou bloc de vitesses selon schéma", "M/V = moteur de soufflante", "S = fusible", "31 = masse"],
+        flow: ["Alimentation après contact ou ligne X", "Fusible", "Commande de vitesses", "Résistance de ventilation", "Moteur de soufflante", "Masse"],
+        tests: ["Si aucune vitesse : vérifier alimentation et masse moteur.", "Si seule la grande vitesse marche : suspecter résistance de vitesses.", "Mesurer 12 V au moteur sur chaque position.", "Si la tension arrive mais le moteur ne tourne pas : moteur ou blocage mécanique."]
+      }
     },
     controleChauffageHabitacle: {
       title: "Contrôler chauffage habitacle",
@@ -844,10 +911,11 @@ window.AUDI80_REPAIR = {
       category: "Éclairage / habitacle",
       keywords: ["antibrouillard", "feu arrière", "éclairage", "ampoule"],
       symptom: "Feu antibrouillard arrière défectueux ou absent.",
-      controls: ["fusibleDeuxCotes", "masseChuteTension"],
+      controls: ["controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: [],
-      rta: ["antibrouillard", "fusibles"],
-      emergency: "Défaut de contrôle technique : réparer avant contre-visite."
+      rta: ["antibrouillard", "fusibles", "masses"],
+      emergency: "Défaut de contrôle technique : réparer avant contre-visite.",
+      missing: "La page RTA disponible nommée antibrouillard arrière est à revérifier : l'image actuelle montre clairement dégivrage/autoradio, pas un chemin antibrouillard complet. Tester donc le circuit par mesures avant de conclure."
     },
     {
       id: "compteur-inactif",
@@ -923,7 +991,7 @@ window.AUDI80_REPAIR = {
       symptom: "Un feu ne s'allume pas, éclaire faiblement, clignote avec un autre feu ou déclenche un défaut CT.",
       controls: ["controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: ["eclairage"],
-      rta: ["fusibles", "masses", "instruments", "antibrouillard"],
+      rta: ["fusibles", "masses", "instruments", "feuxReculClignotants", "projecteursEssuieCombine", "antibrouillard"],
       emergency: "Un éclairage de sécurité absent doit être réparé avant roulage de nuit."
     },
     {
@@ -934,7 +1002,7 @@ window.AUDI80_REPAIR = {
       symptom: "Clignotement trop rapide, absent d'un côté, warnings absents ou voyant incohérent.",
       controls: ["controleAmpouleAlimMasse", "fusibleDeuxCotes", "masseChuteTension"],
       suspects: ["eclairage", "combine"],
-      rta: ["fusibles", "masses", "instruments"],
+      rta: ["fusibles", "masses", "instruments", "feuxReculClignotants"],
       emergency: "Signalisation absente = risque direct en circulation."
     },
     {

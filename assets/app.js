@@ -79,6 +79,29 @@
     return blocks.length ? `<section class="grid two technical-media">${blocks.join("")}</section>` : "";
   }
 
+  function schematicGuide(item) {
+    if (!item.schematic) return "";
+    return `
+      <section class="panel schematic-guide">
+        <h2>Lire le schéma</h2>
+        <div class="grid three">
+          <div>
+            <h3>Repères à chercher</h3>
+            <ul>${(item.schematic.refs || []).map(ref => `<li>${esc(ref)}</li>`).join("")}</ul>
+          </div>
+          <div>
+            <h3>Chemin du courant</h3>
+            <ol>${(item.schematic.flow || []).map(step => `<li>${esc(step)}</li>`).join("")}</ol>
+          </div>
+          <div>
+            <h3>Mesures utiles</h3>
+            <ul>${(item.schematic.tests || []).map(test => `<li>${esc(test)}</li>`).join("")}</ul>
+          </div>
+        </div>
+        ${item.schematic.note ? `<p>${esc(item.schematic.note)}</p>` : ""}
+      </section>`;
+  }
+
   function setActive(route) {
     navLinks.forEach(link => link.classList.toggle("active", link.dataset.route === route));
   }
@@ -286,10 +309,6 @@
             <strong>Pollution CO</strong>
             <span>Contrôler allumage, carburation Keihin et réglage richesse.</span>
           </a>
-          <a href="#panne/claquement-train-avant">
-            <strong>Soufflets AV / roulement ARD</strong>
-            <span>Réparés en janvier 2026 ; contrôle visuel et essai routier à refaire.</span>
-          </a>
         </div>
       </section>`;
     const repairSearch = document.querySelector("#repair-search-input");
@@ -369,6 +388,7 @@
             <p>${esc(control.bad)}</p>
           </div>
         </section>
+        ${schematicGuide(control)}
         ${control.missing ? `<section class="panel missing"><h2>Information à compléter</h2><p>${esc(control.missing)}</p></section>` : ""}
         <section class="grid two">${rtaImages(control.rta)}</section>
       </article>`;
