@@ -752,7 +752,7 @@ window.AUDI80_HISTORY = [
     "mileage": "À relever",
     "intervention": "Soufflets avant cote roue remplaces a gauche et a droite. Reference facture 03633. Controle apres reparation fait.",
     "zone": "Transmission",
-    "source": "Facture Autodoc 114925518 ? Transmission|transmission.html",
+    "source": "Facture Autodoc 114925518",
     "status": "Repare Facture",
     "files": [
       "docs/factures/pieces/2026-01-08_facture-Autodoc_114925518_roulement-roue-ARD-soufflet-cardan.pdf"
@@ -763,7 +763,7 @@ window.AUDI80_HISTORY = [
     "mileage": "À relever",
     "intervention": "Roulement roue arriere droit remplace, cote passager. Reference facture 100 598 0101. Controle apres reparation fait.",
     "zone": "Train arriere / roue ARD",
-    "source": "Facture Autodoc 114925518 ? Transmission|transmission.html",
+    "source": "Facture Autodoc 114925518",
     "status": "Repare Facture",
     "files": [
       "docs/factures/pieces/2026-01-08_facture-Autodoc_114925518_roulement-roue-ARD-soufflet-cardan.pdf"
@@ -774,19 +774,22 @@ window.AUDI80_HISTORY = [
     "mileage": "À relever",
     "intervention": "Distribution remplacee avec kit distribution/pompe a eau et consommables de vidange.",
     "zone": "Moteur / distribution",
-    "source": "Facture Autodoc 120399599 ? Distribution|distribution.html ? Vidange|procedures.html#vidange",
+    "source": "Facture Autodoc 120399599",
     "status": "Photo Facture",
     "files": [
       "docs/factures/pieces/2026-04-10_facture-Autodoc_120399599_distribution-vidange.pdf"
     ]
   },
   {
-    "date": "À dater",
+    "date": "08.06.2026",
     "mileage": "À relever",
     "intervention": "Bouton antibrouillard arriere remplace. Reference 893 941 563 visible sur la piece.",
     "zone": "Habitacle / tableau de bord",
-    "source": "Habitacle|habitacle.html ? Diagnostic|diagnostic.html#arbres ? Procedure|procedures.html#antibrouillard",
+    "source": "Photo pièce",
     "status": "Repare",
-    "files": []
+    "files": [
+      "docs/photos/habitacle/2026-06-08_bouton-antibrouillard-arriere_893-941-563.jpg",
+      "docs/rta/122_schema-antibrouillard-arriere-degivrage.jpg"
+    ]
   }
 ];

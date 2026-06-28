@@ -7,7 +7,7 @@ window.AUDI80_REPAIR = {
     generation: "B3 / Type 89",
     production: "1986 à 1991",
     body: "Berline 4 portes",
-    color: "Blanc Alpinweiß, code L90E confirmé sur le scan du plan d'entretien V.A.G",
+    color: "Blanc Alpinweiß, code L90E",
     engine: "NE",
     gearbox: "AKM",
     carburetor: "Keihin KS2",
@@ -24,8 +24,7 @@ window.AUDI80_REPAIR = {
       { label: "Combiné d'instruments analogique", detail: "Compteur, voyants et buzzer actuellement en diagnostic." },
       { label: "Verrouillage centralisé", detail: "Équipement disponible sur cette voiture." },
       { label: "Direction sans assistance", detail: "La voiture n'a pas de direction assistée." },
-      { label: "Jantes tôle", detail: "Montage confirmé : jantes tôle 14 pouces." },
-      { label: "Sans toit ouvrant", detail: "La voiture n'est pas équipée d'un toit ouvrant." }
+      { label: "Jantes tôle", detail: "Montage confirmé : jantes tôle 14 pouces." }
     ],
     equipmentToConfirm: [
       "Rétroviseurs électriques / dégivrants",
@@ -50,6 +49,7 @@ window.AUDI80_REPAIR = {
     feuxReculClignotants: { label: "RTA feux de recul / clignotants / détresse", file: "docs/rta/088_schema-feux-recul-clignotants-feux-detresse.jpg" },
     fusibles: { label: "RTA fusibles", file: "docs/rta/072_equipement-electrique-caracteristiques-fusibles.jpg" },
     masses: { label: "RTA points de masse", file: "docs/rta/120_schema-points-masse-raccords-faisceau.jpg" },
+    ventilateurPressionHuile: { label: "RTA ventilateur radiateur / témoin pression huile", file: "docs/rta/085_schema-ventilateur-radiateur-temoin-pression-huile.jpg" },
     freins: { label: "RTA freins caractéristiques", file: "docs/rta/064_freins-caracteristiques.jpg" },
     plaquettes: { label: "RTA plaquettes avant", file: "docs/rta/065_freins-avant-plaquettes.jpg" },
     purgeFrein: { label: "RTA purge frein", file: "docs/rta/070_frein-stationnement-purge-circuit.jpg" },
@@ -100,17 +100,38 @@ window.AUDI80_REPAIR = {
       title: "Contrôler le déclenchement du ventilateur",
       tools: ["Multimètre", "Lampe", "Fil de pontage avec prudence"],
       where: "Ventilateur de radiateur, connecteur moteur ventilateur, thermocontact sur radiateur.",
+      meter: [
+        {
+          title: "Alimentation ventilateur",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Contact mis si le circuit le demande.", "Pointe noire sur borne - batterie ou masse sûre.", "Pointe rouge sur le + du connecteur ventilateur.", "Si 12 V arrive et que le ventilateur ne tourne pas, contrôler masse puis moteur de ventilateur."]
+        },
+        {
+          title: "Masse ventilateur sous charge",
+          steps: ["Ventilateur commandé ou ponté avec prudence.", "Molette sur V⎓ 20 V.", "Pointe noire sur borne - batterie.", "Pointe rouge sur la masse du ventilateur.", "Valeur proche de 0 V attendue.", "Valeur élevée = masse ou connecteur à nettoyer/resserrer."]
+        },
+        {
+          title: "Thermocontact radiateur",
+          steps: ["Contact coupé, connecteur du thermocontact débranché.", "Molette sur continuité/bip ou Ω.", "Mesurer entre les bornes du thermocontact.", "À froid il est normalement ouvert.", "À température de déclenchement il doit se fermer.", "Ne jamais mesurer en Ω sur un circuit alimenté."]
+        }
+      ],
       how: [
         "Laisser chauffer au ralenti en surveillant la jauge.",
+        "RTA moteur NE : le ventilateur doit se déclencher vers 92 à 97 °C et s'arrêter vers 84 à 91 °C.",
         "Vérifier si le ventilateur se déclenche avant zone dangereuse.",
         "Si non, couper avant surchauffe.",
         "Contrôler fusible et alimentation au ventilateur.",
         "Tester le ventilateur en alimentation directe sécurisée.",
         "Contrôler le thermocontact et son connecteur."
       ],
-      expected: "Ventilateur alimenté et déclenché automatiquement à température élevée.",
+      expected: "Ventilateur alimenté et déclenché automatiquement vers 92-97 °C, puis arrêté vers 84-91 °C selon RTA.",
       bad: "Ventilateur direct OK mais pas déclenché : thermocontact/connectique/faisceau. Ventilateur direct HS : moteur ventilateur ou masse.",
-      rta: ["refroidissement", "fusibles"]
+      rta: ["refroidissement", "ventilateurPressionHuile", "fusibles"],
+      schematic: {
+        refs: ["S = fusible", "F18 = thermocontact de ventilateur selon page RTA", "V7/M = moteur de ventilateur selon légende", "T = connecteur", "31 = masse"],
+        flow: ["Alimentation protégée par fusible", "Thermocontact radiateur", "Moteur de ventilateur", "Masse 31"],
+        tests: ["Si le ventilateur ne part pas chaud, tester le moteur en direct avec un fil protégé par fusible.", "Si le moteur tourne en direct, tester le thermocontact et son connecteur.", "Si 12 V arrive au moteur mais qu'il ne tourne pas, contrôler masse et moteur.", "Si aucune alimentation n'arrive, remonter vers fusible et faisceau."],
+        note: "Le thermocontact commande le ventilateur en fonction de la température du radiateur, pas seulement de l'aiguille au tableau de bord."
+      }
     },
     circulationPompeEau: {
       title: "Contrôler la circulation de pompe à eau",
@@ -353,10 +374,10 @@ window.AUDI80_REPAIR = {
       bad: "Alimentation absente : fusible, contacteur, faisceau ou connecteur. Alimentation présente mais masse mauvaise : réparer masse/faisceau. Alimentation et masse bonnes mais combiné mort : combiné suspect.",
       rta: ["instruments", "fusibles", "masses"],
       schematic: {
-        refs: ["G1 = indicateur de niveau carburant", "G3 = indicateur de température liquide de refroidissement", "J6 = stabilisateur de tension", "K1/K2/K3/K15 = voyants", "T26/T26a = connecteurs du combiné"],
-        flow: ["+ après contact 15 arrive au combiné", "Le courant passe par le connecteur T26/T26a", "Le stabilisateur J6 alimente les jauges", "Les voyants et jauges reviennent à la masse 31 ou par leurs sondes", "Le combiné fonctionne seulement si alimentation et masse sont présentes"],
-        tests: ["Contact mis : chercher 12 V sur le fusible instruments puis au connecteur du combiné.", "Mesurer entre + combiné et masse batterie.", "Mesurer entre + combiné et masse locale du combiné.", "Si + et masse sont bons mais tout reste mort, le combiné devient suspect."],
-        note: "Pour ta panne actuelle, on sépare deux choses : panne totale du combiné maintenant, et panne ancienne possible du compteur kilométrique."
+        refs: ["30 = + permanent, souvent utile pour montre/mémoire", "15 = + après contact pour voyants/jauges", "58b = éclairage tableau de bord", "31 = masse", "G1/G3 = jauges carburant/température", "J6 = stabilisateur de tension des jauges", "K = témoins/voyants", "T26/T26a = connecteurs du combiné"],
+        flow: ["Batterie et contacteur de Neiman", "Fusibles alimentation instruments", "Connecteur T26/T26a du combiné", "Stabilisateur J6 pour les jauges", "Voyants, jauges, buzzer et éclairage", "Retour masse 31 ou retour par les sondes/contacteurs"],
+        tests: ["Contact mis, mesurer 12 V sur le fusible instruments des deux côtés.", "Au connecteur combiné, chercher le +15 puis le +30 si présent.", "Allumer les veilleuses et chercher le 58b pour l'éclairage tableau.", "Mesurer la masse par chute de tension : + combiné vers masse locale puis vers borne - batterie.", "Si +15, +30/58b utiles et masse sont bons mais aucun voyant/son ne réagit, déposer le combiné pour connecteur/pistes."],
+        note: "Pour ta panne actuelle, on sépare deux pannes possibles : panne totale d'alimentation/masse du combiné maintenant, et panne mécanique interne du kilométrage déjà présente avant."
       }
     },
     connecteurCombine: {
@@ -378,7 +399,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Connecteur bien verrouillé, broches propres, pistes visuellement intactes.",
       bad: "Connecteur mal engagé ou piste fissurée : réparer avant remplacement du combiné.",
-      rta: ["instruments", "masses"]
+      rta: ["instruments", "masses"],
+      schematic: {
+        refs: ["T26/T26a = connecteurs du combiné", "15 = alimentation après contact", "30 = alimentation permanente", "31 = masse", "58b = éclairage instruments", "K = voyants"],
+        flow: ["Faisceau tableau de bord", "Connecteur du combiné", "Pistes imprimées du combiné", "Voyants/jauges/buzzer", "Masse ou capteur"],
+        tests: ["Batterie débranchée : contrôler continuité d'une piste ou d'un fil, jamais sur circuit alimenté.", "Contact mis : contrôler tension uniquement en V⎓ 20 V.", "Si une broche chauffe, est noire ou lâche, réparer le connecteur avant de suspecter le combiné.", "Si un seul voyant est absent, suivre son fil/capteur ; si tout est absent, revenir à +15/+30/31."]
+      }
     },
     compteurKilometrique: {
       title: "Contrôler compteur kilométrique et compteur de vitesse",
@@ -519,9 +545,10 @@ window.AUDI80_REPAIR = {
       bad: "Entrée présente mais pas de sortie : interrupteur/relais suspect. Pas d'entrée : fusible, alimentation ou faisceau amont.",
       rta: ["fusibles", "commandesMoteursOptions"],
       schematic: {
-        refs: ["S17 30A = fusible lève-vitres sur la page options", "E9 = commande/interrupteur selon la légende RTA", "V2 = moteur de lève-vitre", "T... = connecteurs", "31 = masse"],
-        flow: ["L'alimentation arrive par le fusible", "Elle passe par la commande/interrupteur", "La commande inverse la polarité pour monter ou descendre", "Le courant arrive au moteur de vitre", "Le retour se fait par l'autre fil ou par la masse selon position de commande"],
-        tests: ["Mesurer le 12 V en entrée de commande.", "Actionner montée puis descente : la sortie doit changer.", "Si toutes les vitres réagissent mal selon contact/moteur, tester d'abord la ligne X/J18.", "Si une seule vitre est en panne, tester ensuite faisceau de porte et moteur."]
+        refs: ["S17 30A = fusible lève-vitres sur la page options", "E9 = commande/interrupteur selon la légende RTA", "V2 = moteur de lève-vitre", "T = connecteur ou raccord de faisceau", "31 = masse", "X/J18 = alimentation accessoires délestée si plusieurs équipements changent selon contact/moteur"],
+        flow: ["Alimentation accessoires ou ligne dédiée", "Fusible S17", "Interrupteur de lève-vitre", "Connecteur de porte", "Moteur V2", "Retour par l'autre fil ou par la masse selon position de commande"],
+        tests: ["Mettre le multimètre en V⎓ 20 V, noir sur masse sûre.", "Mesurer le 12 V en entrée de commande.", "Actionner montée puis descente : les sorties vers moteur doivent changer, souvent avec inversion de polarité.", "Si toutes les vitres réagissent mal selon contact/moteur, tester d'abord la ligne X/J18 et le contacteur de Neiman.", "Si une seule vitre est en panne, tester ensuite faisceau de porte et moteur."],
+        note: "Une tension négative au multimètre pendant montée/descente n'est pas forcément une panne : elle indique souvent que la polarité du moteur est inversée pour changer le sens."
       }
     },
     faisceauPorte: {
@@ -543,7 +570,12 @@ window.AUDI80_REPAIR = {
       ],
       expected: "Continuité stable, aucune coupure intermittente, connecteurs propres.",
       bad: "Fil coupé/intermittent : réparer le conducteur avec section adaptée, gaine et protection mécanique.",
-      rta: ["masses", "commandesMoteursOptions"]
+      rta: ["masses", "commandesMoteursOptions"],
+      schematic: {
+        refs: ["T = connecteurs entre caisse et porte", "31 = masse", "V2 = moteur de lève-vitre", "E9 = interrupteur"],
+        flow: ["Interrupteur habitacle", "Faisceau dans le soufflet de porte", "Connecteur de porte", "Moteur de lève-vitre", "Retour masse ou retour par second fil"],
+        tests: ["Contact coupé et connecteurs débranchés : tester la continuité en Ω/bip.", "Bouger doucement le faisceau pendant la mesure.", "Si la continuité coupe en bougeant la porte, réparer le fil dans le passage de porte.", "Sous tension, utiliser V⎓ 20 V et ne jamais l'ohmmètre."]
+      }
     },
     moteurLeveVitre: {
       title: "Contrôler moteur et mécanisme de lève-vitre",
@@ -566,9 +598,10 @@ window.AUDI80_REPAIR = {
       bad: "Tension absente : commande/faisceau. Tension présente mais moteur muet : moteur ou masse. Moteur force : mécanisme/coulisses.",
       rta: ["commandesMoteursOptions", "fusibles", "masses"],
       schematic: {
-        refs: ["V2 = moteur de lève-vitre sur la page options", "E9 = commande", "S17 30A = fusible alimentation", "T... = connecteur de porte ou raccord", "31 = masse"],
+        refs: ["V2 = moteur de lève-vitre sur la page options", "E9 = commande", "S17 30A = fusible alimentation", "T = connecteur de porte ou raccord", "31 = masse"],
         flow: ["Fusible S17", "Commande de vitre", "Connecteur de porte", "Moteur V2", "Retour par l'autre fil ou masse"],
-        tests: ["Au connecteur moteur, mesurer pendant que quelqu'un appuie sur l'interrupteur.", "En montée puis descente, la polarité doit s'inverser.", "Si le 12 V arrive mais le moteur ne bouge pas, la panne est dans la porte.", "Si le 12 V n'arrive pas, remonter vers commande, fusible ou relais."]
+        tests: ["Au connecteur moteur, multimètre en V⎓ 20 V, mesurer pendant que quelqu'un appuie sur l'interrupteur.", "En montée puis descente, la polarité doit s'inverser.", "Si le 12 V arrive mais le moteur ne bouge pas, la panne est dans la porte : moteur, mécanisme, coulisses.", "Si le 12 V n'arrive pas, remonter vers commande, fusible, relais X/J18 ou contacteur de Neiman.", "Si le moteur force, mesurer la chute de tension batterie pendant action pour repérer un point dur ou une alimentation faible."],
+        note: "Sur une panne qui change entre contact mis et moteur tournant, ne démonte pas la porte en premier : commence par alimentation X/J18, fusibles et Neiman."
       }
     },
     controleAmpouleAlimMasse: {
@@ -702,10 +735,10 @@ window.AUDI80_REPAIR = {
       bad: "Tension absente : fusible/interrupteur/faisceau. Tension présente mais feu éteint : ampoule, porte-ampoule ou masse arrière.",
       rta: ["antibrouillard", "fusibles", "masses"],
       schematic: {
-        refs: ["S = fusible", "E = interrupteur", "T = connecteur", "31 = masse", "Feu arrière = porte-ampoule à contrôler physiquement"],
-        flow: ["Alimentation éclairage", "Fusible", "Interrupteur antibrouillard", "Faisceau vers arrière", "Porte-ampoule antibrouillard", "Masse du feu arrière"],
-        tests: ["Mesurer au porte-ampoule commande activée.", "Si 12 V présent avec masse batterie mais pas avec masse locale, nettoyer la masse arrière.", "Si pas de 12 V, remonter vers interrupteur/fusible.", "Si le schéma RTA ne correspond pas à la voiture, se fier au test de tension étape par étape."],
-        note: "La page RTA disponible est à utiliser avec prudence : elle doit être recoupée avec la voiture et les mesures, car l'image scannée ne montre pas clairement tout le chemin antibrouillard."
+        refs: ["S1 = fusible projecteurs antibrouillard / feu de brouillard arrière selon tableau RTA", "E = interrupteur antibrouillard", "K = témoin éventuel au tableau/interrupteur", "T = connecteur", "M = lampe de feu arrière", "31 = masse"],
+        flow: ["Alimentation éclairage autorisée par la commande de feux", "Fusible S1", "Interrupteur antibrouillard arrière", "Témoin de commande si équipé", "Faisceau vers l'arrière", "Porte-ampoule antibrouillard", "Masse du feu arrière"],
+        tests: ["Commande activée : multimètre en V⎓ 20 V, mesurer au porte-ampoule.", "Si 12 V présent avec masse batterie mais pas avec masse locale, nettoyer la masse arrière.", "Si pas de 12 V au feu, tester sortie d'interrupteur puis entrée d'interrupteur.", "Si entrée présente mais pas sortie, interrupteur/connecteur suspect.", "Si sortie interrupteur présente mais rien au feu, chercher coupure connecteur/faisceau arrière.", "Si le schéma RTA scanné ne montre pas exactement le montage de ta voiture, suivre le courant avec ces mesures plutôt que remplacer au hasard."],
+        note: "La RTA antibrouillard partage des pages avec dégivrage/autoradio selon le scan. Pour être sûr, il faut lire le numéro de fil/connecteur puis confirmer au multimètre sur la voiture."
       }
     },
     reglageProjecteurs: {
@@ -750,19 +783,26 @@ window.AUDI80_REPAIR = {
     pressionHuileManometre: {
       title: "Mesurer la pression d'huile au manomètre",
       tools: ["Manomètre de pression d'huile", "Adaptateur filetage sonde", "Clé adaptée", "Chiffons"],
-      where: "Emplacement de la sonde ou du contacteur de pression d'huile sur le circuit de graissage moteur.",
+      where: "À la place du manocontact de pression d'huile sur le bloc moteur. La RTA indique de déposer le manocontact et de brancher le manomètre de contrôle à sa place.",
       how: [
         "Contrôler d'abord le niveau d'huile.",
         "Identifier le contacteur/point de mesure sur le moteur avec la RTA graissage.",
         "Déposer le contacteur moteur froid si possible et monter le manomètre avec adaptateur correct.",
-        "Démarrer et relever la pression au ralenti puis à régime stabilisé moteur chaud.",
-        "Comparer aux valeurs RTA si disponibles pour ce moteur.",
+        "Démarrer et laisser l'huile atteindre environ 80 °C.",
+        "Relever la pression au ralenti.",
+        "Relever la pression à 2000 tr/min.",
+        "Comparer aux valeurs RTA moteur NE : minimum 0,3 bar ± 0,15 au ralenti ; 2 bar ± 0,2 à 2000 tr/min.",
         "Remonter le contacteur avec étanchéité correcte puis vérifier l'absence de fuite."
       ],
-      expected: "Pression cohérente avec la RTA, voyant éteint et pas de bruit de graissage.",
+      expected: "Huile à 80 °C : au moins 0,3 bar ± 0,15 au ralenti et 2 bar ± 0,2 à 2000 tr/min.",
       bad: "Pression réellement faible : arrêter le moteur et chercher pompe, crépine, usure moteur ou huile inadaptée. Pression bonne mais voyant allumé : contacteur, fil ou combiné.",
-      rta: ["graissage", "moteurDonnees"],
-      missing: "Il faut confirmer sur la voiture l'emplacement exact du contacteur de pression d'huile et les valeurs RTA applicables au moteur NE."
+      rta: ["graissage", "moteurDonnees", "ventilateurPressionHuile"],
+      schematic: {
+        refs: ["F1/F22 selon schéma = manocontacts de pression d'huile", "K = témoin de pression d'huile", "31 = masse", "T = connecteur", "La pression se mesure mécaniquement à la place du manocontact"],
+        flow: ["Pression d'huile réelle dans le bloc", "Manocontact vissé sur le circuit", "Fil vers combiné/témoin", "Témoin ou alerte au tableau", "Masse/contact selon état du manocontact"],
+        tests: ["Pour la pression réelle, utiliser un manomètre mécanique, pas le multimètre.", "Pour le fil de témoin, contact mis : contrôler en V⎓ 20 V ou continuité seulement contact coupé et connecteur débranché.", "Si la pression mécanique est bonne mais le voyant reste allumé, suspecter manocontact, fil à la masse ou combiné.", "Si la pression mécanique est basse, arrêter le moteur avant de chercher un problème électrique."],
+        note: "La RTA précise les valeurs moteur chaud : huile à 80 °C, ralenti puis 2000 tr/min."
+      }
     },
     rechercheFuiteHuile: {
       title: "Rechercher une fuite d'huile moteur",
@@ -857,6 +897,80 @@ window.AUDI80_REPAIR = {
       expected: "Usure régulière, flexible sain, aucune fuite.",
       bad: "Flexible abîmé ou fuite : réparer/purger avant roulage. Plaquettes/disques usés : remplacer par essieu.",
       rta: ["freins", "plaquettes", "purgeFrein"]
+    },
+    controleEchappement: {
+      title: "Contrôler une fuite ou un bruit d'échappement",
+      tools: ["Gants", "Lampe", "Chandelles", "Chiffon"],
+      where: "Collecteur, descente, raccords, silencieux, supports caoutchouc et sortie arrière.",
+      how: [
+        "Travailler moteur froid pour l'inspection manuelle.",
+        "Chercher trace noire de suie autour des raccords, collecteur et silencieux.",
+        "Moteur tournant, écouter sans passer sous la voiture non sécurisée.",
+        "Boucher brièvement la sortie avec un chiffon sans forcer : une fuite devient souvent plus audible.",
+        "Contrôler supports caoutchouc et chocs sous caisse."
+      ],
+      expected: "Ligne tenue, pas de suie de fuite, bruit régulier et pas d'odeur de gaz dans l'habitacle.",
+      bad: "Fuite avant habitacle ou collecteur : réparer vite. Support cassé : risque de casse de ligne. Bruit métallique : tôle pare-chaleur, support ou élément interne.",
+      rta: ["echappement"]
+    },
+    controleOdeurBruleElectrique: {
+      title: "Chercher une odeur de brûlé électrique",
+      tools: ["Lampe", "Multimètre", "Gants", "Nez"],
+      where: "Boîte à fusibles, platine relais, interrupteurs, connecteurs d'éclairage, alternateur et consommateurs récemment sollicités.",
+      meter: [
+        {
+          title: "Recherche de chute de tension",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Circuit en fonctionnement.", "Mesurer avant puis après le connecteur suspect.", "Une chute anormale ou un échauffement local indique résistance de contact.", "Couper immédiatement si plastique chaud, fumée ou odeur forte."]
+        }
+      ],
+      how: [
+        "Couper le circuit si odeur forte, fumée ou plastique chaud.",
+        "Identifier le dernier consommateur utilisé : phares, ventilation, vitres, dégivrage, essuie-glace.",
+        "Contrôler fusible du circuit : calibre correct, traces de chauffe, porte-fusible fondu.",
+        "Inspecter relais et connecteurs : brunissement, cosse lâche, plastique déformé.",
+        "Remettre sous tension seulement pour mesure courte et surveillée."
+      ],
+      expected: "Aucun échauffement, fusibles au bon calibre, connecteurs propres et serrés.",
+      bad: "Plastique fondu ou cosse brunie : réparer connecteur/cosse avant de réutiliser. Fusible surcalibré : revenir au calibre RTA et chercher la cause.",
+      rta: ["fusibles", "masses"]
+    },
+    controleEtancheiteHabitacle: {
+      title: "Rechercher une infiltration d'eau habitacle/coffre",
+      tools: ["Lampe", "Papier absorbant", "Arrosoir ou tuyau doux", "Aide"],
+      where: "Tapis, coffre, logement roue de secours, joints de feux arrière, baie de pare-brise, portes et évacuations.",
+      how: [
+        "Sécher la zone pour repartir d'un point clair.",
+        "Chercher trace blanche, rouille, odeur d'humidité et mousse humide sous tapis.",
+        "Tester à l'eau zone par zone, sans jet haute pression.",
+        "Commencer par feux arrière/coffre si eau dans coffre.",
+        "Tester baie de pare-brise et évacuations si eau aux pieds avant.",
+        "Photographier le chemin de l'eau dès qu'il apparaît."
+      ],
+      expected: "Habitacle sec, évacuations libres, joints non craquelés.",
+      bad: "Eau par feu arrière : joint/porte-lampe/coffre. Eau aux pieds : baie de pare-brise, joint de porte ou évacuation bouchée. Sécher vite pour éviter corrosion.",
+      rta: ["chauffage"]
+    },
+    controleSerruresVerrouillage: {
+      title: "Contrôler serrures et verrouillage centralisé",
+      tools: ["Multimètre", "Lampe", "Lubrifiant serrure adapté", "Nettoyant contact"],
+      where: "Serrures de portes, coffre, tringleries, faisceaux de porte et commande de verrouillage centralisé.",
+      meter: [
+        {
+          title: "Alimentation verrouillage",
+          steps: ["Cordon noir sur COM, cordon rouge sur VΩmA.", "Molette sur V⎓ 20 V.", "Pointe noire sur masse sûre.", "Mesurer au connecteur de l'actionneur ou commande pendant verrouillage/déverrouillage.", "Si 12 V arrive mais rien ne bouge, contrôler actionneur/tringlerie.", "Si aucun 12 V, remonter vers fusible, commande et faisceau."]
+        }
+      ],
+      how: [
+        "Distinguer panne mécanique de serrure et panne électrique.",
+        "Tester la clé dans chaque serrure, sans forcer.",
+        "Observer si le bouton de porte bouge franchement.",
+        "Contrôler tringlerie déboîtée ou grippée dans la porte concernée.",
+        "Si plusieurs portes sont concernées, contrôler alimentation/fusible du verrouillage centralisé.",
+        "Si une seule porte est concernée, contrôler faisceau de porte et actionneur."
+      ],
+      expected: "Serrures mécaniques libres, actionneurs alimentés et tringleries qui bougent sans point dur.",
+      bad: "Commande alimentée mais pas de mouvement : actionneur ou tringlerie. Pas d'alimentation : fusible, faisceau ou commande.",
+      rta: ["fusibles", "masses", "commandesMoteursOptions"]
     }
   },
 
@@ -1301,6 +1415,17 @@ window.AUDI80_REPAIR = {
       emergency: "Débrancher/charger correctement la batterie si elle chute fortement, éviter les essais répétés au démarreur."
     },
     {
+      id: "odeur-brule-electrique",
+      title: "Odeur de brûlé électrique ou connecteur qui chauffe",
+      category: "Électricité / sécurité",
+      keywords: ["odeur brule", "odeur brûlé", "fumee electrique", "fumée électrique", "connecteur chaud", "fusible chaud", "plastique fondu", "relais chaud", "court circuit"],
+      symptom: "Odeur de plastique chaud, fumée, fusible qui chauffe, connecteur brun ou consommateur qui sent le brûlé.",
+      controls: ["controleOdeurBruleElectrique", "fusibleDeuxCotes", "masseChuteTension"],
+      suspects: ["faisceauTableauBord", "relaisDelestageX", "eclairage", "leveVitre"],
+      rta: ["fusibles", "masses"],
+      emergency: "Couper le circuit et ne pas remplacer par un fusible plus fort. Risque d'incendie si une cosse chauffe ou si un fil fond."
+    },
+    {
       id: "odeur-essence-fuite",
       title: "Odeur d'essence ou fuite carburant",
       category: "Alimentation carburant",
@@ -1310,6 +1435,17 @@ window.AUDI80_REPAIR = {
       suspects: ["carburateur"],
       rta: ["carburateur10", "carburateur12"],
       emergency: "Ne pas tester l'allumage près d'une fuite d'essence. Ventiler et supprimer la fuite d'abord."
+    },
+    {
+      id: "surconsommation-essence",
+      title: "Surconsommation d'essence",
+      category: "Carburation / moteur",
+      keywords: ["surconsommation", "consomme trop", "essence", "riche", "starter", "bougies noires", "odeur essence", "co eleve", "co élevé"],
+      symptom: "Consommation anormale, odeur d'essence, bougies noires, ralenti riche ou CO élevé.",
+      controls: ["bougiesLecture", "priseAirAdmission", "debitEssence", "etincelleAllumage"],
+      suspects: ["carburateur", "sondeTemperature"],
+      rta: ["carburateur10", "carburateur11", "allumage"],
+      emergency: "Si odeur d'essence forte ou fuite visible, traiter la fuite avant tout réglage."
     },
     {
       id: "fuite-huile",
@@ -1332,6 +1468,28 @@ window.AUDI80_REPAIR = {
       suspects: ["carburateur"],
       rta: ["moteurDonnees", "culasse", "echappement"],
       emergency: "Fumée blanche épaisse avec niveau LDR qui baisse : éviter de rouler avant diagnostic."
+    },
+    {
+      id: "bruit-moteur-anormal",
+      title: "Bruit moteur anormal",
+      category: "Moteur / graissage",
+      keywords: ["bruit moteur", "claquement moteur", "cognement", "cliquetis", "poussoir", "courroie", "sifflement", "bruit a froid", "bruit à froid"],
+      symptom: "Claquement, cognement, cliquetis, sifflement ou bruit nouveau côté moteur.",
+      controls: ["niveauHuileMoteur", "pressionHuileManometre", "tensionBatterieCharge", "compressionTest"],
+      suspects: ["alternateur", "pompeEau", "carburateur"],
+      rta: ["graissage", "moteurDonnees", "distribution"],
+      emergency: "Si bruit de cognement fort ou voyant d'huile allumé, couper le moteur et mesurer la pression d'huile avant de rouler."
+    },
+    {
+      id: "echappement-bruyant-odeur-gaz",
+      title: "Échappement bruyant ou odeur de gaz",
+      category: "Échappement",
+      keywords: ["echappement", "échappement", "bruit echappement", "silencieux", "odeur gaz", "fuite gaz", "ligne echappement"],
+      symptom: "Bruit plus fort, vibration de ligne, odeur de gaz dans ou autour de la voiture.",
+      controls: ["controleEchappement", "bougiesLecture"],
+      suspects: [],
+      rta: ["echappement"],
+      emergency: "Odeur de gaz dans l'habitacle : ne pas rouler vitres fermées, réparer la fuite rapidement."
     },
     {
       id: "vibrations-roulage-pneus",
@@ -1365,6 +1523,39 @@ window.AUDI80_REPAIR = {
       suspects: [],
       rta: ["trainAvant", "jambeForce", "direction"],
       emergency: "Jeu important de direction/suspension = sécurité prioritaire."
+    },
+    {
+      id: "direction-dure-ou-floue",
+      title: "Direction dure, floue ou qui revient mal",
+      category: "Direction / train avant",
+      keywords: ["direction dure", "direction floue", "volant dur", "volant revient mal", "tirage", "cremaillere", "crémaillère", "rotule direction", "sans assistance"],
+      symptom: "Volant dur, retour de volant mauvais, tirage, imprécision ou point dur.",
+      controls: ["controleRouesPneusJeu", "controleTrainAvantJeux"],
+      suspects: [],
+      rta: ["direction", "trainAvant", "jambeForce"],
+      emergency: "La voiture est sans direction assistée : un certain effort est normal à l'arrêt, mais un point dur ou jeu franc doit être corrigé."
+    },
+    {
+      id: "verrouillage-serrures",
+      title: "Serrure ou verrouillage centralisé en panne",
+      category: "Habitacle / ouvrants",
+      keywords: ["serrure", "verrouillage", "centralise", "centralisé", "porte ferme pas", "porte ouvre pas", "coffre", "clé tourne", "cle tourne", "loquet"],
+      symptom: "Une porte ne ferme/ouvre pas, verrouillage centralisé irrégulier, clé dure ou loquet qui ne bouge pas.",
+      controls: ["controleSerruresVerrouillage", "faisceauPorte", "fusibleDeuxCotes"],
+      suspects: ["faisceauTableauBord"],
+      rta: ["fusibles", "masses", "commandesMoteursOptions"],
+      emergency: "Ne pas forcer une clé ou une tringlerie : risque de casse de barillet ou de verrouillage bloqué."
+    },
+    {
+      id: "infiltration-eau-habitacle",
+      title: "Infiltration d'eau habitacle ou coffre",
+      category: "Carrosserie / habitacle",
+      keywords: ["infiltration", "eau habitacle", "eau coffre", "humidité", "humidite", "moquette humide", "roue de secours", "joint feu arriere", "joint porte", "pare brise"],
+      symptom: "Moquette humide, buée persistante, odeur d'humidité, eau dans coffre ou logement roue de secours.",
+      controls: ["controleEtancheiteHabitacle"],
+      suspects: [],
+      rta: ["chauffage"],
+      emergency: "Sécher rapidement l'eau stagnante pour éviter corrosion, moisissure et problèmes électriques."
     }
   ]
 };

@@ -522,9 +522,17 @@
       <td>${esc(row.mileage)}</td>
       <td>${esc(row.intervention)}</td>
       <td>${esc(row.zone)}</td>
-      <td>${esc(row.source)} ${row.files?.map(file => `<a href="${file}" target="_blank">document</a>`).join(" ") || ""}</td>
+      <td>${esc(row.source)} ${row.files?.map(file => `<a href="${file}" target="_blank">${esc(fileLabel(file))}</a>`).join(" ") || ""}</td>
       <td>${esc(row.status)}</td>
     </tr>`).join("");
+  }
+
+  function fileLabel(file) {
+    const name = String(file).toLowerCase();
+    if (name.includes("/rta/")) return "RTA";
+    if (name.includes("/photos/") || /\.(jpg|jpeg|png|webp)$/.test(name)) return "photo";
+    if (name.includes("/factures/") || name.endsWith(".pdf")) return "facture";
+    return "document";
   }
 
   function historyTimestamp(row) {
