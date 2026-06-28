@@ -7,7 +7,7 @@ window.AUDI80_REPAIR = {
     generation: "B3 / Type 89",
     production: "1986 à 1991",
     body: "Berline 4 portes",
-    color: "Blanc Alpinweiß, code L90E à confirmer sur étiquette",
+    color: "Blanc Alpinweiß, code L90E confirmé sur le scan du plan d'entretien V.A.G",
     engine: "NE",
     gearbox: "AKM",
     carburetor: "Keihin KS2",
@@ -16,20 +16,20 @@ window.AUDI80_REPAIR = {
     displacement: "1 781 cm3",
     fuel: "Essence, carburateur",
     drivetrain: "Traction avant",
-    tires: "175/70 R14 confirmé photo",
+    tires: "175/70 R14",
     equipmentConfirmed: [
       { label: "Vitres électriques", detail: "Présentes dans le dossier panne lève-vitre ; côté exact et moteur à identifier." },
       { label: "Antibrouillard arrière", detail: "Interrupteur remplacé, référence visible 893 941 563." },
       { label: "Dégivrage lunette arrière", detail: "Circuit lié à la page RTA antibrouillard/dégivrage." },
-      { label: "Combiné d'instruments analogique", detail: "Compteur, voyants et buzzer actuellement en diagnostic." }
+      { label: "Combiné d'instruments analogique", detail: "Compteur, voyants et buzzer actuellement en diagnostic." },
+      { label: "Verrouillage centralisé", detail: "Équipement disponible sur cette voiture." },
+      { label: "Direction sans assistance", detail: "La voiture n'a pas de direction assistée." },
+      { label: "Jantes tôle", detail: "Montage confirmé : jantes tôle 14 pouces." },
+      { label: "Sans toit ouvrant", detail: "La voiture n'est pas équipée d'un toit ouvrant." }
     ],
     equipmentToConfirm: [
-      "Direction assistée",
       "Rétroviseurs électriques / dégivrants",
-      "Verrouillage centralisé",
-      "Toit ouvrant électrique",
       "Autoradio / antenne",
-      "Jantes tôle ou alliage 14 pouces",
       "Sellerie et couleur intérieure"
     ]
   },

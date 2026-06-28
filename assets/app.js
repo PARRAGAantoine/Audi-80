@@ -298,7 +298,7 @@
         <h2>Options / équipements de cette voiture</h2>
         <div class="equipment-grid">
           <div>
-            <h3>Confirmé dans l'ancien dossier</h3>
+            <h3>Confirmé pour cette voiture</h3>
             <div class="equipment-list">
               ${repair.vehicle.equipmentConfirmed.map(item => `
                 <div>
