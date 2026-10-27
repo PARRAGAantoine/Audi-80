@@ -170,15 +170,15 @@
       const dark = this.isDark;
       const isRealistic = this.displayMode === "realistic";
 
-      // 1. Matériaux Mode Réaliste (Peinture officielle Blanc Alpinweiß L90E d'usine)
+      // 1. Matériaux Mode Réaliste (Audi 80 B3 Blanc Alpinweiß L90E d'usine avec pare-chocs et bandeaux noirs)
       if (isRealistic) {
         switch (role) {
           case "body":
             return {
               mesh: new THREE.MeshStandardMaterial({
-                color: isHighlighted ? 0xe0f2fe : 0xf4f5f0, // Blanc Alpinweiß L90E pur
-                roughness: 0.25,
-                metalness: 0.12,
+                color: isHighlighted ? 0xe0f2fe : 0xf8f9fa, // Blanc Alpinweiß pur d'origine
+                roughness: 0.28,
+                metalness: 0.15,
                 transparent: false,
                 opacity: 1.0,
                 side: THREE.DoubleSide
@@ -186,55 +186,101 @@
               edges: new THREE.LineBasicMaterial({
                 color: isHighlighted ? 0x0284c7 : 0xd1d5db,
                 transparent: true,
-                opacity: isHighlighted ? 0.9 : 0.35,
+                opacity: isHighlighted ? 0.9 : 0.25,
                 linewidth: 1
+              })
+            };
+          case "black_trim":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: isHighlighted ? 0x334155 : 0x1f2428, // Plastique noir mat/satiné grainé (pare-chocs, bandeaux)
+                roughness: 0.75,
+                metalness: 0.1,
+                transparent: false,
+                opacity: 1.0,
+                side: THREE.DoubleSide
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: isHighlighted ? 0x38bdf8 : 0x111827,
+                transparent: true,
+                opacity: isHighlighted ? 0.8 : 0.4
               })
             };
           case "glass":
             return {
               mesh: new THREE.MeshStandardMaterial({
-                color: 0x1e293b,
+                color: 0x0f172a, // Teinte verte/fumé d'origine VAG
                 roughness: 0.1,
-                metalness: 0.8,
+                metalness: 0.85,
                 transparent: true,
-                opacity: 0.65,
+                opacity: 0.6,
                 depthWrite: false,
                 side: THREE.DoubleSide
               }),
               edges: new THREE.LineBasicMaterial({
-                color: 0x64748b,
+                color: 0x475569,
                 transparent: true,
-                opacity: 0.4
+                opacity: 0.35
               })
             };
           case "wheel":
             return {
               mesh: new THREE.MeshStandardMaterial({
-                color: 0x18181b, // Pneu noir et jante tôle
-                roughness: 0.8,
-                metalness: 0.2,
+                color: 0x1e242b, // Pneu noir et jante/enjoliveur tôle
+                roughness: 0.7,
+                metalness: 0.25,
                 transparent: false,
                 opacity: 1.0
               }),
               edges: new THREE.LineBasicMaterial({
-                color: 0x3f3f46,
+                color: 0x374151,
                 transparent: true,
-                opacity: 0.5
+                opacity: 0.4
               })
             };
-          case "light":
+          case "light_front":
             return {
               mesh: new THREE.MeshStandardMaterial({
-                color: isHighlighted ? 0xfef08a : 0xffedd5,
-                roughness: 0.2,
-                metalness: 0.3,
+                color: isHighlighted ? 0xfef08a : 0xf1f5f9, // Optique phare H4 verre transparent
+                roughness: 0.15,
+                metalness: 0.4,
                 transparent: true,
                 opacity: 0.85
               }),
               edges: new THREE.LineBasicMaterial({
-                color: 0xf59e0b,
+                color: 0x94a3b8,
                 transparent: true,
-                opacity: 0.7
+                opacity: 0.6
+              })
+            };
+          case "light_indicator":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: 0xd97706, // Clignotant orange d'angle B3
+                roughness: 0.2,
+                metalness: 0.2,
+                transparent: true,
+                opacity: 0.9
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: 0xb45309,
+                transparent: true,
+                opacity: 0.6
+              })
+            };
+          case "light_rear":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: 0xb91c1c, // Bandeau de feux arrière rouge foncé Audi 80
+                roughness: 0.2,
+                metalness: 0.2,
+                transparent: true,
+                opacity: 0.9
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: 0x7f1d1d,
+                transparent: true,
+                opacity: 0.6
               })
             };
         }
@@ -247,6 +293,11 @@
           color = dark ? (isHighlighted ? 0x38bdf8 : 0x224168) : (isHighlighted ? 0x0284c7 : 0x94a3b8);
           edgeColor = dark ? (isHighlighted ? 0x7dd3fc : 0x477aa8) : (isHighlighted ? 0x0369a1 : 0x64748b);
           opacity = isHighlighted ? 0.45 : this.ghostOpacity;
+          break;
+        case "black_trim":
+          color = dark ? 0x1e293b : 0x64748b;
+          edgeColor = dark ? 0x475569 : 0x334155;
+          opacity = isHighlighted ? 0.55 : this.ghostOpacity * 1.2;
           break;
         case "glass":
           color = dark ? 0x38bdf8 : 0x0ea5e9;
@@ -584,27 +635,13 @@
       gCoffre.add(masse98);
 
       // ==========================================
-      // TRAINS ROULANTS & 4 ROUES (175/70 R14 sur jantes tôle)
+      // TRAINS ROULANTS & 4 ROUES
       // ==========================================
-      this.buildWheels();
+      // Les 4 roues authentiques avec jantes d'origine sont désormais intégrées dans le modèle 3D Blender.
     }
 
     buildWheels() {
-      const wheelGeom = new THREE.CylinderGeometry(0.3, 0.3, 0.18, 20);
-      wheelGeom.rotateX(Math.PI / 2);
-
-      const positions = [
-        { x: 1.28, y: 0.3, z: 0.76 },  // AV G
-        { x: 1.28, y: 0.3, z: -0.76 }, // AV D
-        { x: -1.26, y: 0.3, z: 0.76 }, // AR G
-        { x: -1.26, y: 0.3, z: -0.76 } // AR D
-      ];
-
-      positions.forEach(pos => {
-        const wheel = this.createTechMesh(wheelGeom, "wheel", "all");
-        wheel.position.set(pos.x, pos.y, pos.z);
-        this.carGroup.add(wheel);
-      });
+      // Les roues sont chargées fidèlement depuis le modèle 3D GLTF
     }
 
     // Chargement du modèle haute fidélité officiel Audi 80 B3
@@ -622,19 +659,50 @@
             let role = "body";
             let zone = "habitacle";
 
-            if (nameL.includes("bonnet") || nameL.includes("hood") || nameL.includes("bump_front") || nameL.includes("bamper02-mesh_004") || nameL.includes("bamper02-mesh_001")) {
-              zone = "moteur";
-            } else if (nameL.includes("fari")) {
-              role = "light";
-              zone = nameL.includes("fari2") ? "coffre" : "moteur";
-            } else if (nameL.includes("boot") || nameL.includes("trunk") || nameL.includes("bump_rear")) {
-              zone = "coffre";
-            } else if (nameL.includes("door_lf") || nameL.includes("door_rf")) {
-              zone = "soustrd";
-            } else if (nameL.includes("door_lr") || nameL.includes("door_rr")) {
-              zone = "habitacle";
-            } else if (nameL.includes("wheel")) {
-              role = "wheel";
+            if (nameL.startsWith("paint_")) {
+              role = "body"; // Peinture Blanc Alpinweiß L90E
+              if (nameL.includes("bonnet") || nameL.includes("body_001") || nameL.includes("body_012")) {
+                zone = "moteur";
+              } else if (nameL.includes("boot")) {
+                zone = "coffre";
+              } else if (nameL.includes("door_lf") || nameL.includes("door_rf")) {
+                zone = "soustrd";
+              } else {
+                zone = "habitacle";
+              }
+            } else if (nameL.startsWith("trimblack_")) {
+              role = "black_trim"; // Pare-chocs, bas de caisse, baguettes et poignées noires
+              if (nameL.includes("bump_front") || nameL.includes("trim_007")) {
+                zone = "moteur";
+              } else if (nameL.includes("bump_rear")) {
+                zone = "coffre";
+              } else if (nameL.includes("door_lf") || nameL.includes("door_rf")) {
+                zone = "soustrd";
+              } else {
+                zone = "habitacle";
+              }
+            } else if (nameL.startsWith("glass_")) {
+              role = "glass"; // Vitrages teintés
+              if (nameL.includes("glass_010")) {
+                zone = "auvent"; // Pare-brise
+              } else if (nameL.includes("glass_011") || nameL.includes("glass_016") || nameL.includes("glass_017")) {
+                zone = "coffre"; // Lunette arrière
+              } else {
+                zone = "habitacle";
+              }
+            } else if (nameL.startsWith("light_")) {
+              if (nameL.includes("fari2_1") || nameL.includes("fari2_001_1")) {
+                role = "light_indicator"; // Clignotants orange d'aile
+                zone = "moteur";
+              } else if (nameL.includes("fari")) {
+                role = "light_front"; // Phares avant H4 verre
+                zone = "moteur";
+              } else {
+                role = "light_rear"; // Feux arrière rouges/malle
+                zone = "coffre";
+              }
+            } else if (nameL.startsWith("wheel_")) {
+              role = "wheel"; // 4 Roues complètes
               zone = "all";
             }
 
