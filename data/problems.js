@@ -1,4 +1,5 @@
-export const problems = [
+window.AUDI80_DATA = window.AUDI80_DATA || {};
+window.AUDI80_DATA.problems = [
     {
       id: "surchauffe",
       title: "Surchauffe moteur",

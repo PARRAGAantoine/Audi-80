@@ -1,0 +1,323 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" width="100%" height="100%">
+  <defs>
+    <style>
+      .etka-bg { fill: #f8fafc; }
+      .etka-grid { stroke: #e2e8f0; stroke-width: 0.8; stroke-dasharray: 4,4; }
+      .etka-title { font-family: ui-monospace, monospace; font-size: 15px; font-weight: bold; fill: #0f172a; }
+      .etka-subtitle { font-family: ui-monospace, monospace; font-size: 11px; fill: #64748b; }
+      .etka-part-outline { fill: #f1f5f9; stroke: #1e293b; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+      .etka-part-shaded { fill: #e2e8f0; stroke: #1e293b; stroke-width: 1.8; stroke-linejoin: round; stroke-linecap: round; }
+      .etka-part-accent { fill: #cbd5e1; stroke: #0f172a; stroke-width: 1.8; }
+      .etka-fuse-red { fill: #ef4444; stroke: #991b1b; stroke-width: 1.2; }
+      .etka-fuse-blue { fill: #3b82f6; stroke: #1d4ed8; stroke-width: 1.2; }
+      .etka-fuse-yellow { fill: #eab308; stroke: #a16207; stroke-width: 1.2; }
+      .etka-fuse-green { fill: #22c55e; stroke: #15803d; stroke-width: 1.2; }
+      .etka-relay { fill: #334155; stroke: #0f172a; stroke-width: 1.5; }
+      .etka-relay-text { font-family: ui-monospace, monospace; font-size: 9px; fill: #f8fafc; font-weight: bold; }
+      .etka-line-hidden { stroke: #64748b; stroke-width: 1; stroke-dasharray: 3,3; fill: none; }
+      .etka-leader { stroke: #dc2626; stroke-width: 1.3; fill: none; }
+      .etka-leader-dot { fill: #dc2626; }
+      .etka-bubble { fill: #dc2626; stroke: #ffffff; stroke-width: 1.5; }
+      .etka-bubble-num { font-family: ui-monospace, monospace; font-size: 12px; font-weight: bold; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .etka-card-box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; rx: 6px; }
+      .etka-tbl-hdr { font-family: ui-monospace, monospace; font-size: 11px; font-weight: bold; fill: #334155; }
+      .etka-tbl-row { font-family: ui-monospace, monospace; font-size: 10.5px; fill: #475569; }
+      .etka-tbl-ref { font-family: ui-monospace, monospace; font-size: 10.5px; font-weight: bold; fill: #0f172a; }
+    </style>
+  </defs>
+
+  <!-- Arrière-plan technique et cartouche officiel -->
+  <rect width="960" height="680" class="etka-bg" />
+  
+  <!-- Cadre technique de planche atelier -->
+  <rect x="16" y="16" width="928" height="648" fill="none" stroke="#94a3b8" stroke-width="1.2" />
+  <rect x="20" y="20" width="920" height="640" fill="none" stroke="#cbd5e1" stroke-width="0.8" />
+
+  <!-- En-tête officiel ETKA VAG -->
+  <path d="M 20 62 L 940 62" stroke="#94a3b8" stroke-width="1.2" />
+  <text x="36" y="42" class="etka-title">AUDI 80 / 90 / AVANT (1987-1991) · GROUPE 9 : ÉQUIPEMENT ÉLECTRIQUE</text>
+  <text x="36" y="56" class="etka-subtitle">PLANCHE ISOMÉTRIQUE ATELIER N° 937-00 · CENTRALE ÉLECTRIQUE, PORTE-FUSIBLES &amp; PORTE-RELAIS</text>
+  <text x="760" y="46" font-family="ui-monospace, monospace" font-size="13px" font-weight="bold" fill="#dc2626">BILDTAFEL 937-00</text>
+
+  <!-- ==================== VUE ÉCLATÉE ISOMÉTRIQUE ==================== -->
+  <g transform="translate(40, 20)">
+
+    <!-- Repère 1 : Couvercle transparent d'étanchéité avec clips (893 941 823) -->
+    <!-- Vue éclatée en lévitation vers le haut -->
+    <g id="part-1-cover" transform="translate(180, 80)">
+      <!-- Couvercle supérieur en perspective isométrique -->
+      <polygon points="0,70 140,10 320,80 180,140" fill="rgba(226, 232, 240, 0.55)" stroke="#0f172a" stroke-width="2" />
+      <polygon points="0,70 0,90 180,160 180,140" fill="rgba(203, 213, 225, 0.65)" stroke="#0f172a" stroke-width="2" />
+      <polygon points="180,140 180,160 320,100 320,80" fill="rgba(148, 163, 184, 0.65)" stroke="#0f172a" stroke-width="2" />
+      <!-- Nervures de rigidité et empreintes de clips -->
+      <line x1="45" y1="50" x2="185" y2="120" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4,2" />
+      <line x1="90" y1="30" x2="230" y2="100" stroke="#64748b" stroke-width="1.2" stroke-dasharray="4,2" />
+      <!-- Clip de fermeture avant gauche -->
+      <polygon points="-8,74 4,68 4,96 -8,92" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+      <!-- Clip de fermeture avant droit -->
+      <polygon points="176,146 188,142 188,168 176,164" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+      <!-- Pictogramme étiquette fusibles sous couvercle -->
+      <polygon points="110,50 170,25 240,55 180,80" fill="rgba(255,255,255,0.7)" stroke="#64748b" stroke-width="1" />
+      <text x="145" y="55" font-family="ui-monospace, monospace" font-size="8" fill="#475569" transform="rotate(22, 145, 55)">BELEGUNGSPLAN</text>
+    </g>
+
+    <!-- Axe d'explosion vertical (traits mixtes) -->
+    <line x1="360" y1="180" x2="360" y2="240" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4" />
+    <line x1="180" y1="150" x2="180" y2="220" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4" />
+    <line x1="500" y1="160" x2="500" y2="230" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4" />
+
+    <!-- Repère 2 : Joint d'étanchéité silicone périphérique -->
+    <g id="part-2-gasket" transform="translate(178, 205)">
+      <polygon points="0,70 140,10 324,80 184,140" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <polygon points="4,71 140,13 320,80 184,137" fill="none" stroke="#b91c1c" stroke-width="1.5" />
+    </g>
+
+    <!-- Repère 3 : Boîtier principal porte-fusibles et relais (443 937 105 A) -->
+    <g id="part-3-housing" transform="translate(180, 240)">
+      <!-- Base principale du boîtier -->
+      <polygon points="0,70 140,10 320,80 180,140" fill="#cbd5e1" stroke="#0f172a" stroke-width="2.2" />
+      <polygon points="0,70 0,130 180,200 180,140" fill="#94a3b8" stroke="#0f172a" stroke-width="2.2" />
+      <polygon points="180,140 180,200 320,140 320,80" fill="#64748b" stroke="#0f172a" stroke-width="2.2" />
+
+      <!-- Emplacements des Relais I à VIII (Cubiques) -->
+      <!-- Relais I : Antibrouillard (215 / 111 953 227 D) -->
+      <g transform="translate(50, 48)">
+        <polygon points="0,20 28,8 48,16 20,28" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="0,20 0,44 20,52 20,28" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="20,28 20,52 48,40 48,16" fill="#475569" stroke="#0f172a" stroke-width="1.5" />
+        <text x="12" y="38" class="etka-relay-text">I</text>
+      </g>
+
+      <!-- Relais II : Ventilateur Radiateur V7 -->
+      <g transform="translate(90, 31)">
+        <polygon points="0,20 28,8 48,16 20,28" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="0,20 0,44 20,52 20,28" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="20,28 20,52 48,40 48,16" fill="#475569" stroke="#0f172a" stroke-width="1.5" />
+        <text x="10" y="38" class="etka-relay-text">II</text>
+      </g>
+
+      <!-- Relais V : Essuie-glace intermittent (229) -->
+      <g transform="translate(170, 42)">
+        <polygon points="0,20 32,8 54,16 22,28" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="0,20 0,44 22,52 22,28" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="22,28 22,52 54,40 54,16" fill="#475569" stroke="#0f172a" stroke-width="1.5" />
+        <text x="13" y="38" class="etka-relay-text">V</text>
+      </g>
+
+      <!-- Relais VI : Avertisseur sonore 2-tons (53) -->
+      <g transform="translate(210, 58)">
+        <polygon points="0,20 28,8 48,16 20,28" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="0,20 0,44 20,52 20,28" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+        <polygon points="20,28 20,52 48,40 48,16" fill="#475569" stroke="#0f172a" stroke-width="1.5" />
+        <text x="11" y="38" class="etka-relay-text">VI</text>
+      </g>
+
+      <!-- Rangée de fusibles standard S1 à S21 -->
+      <g transform="translate(30, 85)">
+        <!-- S1 (15A Bleu - Antibrouillard) -->
+        <rect x="0" y="10" width="8" height="12" class="etka-fuse-blue" transform="skewY(22)" />
+        <!-- S2 (15A Bleu) -->
+        <rect x="12" y="15" width="8" height="12" class="etka-fuse-blue" transform="skewY(22)" />
+        <!-- S3 (25A Blanc/Gris) -->
+        <rect x="24" y="20" width="8" height="12" fill="#f8fafc" stroke="#475569" stroke-width="1.2" transform="skewY(22)" />
+        <!-- S4 (15A Bleu) -->
+        <rect x="36" y="25" width="8" height="12" class="etka-fuse-blue" transform="skewY(22)" />
+        <!-- S5 (30A Vert - Ventilateur V7) -->
+        <rect x="48" y="30" width="8" height="12" class="etka-fuse-green" transform="skewY(22)" />
+        <!-- S6 (5A Marron) -->
+        <rect x="60" y="35" width="8" height="12" fill="#78350f" stroke="#451a03" stroke-width="1.2" transform="skewY(22)" />
+        <!-- S7 (10A Rouge) -->
+        <rect x="72" y="40" width="8" height="12" class="etka-fuse-red" transform="skewY(22)" />
+        <!-- S8 (10A Rouge) -->
+        <rect x="84" y="45" width="8" height="12" class="etka-fuse-red" transform="skewY(22)" />
+        <!-- S9 (10A Rouge) -->
+        <rect x="96" y="50" width="8" height="12" class="etka-fuse-red" transform="skewY(22)" />
+        <!-- S10 (10A Rouge) -->
+        <rect x="108" y="55" width="8" height="12" class="etka-fuse-red" transform="skewY(22)" />
+        <!-- S11 (10A Rouge) -->
+        <rect x="120" y="60" width="8" height="12" class="etka-fuse-red" transform="skewY(22)" />
+        <!-- S12 (15A Bleu - Combiné Instruments) -->
+        <rect x="132" y="65" width="8" height="12" class="etka-fuse-blue" transform="skewY(22)" />
+        <!-- S13 (15A Bleu) -->
+        <rect x="144" y="70" width="8" height="12" class="etka-fuse-blue" transform="skewY(22)" />
+        <!-- S14 (5A Marron - Éclairage plaque/instruments) -->
+        <rect x="156" y="75" width="8" height="12" fill="#78350f" stroke="#451a03" stroke-width="1.2" transform="skewY(22)" />
+        <!-- S15 (25A Essuie-glace) -->
+        <rect x="168" y="80" width="8" height="12" fill="#f8fafc" stroke="#475569" stroke-width="1.2" transform="skewY(22)" />
+        <!-- S16 (30A Dégivrage) -->
+        <rect x="180" y="85" width="8" height="12" class="etka-fuse-green" transform="skewY(22)" />
+        <!-- S17 (30A Lève-vitres) -->
+        <rect x="192" y="90" width="8" height="12" class="etka-fuse-green" transform="skewY(22)" />
+        <!-- S20 (30A Chauffage V2) -->
+        <rect x="204" y="95" width="8" height="12" class="etka-fuse-green" transform="skewY(22)" />
+      </g>
+
+      <!-- Pince plastique d'extraction de fusible -->
+      <g transform="translate(270, 75)">
+        <polygon points="0,5 6,0 12,18 6,23" fill="#ef4444" stroke="#991b1b" stroke-width="1.2" />
+      </g>
+    </g>
+
+    <!-- Repère 8 : Connecteurs inférieurs multibroches vers faisceau habitacle -->
+    <g id="part-8-connectors" transform="translate(220, 440)">
+      <!-- Prise Jaune -->
+      <polygon points="0,20 30,8 50,16 20,28" fill="#eab308" stroke="#a16207" stroke-width="1.5" />
+      <polygon points="0,20 0,40 20,48 20,28" fill="#ca8a04" stroke="#a16207" stroke-width="1.5" />
+      <polygon points="20,28 20,48 50,36 50,16" fill="#a16207" stroke="#713f12" stroke-width="1.5" />
+
+      <!-- Prise Bleue -->
+      <polygon points="60,45 90,33 110,41 80,53" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5" />
+      <polygon points="60,45 60,65 80,73 80,53" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" />
+      <polygon points="80,53 80,73 110,61 110,41" fill="#1d4ed8" stroke="#1e40af" stroke-width="1.5" />
+
+      <!-- Prise Noire -->
+      <polygon points="120,70 150,58 170,66 140,78" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+      <polygon points="120,70 120,90 140,98 140,78" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+      <polygon points="140,78 140,98 170,86 170,66" fill="#0f172a" stroke="#000000" stroke-width="1.5" />
+
+      <!-- Faisceau de sortie vers tablier -->
+      <path d="M 20 48 Q 40 90 90 120" stroke="#1e293b" stroke-width="7" fill="none" stroke-linecap="round" />
+      <path d="M 80 73 Q 95 105 130 125" stroke="#1e293b" stroke-width="9" fill="none" stroke-linecap="round" />
+      <path d="M 140 98 Q 150 115 180 130" stroke="#1e293b" stroke-width="8" fill="none" stroke-linecap="round" />
+    </g>
+
+    <!-- ==================== LIGNES DE RAPPEL & BULLES DE REPÈRE ETKA ==================== -->
+    
+    <!-- Repère 1 : Couvercle -->
+    <line x1="140" y1="120" x2="310" y2="130" class="etka-leader" />
+    <circle cx="310" cy="130" r="3" class="etka-leader-dot" />
+    <circle cx="125" cy="120" r="13" class="etka-bubble" />
+    <text x="125" y="120" class="etka-bubble-num">1</text>
+
+    <!-- Repère 2 : Joint -->
+    <line x1="140" y1="210" x2="220" y2="225" class="etka-leader" />
+    <circle cx="220" cy="225" r="3" class="etka-leader-dot" />
+    <circle cx="125" cy="210" r="13" class="etka-bubble" />
+    <text x="125" y="210" class="etka-bubble-num">2</text>
+
+    <!-- Repère 3 : Boîtier socle -->
+    <line x1="140" y1="330" x2="250" y2="340" class="etka-leader" />
+    <circle cx="250" cy="340" r="3" class="etka-leader-dot" />
+    <circle cx="125" cy="330" r="13" class="etka-bubble" />
+    <text x="125" y="330" class="etka-bubble-num">3</text>
+
+    <!-- Repère 4 : Fusibles S1 à S21 -->
+    <line x1="140" y1="410" x2="255" y2="390" class="etka-leader" />
+    <circle cx="255" cy="390" r="3" class="etka-leader-dot" />
+    <circle cx="125" cy="410" r="13" class="etka-bubble" />
+    <text x="125" y="410" class="etka-bubble-num">4</text>
+
+    <!-- Repère 5 : Relais I à VI -->
+    <line x1="560" y1="260" x2="430" y2="295" class="etka-leader" />
+    <circle cx="430" cy="295" r="3" class="etka-leader-dot" />
+    <circle cx="575" cy="260" r="13" class="etka-bubble" />
+    <text x="575" y="260" class="etka-bubble-num">5</text>
+
+    <!-- Repère 6 : Pince extraction -->
+    <line x1="560" y1="330" x2="460" y2="325" class="etka-leader" />
+    <circle cx="460" cy="325" r="3" class="etka-leader-dot" />
+    <circle cx="575" cy="330" r="13" class="etka-bubble" />
+    <text x="575" y="330" class="etka-bubble-num">6</text>
+
+    <!-- Repère 8 : Connecteurs inférieurs verrouillables -->
+    <line x1="140" y1="500" x2="270" y2="480" class="etka-leader" />
+    <circle cx="270" cy="480" r="3" class="etka-leader-dot" />
+    <circle cx="125" cy="500" r="13" class="etka-bubble" />
+    <text x="125" y="500" class="etka-bubble-num">8</text>
+
+  </g>
+
+  <!-- ==================== NOMENCLATURE OFFICIELLE VAG / TABLEAU ETKA ==================== -->
+  <g transform="translate(615, 80)">
+    <rect width="310" height="560" class="etka-card-box" />
+    <rect width="310" height="30" fill="#f1f5f9" rx="6" />
+    <text x="12" y="20" class="etka-tbl-hdr">NOMENCLATURE PIÈCES · BILDTAFEL 937-00</text>
+    <line x1="0" y1="30" x2="310" y2="30" stroke="#cbd5e1" />
+
+    <!-- Entêtes de colonnes -->
+    <text x="12" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">REP</text>
+    <text x="44" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">RÉFÉRENCE OEM</text>
+    <text x="170" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">DÉSIGNATION</text>
+    <line x1="0" y1="52" x2="310" y2="52" stroke="#e2e8f0" />
+
+    <!-- Ligne 1 -->
+    <text x="16" y="74" class="etka-tbl-ref">1</text>
+    <text x="44" y="74" class="etka-tbl-ref">893 941 823</text>
+    <text x="170" y="74" class="etka-tbl-row">Couvercle boîte</text>
+    <text x="44" y="87" class="etka-subtitle">Deckel für Zentralelektrik</text>
+    <line x1="8" y1="94" x2="302" y2="94" stroke="#f1f5f9" />
+
+    <!-- Ligne 2 -->
+    <text x="16" y="112" class="etka-tbl-ref">2</text>
+    <text x="44" y="112" class="etka-tbl-ref">893 941 825</text>
+    <text x="170" y="112" class="etka-tbl-row">Joint d'étanchéité</text>
+    <text x="44" y="125" class="etka-subtitle">Dichtung Gummi</text>
+    <line x1="8" y1="132" x2="302" y2="132" stroke="#f1f5f9" />
+
+    <!-- Ligne 3 -->
+    <text x="16" y="150" class="etka-tbl-ref">3</text>
+    <text x="44" y="150" class="etka-tbl-ref">443 937 105 A</text>
+    <text x="170" y="150" class="etka-tbl-row">Boîtier central</text>
+    <text x="44" y="163" class="etka-subtitle">Zentral-Elektrik Kasten</text>
+    <line x1="8" y1="170" x2="302" y2="170" stroke="#f1f5f9" />
+
+    <!-- Ligne 4 -->
+    <text x="16" y="188" class="etka-tbl-ref">4</text>
+    <text x="44" y="188" class="etka-tbl-ref">N 017 131 11</text>
+    <text x="170" y="188" class="etka-tbl-row">Fusible 15A (bleu)</text>
+    <text x="44" y="201" class="etka-subtitle">S1 antibrouillard, S12 bord</text>
+    <line x1="8" y1="208" x2="302" y2="208" stroke="#f1f5f9" />
+
+    <!-- Ligne 4 bis -->
+    <text x="16" y="226" class="etka-tbl-ref">4</text>
+    <text x="44" y="226" class="etka-tbl-ref">N 017 131 12</text>
+    <text x="170" y="226" class="etka-tbl-row">Fusible 30A (vert)</text>
+    <text x="44" y="239" class="etka-subtitle">S5 ventilo V7, S17 vitres</text>
+    <line x1="8" y1="246" x2="302" y2="246" stroke="#f1f5f9" />
+
+    <!-- Ligne 5 -->
+    <text x="16" y="264" class="etka-tbl-ref">5</text>
+    <text x="44" y="264" class="etka-tbl-ref">111 953 227 D</text>
+    <text x="170" y="264" class="etka-tbl-row">Relais I (antibrouill.)</text>
+    <text x="44" y="277" class="etka-subtitle">Relais Nebelscheinwerfer</text>
+    <line x1="8" y1="284" x2="302" y2="284" stroke="#f1f5f9" />
+
+    <!-- Ligne 5 bis -->
+    <text x="16" y="302" class="etka-tbl-ref">5</text>
+    <text x="44" y="302" class="etka-tbl-ref">443 951 253 AA</text>
+    <text x="170" y="302" class="etka-tbl-row">Relais II (ventilateur)</text>
+    <text x="44" y="315" class="etka-subtitle">Relais Kühlerlüfter</text>
+    <line x1="8" y1="322" x2="302" y2="322" stroke="#f1f5f9" />
+
+    <!-- Ligne 5 ter -->
+    <text x="16" y="340" class="etka-tbl-ref">5</text>
+    <text x="44" y="340" class="etka-tbl-ref">431 955 531</text>
+    <text x="170" y="340" class="etka-tbl-row">Relais V (essuie-gl.)</text>
+    <text x="44" y="353" class="etka-subtitle">Wisch-Wasch Intervall 229</text>
+    <line x1="8" y1="360" x2="302" y2="360" stroke="#f1f5f9" />
+
+    <!-- Ligne 6 -->
+    <text x="16" y="378" class="etka-tbl-ref">6</text>
+    <text x="44" y="378" class="etka-tbl-ref">893 937 549</text>
+    <text x="170" y="378" class="etka-tbl-row">Pince fusibles</text>
+    <text x="44" y="391" class="etka-subtitle">Sicherungsabzieher</text>
+    <line x1="8" y1="398" x2="302" y2="398" stroke="#f1f5f9" />
+
+    <!-- Ligne 8 -->
+    <text x="16" y="416" class="etka-tbl-ref">8</text>
+    <text x="44" y="416" class="etka-tbl-ref">443 971 971</text>
+    <text x="170" y="416" class="etka-tbl-row">Connecteur jaune</text>
+    <text x="44" y="429" class="etka-subtitle">Steckgehäuse 16-polig</text>
+    <line x1="8" y1="436" x2="302" y2="436" stroke="#f1f5f9" />
+
+    <!-- Zone RTA Cross-Reference -->
+    <g transform="translate(10, 452)">
+      <rect width="290" height="92" fill="#eff6ff" stroke="#bfdbfe" rx="5" />
+      <text x="10" y="18" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#1e40af">CORRESPONDANCE RTA / ATELIER</text>
+      <text x="10" y="34" font-family="ui-monospace, monospace" font-size="9.5" fill="#1e3a8a">• RTA page 72 : Tableau calibres S1 à S21</text>
+      <text x="10" y="48" font-family="ui-monospace, monospace" font-size="9.5" fill="#1e3a8a">• RTA page 85 : Circuit S5 &amp; Relais II ventilateur</text>
+      <text x="10" y="62" font-family="ui-monospace, monospace" font-size="9.5" fill="#1e3a8a">• RTA page 121 : Circuit S1 &amp; Relais I antibrouillard</text>
+      <text x="10" y="76" font-family="ui-monospace, monospace" font-size="9.5" fill="#1e3a8a">• RTA page 120 : Masse boîte (32) sous tablier</text>
+    </g>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
-import { repairData as repair, history } from "../data/index.js";
-
 (function () {
+  const repair = window.AUDI80_REPAIR;
+  const history = window.AUDI80_HISTORY || [];
   const app = document.querySelector("#app");
   const results = document.querySelector("#results");
   const search = document.querySelector("#search-input");
@@ -392,10 +392,14 @@ import { repairData as repair, history } from "../data/index.js";
         <h2>Recherche de panne</h2>
         <input id="home-search-input" type="search" placeholder="Symptôme, organe ou panne">
       </section>
-      <section class="grid two">
+      <section class="grid three">
         <a class="card action-card" href="#reparation">
           <h2>Mode réparation</h2>
           <p>Diagnostics, contrôles cliquables, fiches pièces et extraits RTA ciblés.</p>
+        </a>
+        <a class="card action-card" href="#electricite-3d">
+          <h2>Électricité 3D</h2>
+          <p>Vue éclatée, circuits électriques et repérage des pièces en 3D.</p>
         </a>
         <a class="card action-card" href="#entretien">
           <h2>Mode suivi d'entretien</h2>
@@ -567,6 +571,295 @@ import { repairData as repair, history } from "../data/index.js";
       </article>`;
   }
 
+  let activeGhost3D = null;
+
+  function renderElectrical3D(targetZone = "all") {
+    if (activeGhost3D) {
+      activeGhost3D.destroy();
+      activeGhost3D = null;
+    }
+
+    state.route = "electricite-3d";
+    setActive("electricite-3d");
+    search.value = "";
+    renderResults("");
+
+    const zones = window.AUDI80_3D?.ZONES || {};
+    const zoneKeys = Object.keys(zones);
+    const initialZone = zones[targetZone] ? targetZone : "all";
+
+    app.innerHTML = `
+      <section class="page-head">
+        <h1>Électricité 3D & Fantôme Châssis</h1>
+        <p>Audi 80 B3 1.8S (1988) · Repérage spatial interactif des 6 zones anatomiques et équipements électriques</p>
+      </section>
+
+      <section class="panel viewer-3d-panel">
+        <div class="viewer-toolbar-zones">
+          ${zoneKeys.map(k => `
+            <button type="button" class="viewer-zone-btn ${k === initialZone ? 'active' : ''}" data-zone="${k}">
+              ${esc(zones[k].name)}
+            </button>
+          `).join("")}
+        </div>
+
+        <div class="viewer-3d-wrap">
+          <div id="audi3d-canvas-wrap" class="viewer-3d-canvas"></div>
+          <div class="viewer-controls-overlay">
+            <button type="button" class="viewer-cam-btn" data-cam="three-quarter" title="Vue d'ensemble 3/4">Vue 3/4</button>
+            <button type="button" class="viewer-cam-btn" data-cam="front" title="Vue avant compartiment moteur">Avant</button>
+            <button type="button" class="viewer-cam-btn" data-cam="side" title="Vue profil latérale">Profil</button>
+            <button type="button" class="viewer-cam-btn" data-cam="top" title="Vue du dessus">Dessus</button>
+            <button type="button" class="viewer-cam-btn" data-cam="rear" title="Vue arrière malle & coffre">Arrière</button>
+            <button type="button" class="viewer-cam-btn" data-cam="reset" title="Réinitialiser la caméra">Reset</button>
+          </div>
+        </div>
+
+        <div class="viewer-settings-bar">
+          <label class="viewer-setting-item">
+            <span>Transparence :</span>
+            <input id="viewer-opacity-slider" type="range" min="5" max="75" value="22">
+          </label>
+          <label class="viewer-setting-item">
+            <input id="viewer-wireframe-toggle" type="checkbox">
+            <span>Fil de fer seul</span>
+          </label>
+          <label class="viewer-setting-item">
+            <input id="viewer-isolate-toggle" type="checkbox">
+            <span>Isoler la zone active</span>
+          </label>
+          <div class="viewer-setting-item">
+            <small style="opacity:0.75;">Clic gauche : Rotation · Clic droit : Déplacement · Molette : Zoom</small>
+          </div>
+        </div>
+
+        <div id="viewer-zone-card" class="viewer-zone-card panel">
+          <h2>
+            <span id="zone-badge" class="tag">${esc(zones[initialZone]?.badge || "Zone")}</span>
+            <span id="zone-title">${esc(zones[initialZone]?.name || "Véhicule")}</span>
+          </h2>
+          <p id="zone-desc">${esc(zones[initialZone]?.desc || "")}</p>
+        </div>
+
+        <div class="viewer-legend">
+          <div class="viewer-legend-item">
+            <span class="viewer-legend-color" style="background:#224168;"></span>
+            <span>Carrosserie / Châssis B3</span>
+          </div>
+          <div class="viewer-legend-item">
+            <span class="viewer-legend-color" style="background:#0ea5e9;"></span>
+            <span>Vitrage aérodynamique</span>
+          </div>
+          <div class="viewer-legend-item">
+            <span class="viewer-legend-color" style="background:#b45309;"></span>
+            <span>Moteur 1.8S NE / Organes</span>
+          </div>
+          <div class="viewer-legend-item">
+            <span class="viewer-legend-color" style="background:#10b981;"></span>
+            <span>Composants électriques & Faisceaux</span>
+          </div>
+          <div class="viewer-legend-item">
+            <span class="viewer-legend-color" style="background:#ef4444;"></span>
+            <span>Boîtier Fusibles & Platines Relais</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section ETKA VAG Officielle : Vues Éclatées & Références Pièces -->
+      <section class="panel etka-section">
+        <div class="etka-header-row">
+          <div class="etka-header-title">
+            <span class="etka-badge-tag">ETKA VAG</span>
+            <h2>Vues Éclatées &amp; Schémas Techniques d'Atelier (Groupe 9)</h2>
+          </div>
+          <div class="etka-nav" id="etka-nav-bar"></div>
+        </div>
+
+        <div id="etka-plate-container"></div>
+      </section>
+    `;
+
+    const canvasContainer = document.querySelector("#audi3d-canvas-wrap");
+    if (!canvasContainer || !window.AUDI80_3D?.GhostView) return;
+
+    activeGhost3D = new window.AUDI80_3D.GhostView(canvasContainer);
+    if (initialZone !== "all") {
+      activeGhost3D.selectZone(initialZone);
+    }
+
+    const zoneButtons = [...document.querySelectorAll(".viewer-zone-btn")];
+    const zoneBadgeEl = document.querySelector("#zone-badge");
+    const zoneTitleEl = document.querySelector("#zone-title");
+    const zoneDescEl = document.querySelector("#zone-desc");
+
+    // Mapping bi-directionnel Zones 3D <-> Planches ETKA
+    const zoneToPlate = {
+      moteur: "905-00",
+      auvent: "937-00",
+      soustrd: "937-00",
+      planche: "919-00",
+      habitacle: "959-00",
+      coffre: "945-00"
+    };
+
+    const etkaPlates = window.AUDI80_DATA?.etka?.plates || {};
+    const etkaPlateKeys = Object.keys(etkaPlates);
+    let currentPlateKey = zoneToPlate[initialZone] || "937-00";
+
+    const etkaNavBar = document.querySelector("#etka-nav-bar");
+    const etkaPlateContainer = document.querySelector("#etka-plate-container");
+
+    function renderEtkaCard(plateId) {
+      const plate = etkaPlates[plateId];
+      if (!plate) return;
+      currentPlateKey = plateId;
+
+      // Mise à jour de la barre d'onglets ETKA
+      if (etkaNavBar) {
+        etkaNavBar.innerHTML = etkaPlateKeys.map(key => {
+          const p = etkaPlates[key];
+          const shortName = p.title.split("(")[0].split("&")[0].trim();
+          return `
+            <button type="button" class="etka-nav-btn ${key === plateId ? 'active' : ''}" data-plate="${key}">
+              ${key} · ${esc(shortName)}
+            </button>
+          `;
+        }).join("");
+
+        etkaNavBar.querySelectorAll(".etka-nav-btn").forEach(btn => {
+          btn.addEventListener("click", () => {
+            const pId = btn.dataset.plate;
+            renderEtkaCard(pId);
+            // Si la planche est liée à une zone 3D, orienter la caméra 3D dessus
+            if (plate.zone && activeGhost3D) {
+              setZone(plate.zone, false);
+            }
+          });
+        });
+      }
+
+      // Rendu de la carte de planche ETKA
+      if (etkaPlateContainer) {
+        etkaPlateContainer.innerHTML = `
+          <div class="etka-plate-card">
+            <div class="etka-viewer-container">
+              <div class="etka-viewer-toolbar">
+                <span>BILDTAFEL ${esc(plate.id)} · ${esc(plate.subtitle)}</span>
+                <a href="${esc(plate.svg)}" target="_blank" style="color:#38bdf8; text-decoration:none;">Ouvrir en plein écran ↗</a>
+              </div>
+              <div class="etka-svg-frame">
+                <img src="${esc(plate.svg)}" alt="Planche ETKA ${esc(plate.id)} - ${esc(plate.title)}" />
+              </div>
+            </div>
+
+            <div class="etka-details-col">
+              <div class="etka-details-header">
+                <h3>${esc(plate.title)}</h3>
+                <p>📍 ${esc(plate.location)}</p>
+              </div>
+
+              <div class="etka-table-wrap">
+                <table class="etka-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 38px;">Rep</th>
+                      <th>Réf. OEM VAG</th>
+                      <th>Désignation &amp; Rôle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${plate.parts.map(pt => `
+                      <tr>
+                        <td><span class="etka-rep-badge">${esc(pt.rep)}</span></td>
+                        <td>
+                          <div class="etka-oem-code">${esc(pt.ref)}</div>
+                          <div class="etka-part-de">${esc(pt.de || "")}</div>
+                        </td>
+                        <td>
+                          <strong>${esc(pt.name)}</strong>
+                          ${pt.note ? `<div style="font-size:0.8rem; color:#94a3b8; margin-top:2px;">${esc(pt.note)}</div>` : ""}
+                        </td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+
+              ${plate.rtaRef && plate.rtaRef.length ? `
+                <div class="etka-cross-rta">
+                  <strong>Correspondance Schémas d'Atelier RTA :</strong>
+                  <div class="etka-cross-rta-links">
+                    ${plate.rtaRef.map(key => {
+                      const doc = repair.rta[key];
+                      return doc ? `<a class="etka-rta-btn" href="${doc.file}" target="_blank">📄 ${esc(doc.label)}</a>` : "";
+                    }).join("")}
+                  </div>
+                </div>
+              ` : ""}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function setZone(zoneId, syncEtka = true) {
+      zoneButtons.forEach(b => b.classList.toggle("active", b.dataset.zone === zoneId));
+      if (zones[zoneId]) {
+        zoneBadgeEl.textContent = zones[zoneId].badge;
+        zoneTitleEl.textContent = zones[zoneId].name;
+        zoneDescEl.textContent = zones[zoneId].desc;
+        activeGhost3D.selectZone(zoneId);
+      }
+      if (syncEtka && zoneToPlate[zoneId]) {
+        renderEtkaCard(zoneToPlate[zoneId]);
+      }
+    }
+
+    zoneButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        setZone(btn.dataset.zone, true);
+      });
+    });
+
+    // Rendu initial de la planche ETKA
+    renderEtkaCard(currentPlateKey);
+
+    // Boutons de caméra prédéfinie
+    document.querySelectorAll(".viewer-cam-btn").forEach(camBtn => {
+      camBtn.addEventListener("click", () => {
+        const mode = camBtn.dataset.cam;
+        if (mode === "three-quarter") activeGhost3D.animateCameraTo({ x: 4.8, y: 2.2, z: 4.6 }, { x: 0, y: 0.5, z: 0 });
+        if (mode === "front") activeGhost3D.animateCameraTo({ x: 5.5, y: 0.8, z: 0 }, { x: 0, y: 0.5, z: 0 });
+        if (mode === "side") activeGhost3D.animateCameraTo({ x: 0, y: 0.9, z: 5.8 }, { x: 0, y: 0.5, z: 0 });
+        if (mode === "top") activeGhost3D.animateCameraTo({ x: 0.01, y: 7.2, z: 0 }, { x: 0, y: 0.5, z: 0 });
+        if (mode === "rear") activeGhost3D.animateCameraTo({ x: -5.5, y: 1.2, z: 0 }, { x: 0, y: 0.6, z: 0 });
+        if (mode === "reset") activeGhost3D.selectZone(activeGhost3D.currentZone);
+      });
+    });
+
+    // Réglages
+    const opacitySlider = document.querySelector("#viewer-opacity-slider");
+    if (opacitySlider) {
+      opacitySlider.addEventListener("input", (e) => {
+        activeGhost3D.setGhostOpacity(Number(e.target.value) / 100);
+      });
+    }
+
+    const wireframeToggle = document.querySelector("#viewer-wireframe-toggle");
+    if (wireframeToggle) {
+      wireframeToggle.addEventListener("change", (e) => {
+        activeGhost3D.setWireframeOnly(e.target.checked);
+      });
+    }
+
+    const isolateToggle = document.querySelector("#viewer-isolate-toggle");
+    if (isolateToggle) {
+      isolateToggle.addEventListener("change", (e) => {
+        activeGhost3D.setIsolateZone(e.target.checked);
+      });
+    }
+  }
+
   function renderMaintenance() {
     state.route = "entretien";
     setActive("entretien");
@@ -627,8 +920,13 @@ import { repairData as repair, history } from "../data/index.js";
   function route() {
     const raw = location.hash.replace(/^#/, "");
     const [kind, id, problemId] = raw.split("/");
+    if (kind !== "electricite-3d" && activeGhost3D) {
+      activeGhost3D.destroy();
+      activeGhost3D = null;
+    }
     if (!raw || kind === "accueil") return renderHome();
     if (kind === "reparation") return renderRepairHome();
+    if (kind === "electricite-3d") return renderElectrical3D(id);
     if (kind === "entretien") return renderMaintenance();
     if (kind === "panne") return renderProblem(id);
     if (kind === "controle") return renderControl(id, problemId);
@@ -641,6 +939,7 @@ import { repairData as repair, history } from "../data/index.js";
     const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
     document.documentElement.dataset.theme = next;
     localStorage.setItem("audi80-theme", next);
+    if (activeGhost3D) activeGhost3D.updateBackgroundColor();
   });
   document.documentElement.dataset.theme = localStorage.getItem("audi80-theme") || "dark";
   window.addEventListener("hashchange", route);

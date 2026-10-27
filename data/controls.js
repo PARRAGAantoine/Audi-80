@@ -1,4 +1,5 @@
-export const controls = {
+window.AUDI80_DATA = window.AUDI80_DATA || {};
+window.AUDI80_DATA.controls = {
     niveauLdr: {
       title: "Contrôler le niveau de liquide de refroidissement",
       tools: ["Lampe", "Gants", "Chiffon"],

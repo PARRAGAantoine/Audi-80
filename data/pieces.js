@@ -1,4 +1,5 @@
-export const pieces = {
+window.AUDI80_DATA = window.AUDI80_DATA || {};
+window.AUDI80_DATA.pieces = {
     thermostat: {
       title: "Thermostat",
       location: "Dans le circuit de refroidissement côté moteur, au boîtier de sortie d'eau. L'emplacement exact doit être confirmé sur la voiture avant dépose.",

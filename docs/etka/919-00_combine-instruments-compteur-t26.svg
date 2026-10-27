@@ -1,0 +1,256 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" width="100%" height="100%">
+  <defs>
+    <style>
+      .etka-bg { fill: #f8fafc; }
+      .etka-title { font-family: ui-monospace, monospace; font-size: 15px; font-weight: bold; fill: #0f172a; }
+      .etka-subtitle { font-family: ui-monospace, monospace; font-size: 11px; fill: #64748b; }
+      .etka-leader { stroke: #dc2626; stroke-width: 1.3; fill: none; }
+      .etka-leader-dot { fill: #dc2626; }
+      .etka-bubble { fill: #dc2626; stroke: #ffffff; stroke-width: 1.5; }
+      .etka-bubble-num { font-family: ui-monospace, monospace; font-size: 12px; font-weight: bold; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .etka-card-box { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; rx: 6px; }
+      .etka-tbl-hdr { font-family: ui-monospace, monospace; font-size: 11px; font-weight: bold; fill: #334155; }
+      .etka-tbl-row { font-family: ui-monospace, monospace; font-size: 10.5px; fill: #475569; }
+      .etka-tbl-ref { font-family: ui-monospace, monospace; font-size: 10.5px; font-weight: bold; fill: #0f172a; }
+    </style>
+  </defs>
+
+  <rect width="960" height="680" class="etka-bg" />
+  <rect x="16" y="16" width="928" height="648" fill="none" stroke="#94a3b8" stroke-width="1.2" />
+  <rect x="20" y="20" width="920" height="640" fill="none" stroke="#cbd5e1" stroke-width="0.8" />
+
+  <path d="M 20 62 L 940 62" stroke="#94a3b8" stroke-width="1.2" />
+  <text x="36" y="42" class="etka-title">AUDI 80 / 90 / AVANT (1987-1991) · GROUPE 9 : ÉQUIPEMENT ÉLECTRIQUE</text>
+  <text x="36" y="56" class="etka-subtitle">PLANCHE ISOMÉTRIQUE ATELIER N° 919-00 · COMBINÉ D'INSTRUMENTS (VDO / UN4), CONNECTEURS T26/T26a &amp; STABILISATEUR J6</text>
+  <text x="760" y="46" font-family="ui-monospace, monospace" font-size="13px" font-weight="bold" fill="#dc2626">BILDTAFEL 919-00</text>
+
+  <!-- ==================== VUE ÉCLATÉE ISOMÉTRIQUE ==================== -->
+  <g transform="translate(40, 20)">
+
+    <!-- Repère 1 : Visière et façade avant (893 919 059) -->
+    <g id="part-1-fascia" transform="translate(140, 80)">
+      <polygon points="0,50 150,0 340,65 190,115" fill="none" stroke="#1e293b" stroke-width="2.2" />
+      <polygon points="0,50 0,65 190,130 190,115" fill="#334155" stroke="#1e293b" stroke-width="2.2" />
+      <polygon points="190,115 190,130 340,80 340,65" fill="#1e293b" stroke="#1e293b" stroke-width="2.2" />
+      <!-- Vitre et ouvertures compteurs -->
+      <ellipse cx="90" cy="55" rx="35" ry="22" fill="rgba(241, 245, 249, 0.4)" stroke="#475569" stroke-width="1.5" />
+      <ellipse cx="230" cy="65" rx="35" ry="22" fill="rgba(241, 245, 249, 0.4)" stroke="#475569" stroke-width="1.5" />
+      <!-- Boutons poussoirs inférieurs -->
+      <line x1="80" y1="95" x2="80" y2="115" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+      <line x1="240" y1="105" x2="240" y2="125" stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+    </g>
+
+    <!-- Traits d'explosion -->
+    <line x1="330" y1="180" x2="330" y2="240" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="6,4" />
+
+    <!-- Repère 3 : Compteur de vitesse mécanique (893 919 033) & Compte-tours (893 919 034) -->
+    <g id="part-3-gauges" transform="translate(150, 220)">
+      <!-- Compteur vitesse avec totalisateur -->
+      <g transform="translate(40, 20)">
+        <ellipse cx="50" cy="35" rx="42" ry="26" fill="#0f172a" stroke="#334155" stroke-width="2" />
+        <ellipse cx="50" cy="35" rx="34" ry="20" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,3" />
+        <!-- Aiguille blanche -->
+        <line x1="50" y1="35" x2="30" y2="22" stroke="#f8fafc" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="50" cy="35" r="4" fill="#f8fafc" />
+        <!-- Rouleaux kilométriques / engrenage -->
+        <rect x="36" y="42" width="28" height="9" fill="#1e293b" stroke="#e2e8f0" stroke-width="1" />
+        <text x="39" y="49" font-family="ui-monospace, monospace" font-size="6" fill="#e2e8f0">248500</text>
+      </g>
+
+      <!-- Compte-tours électronique (signal borne 1 TSZ-H) -->
+      <g transform="translate(180, 45)">
+        <ellipse cx="50" cy="35" rx="42" ry="26" fill="#0f172a" stroke="#334155" stroke-width="2" />
+        <ellipse cx="50" cy="35" rx="34" ry="20" fill="none" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3,3" />
+        <line x1="50" y1="35" x2="65" y2="20" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" />
+        <circle cx="50" cy="35" r="4" fill="#f8fafc" />
+        <text x="45" y="30" font-family="ui-monospace, monospace" font-size="7" fill="#94a3b8">1/min x100</text>
+      </g>
+    </g>
+
+    <!-- Repère 6 : Stabilisateur de tension 10V J6 (893 907 385 / TCA700Y) -->
+    <g id="part-6-stabilizer" transform="translate(380, 280)">
+      <!-- Boîtier TO-220 avec languette vissée -->
+      <rect x="0" y="0" width="22" height="18" fill="#1e293b" stroke="#0f172a" stroke-width="1.5" />
+      <polygon points="4,-10 18,-10 22,0 0,0" fill="#94a3b8" stroke="#0f172a" stroke-width="1.2" />
+      <circle cx="11" cy="-5" r="2.5" fill="#f8fafc" stroke="#0f172a" stroke-width="1" />
+      <!-- 3 pattes : 1 = +12V (S12), 2 = Masse (32), 3 = Sortie 10.0V régulée -->
+      <line x1="4" y1="18" x2="4" y2="28" stroke="#cbd5e1" stroke-width="2" />
+      <line x1="11" y1="18" x2="11" y2="28" stroke="#cbd5e1" stroke-width="2" />
+      <line x1="18" y1="18" x2="18" y2="28" stroke="#cbd5e1" stroke-width="2" />
+      <text x="1" y="13" font-family="ui-monospace, monospace" font-size="6" fill="#f8fafc">J6 10V</text>
+    </g>
+
+    <!-- Repère 7 : Circuit imprimé souple arrière (PCB Flex foil) -->
+    <g id="part-7-pcb" transform="translate(130, 360)">
+      <polygon points="0,50 150,0 350,65 200,115" fill="#15803d" stroke="#14532d" stroke-width="2" />
+      <!-- Pistes de cuivre conductrices souples -->
+      <path d="M 40 45 L 120 20 L 220 50 L 300 65" fill="none" stroke="#eab308" stroke-width="2" />
+      <path d="M 60 55 L 140 28 L 240 60 L 280 80" fill="none" stroke="#ca8a04" stroke-width="1.5" />
+      <path d="M 80 65 L 160 40 L 200 65" fill="none" stroke="#eab308" stroke-width="1.5" />
+      <!-- Empreintes ampoules B8.5d -->
+      <circle cx="100" cy="45" r="5" fill="#1e293b" stroke="#eab308" stroke-width="1.2" />
+      <circle cx="150" cy="35" r="5" fill="#1e293b" stroke="#eab308" stroke-width="1.2" />
+      <circle cx="210" cy="55" r="5" fill="#1e293b" stroke="#eab308" stroke-width="1.2" />
+      <circle cx="260" cy="65" r="5" fill="#1e293b" stroke="#eab308" stroke-width="1.2" />
+    </g>
+
+    <!-- Repère 8 : Connecteur T26 JAUNE (893 971 979) -->
+    <g id="part-8-t26-yellow" transform="translate(150, 490)">
+      <!-- Corps de prise 26 broches JAUNE -->
+      <polygon points="0,15 40,0 70,12 30,27" fill="#fde047" stroke="#ca8a04" stroke-width="1.8" />
+      <polygon points="0,15 0,35 30,47 30,27" fill="#eab308" stroke="#ca8a04" stroke-width="1.8" />
+      <polygon points="30,27 30,47 70,32 70,12" fill="#ca8a04" stroke="#a16207" stroke-width="1.8" />
+      <!-- Levier de verrouillage violet/noir -->
+      <path d="M 5 15 Q 15 -5 45 3" fill="none" stroke="#7c3aed" stroke-width="3" stroke-linecap="round" />
+      <!-- Faisceau de câbles multicolores -->
+      <path d="M 30 47 Q 20 80 10 110" stroke="#ef4444" stroke-width="4" fill="none" />
+      <path d="M 35 45 Q 30 80 25 110" stroke="#3b82f6" stroke-width="4" fill="none" />
+      <path d="M 45 42 Q 45 80 40 110" stroke="#78350f" stroke-width="5" fill="none" />
+      <text x="18" y="22" font-family="ui-monospace, monospace" font-size="8" font-weight="bold" fill="#713f12">T26</text>
+    </g>
+
+    <!-- Repère 9 : Connecteur T26a BLEU (893 971 980) -->
+    <g id="part-9-t26a-blue" transform="translate(350, 490)">
+      <!-- Corps de prise 26 broches BLEU -->
+      <polygon points="0,15 40,0 70,12 30,27" fill="#60a5fa" stroke="#1d4ed8" stroke-width="1.8" />
+      <polygon points="0,15 0,35 30,47 30,27" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.8" />
+      <polygon points="30,27 30,47 70,32 70,12" fill="#1d4ed8" stroke="#1e40af" stroke-width="1.8" />
+      <!-- Levier de verrouillage -->
+      <path d="M 5 15 Q 15 -5 45 3" fill="none" stroke="#7c3aed" stroke-width="3" stroke-linecap="round" />
+      <!-- Faisceau bleu/rouge/jaune -->
+      <path d="M 30 47 Q 35 80 40 110" stroke="#3b82f6" stroke-width="4" fill="none" />
+      <path d="M 40 45 Q 50 80 55 110" stroke="#eab308" stroke-width="4" fill="none" />
+      <path d="M 50 42 Q 65 80 70 110" stroke="#10b981" stroke-width="4" fill="none" />
+      <text x="16" y="22" font-family="ui-monospace, monospace" font-size="8" font-weight="bold" fill="#1e3a8a">T26a</text>
+    </g>
+
+    <!-- ==================== LIGNES DE RAPPEL & BULLES ETKA ==================== -->
+    <!-- Repère 1 : Façade -->
+    <line x1="90" y1="120" x2="220" y2="105" class="etka-leader" />
+    <circle cx="220" cy="105" r="3" class="etka-leader-dot" />
+    <circle cx="75" cy="120" r="13" class="etka-bubble" />
+    <text x="75" y="120" class="etka-bubble-num">1</text>
+
+    <!-- Repère 3 : Compteur vitesse -->
+    <line x1="90" y1="230" x2="200" y2="245" class="etka-leader" />
+    <circle cx="200" cy="245" r="3" class="etka-leader-dot" />
+    <circle cx="75" cy="230" r="13" class="etka-bubble" />
+    <text x="75" y="230" class="etka-bubble-num">3</text>
+
+    <!-- Repère 4 : Compte-tours -->
+    <line x1="510" y1="240" x2="380" y2="270" class="etka-leader" />
+    <circle cx="380" cy="270" r="3" class="etka-leader-dot" />
+    <circle cx="525" cy="240" r="13" class="etka-bubble" />
+    <text x="525" y="240" class="etka-bubble-num">4</text>
+
+    <!-- Repère 6 : Stabilisateur J6 -->
+    <line x1="510" y1="310" x2="410" y2="295" class="etka-leader" />
+    <circle cx="410" cy="295" r="3" class="etka-leader-dot" />
+    <circle cx="525" cy="310" r="13" class="etka-bubble" />
+    <text x="525" y="310" class="etka-bubble-num">6</text>
+
+    <!-- Repère 7 : Circuit souple -->
+    <line x1="90" y1="380" x2="230" y2="395" class="etka-leader" />
+    <circle cx="230" cy="395" r="3" class="etka-leader-dot" />
+    <circle cx="75" cy="380" r="13" class="etka-bubble" />
+    <text x="75" y="380" class="etka-bubble-num">7</text>
+
+    <!-- Repère 8 : T26 Jaune -->
+    <line x1="90" y1="510" x2="165" y2="515" class="etka-leader" />
+    <circle cx="165" cy="515" r="3" class="etka-leader-dot" />
+    <circle cx="75" cy="510" r="13" class="etka-bubble" />
+    <text x="75" y="510" class="etka-bubble-num">8</text>
+
+    <!-- Repère 9 : T26a Bleu -->
+    <line x1="510" y1="510" x2="410" y2="515" class="etka-leader" />
+    <circle cx="410" cy="515" r="3" class="etka-leader-dot" />
+    <circle cx="525" cy="510" r="13" class="etka-bubble" />
+    <text x="525" y="510" class="etka-bubble-num">9</text>
+
+  </g>
+
+  <!-- ==================== NOMENCLATURE OFFICIELLE VAG ==================== -->
+  <g transform="translate(615, 80)">
+    <rect width="310" height="560" class="etka-card-box" />
+    <rect width="310" height="30" fill="#f1f5f9" rx="6" />
+    <text x="12" y="20" class="etka-tbl-hdr">NOMENCLATURE PIÈCES · BILDTAFEL 919-00</text>
+    <line x1="0" y1="30" x2="310" y2="30" stroke="#cbd5e1" />
+
+    <text x="12" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">REP</text>
+    <text x="44" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">RÉFÉRENCE OEM</text>
+    <text x="170" y="46" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#64748b">DÉSIGNATION</text>
+    <line x1="0" y1="52" x2="310" y2="52" stroke="#e2e8f0" />
+
+    <!-- Ligne 1 -->
+    <text x="16" y="74" class="etka-tbl-ref">1</text>
+    <text x="44" y="74" class="etka-tbl-ref">893 919 059</text>
+    <text x="170" y="74" class="etka-tbl-row">Visière combiné</text>
+    <text x="44" y="87" class="etka-subtitle">Blende für Schalttafeleinsatz</text>
+    <line x1="8" y1="94" x2="302" y2="94" stroke="#f1f5f9" />
+
+    <!-- Ligne 3 -->
+    <text x="16" y="112" class="etka-tbl-ref">3</text>
+    <text x="44" y="112" class="etka-tbl-ref">893 919 033</text>
+    <text x="170" y="112" class="etka-tbl-row">Compteur vitesse</text>
+    <text x="44" y="125" class="etka-subtitle">Geschwindigkeitsmesser 220 km/h</text>
+    <line x1="8" y1="132" x2="302" y2="132" stroke="#f1f5f9" />
+
+    <!-- Ligne 4 -->
+    <text x="16" y="150" class="etka-tbl-ref">4</text>
+    <text x="44" y="150" class="etka-tbl-ref">893 919 034</text>
+    <text x="170" y="150" class="etka-tbl-row">Compte-tours</text>
+    <text x="44" y="163" class="etka-subtitle">Drehzahlmesser 4-Zyl. 7000/min</text>
+    <line x1="8" y1="170" x2="302" y2="170" stroke="#f1f5f9" />
+
+    <!-- Ligne 6 -->
+    <text x="16" y="188" class="etka-tbl-ref">6</text>
+    <text x="44" y="188" class="etka-tbl-ref">893 907 385</text>
+    <text x="170" y="188" class="etka-tbl-row">Stabilisateur 10V</text>
+    <text x="44" y="201" class="etka-subtitle">Spannungskonstanter TCA700Y (J6)</text>
+    <line x1="8" y1="208" x2="302" y2="208" stroke="#f1f5f9" />
+
+    <!-- Ligne 7 -->
+    <text x="16" y="226" class="etka-tbl-ref">7</text>
+    <text x="44" y="226" class="etka-tbl-ref">893 919 053</text>
+    <text x="170" y="226" class="etka-tbl-row">Circuit souple</text>
+    <text x="44" y="239" class="etka-subtitle">Leiterfolie gedruckte Schaltung</text>
+    <line x1="8" y1="246" x2="302" y2="246" stroke="#f1f5f9" />
+
+    <!-- Ligne 8 -->
+    <text x="16" y="264" class="etka-tbl-ref">8</text>
+    <text x="44" y="264" class="etka-tbl-ref">893 971 979</text>
+    <text x="170" y="264" class="etka-tbl-row">Prise T26 Jaune</text>
+    <text x="44" y="277" class="etka-subtitle">Flachkontaktgehäuse 26-polig gelb</text>
+    <line x1="8" y1="284" x2="302" y2="284" stroke="#f1f5f9" />
+
+    <!-- Ligne 9 -->
+    <text x="16" y="302" class="etka-tbl-ref">9</text>
+    <text x="44" y="302" class="etka-tbl-ref">893 971 980</text>
+    <text x="170" y="302" class="etka-tbl-row">Prise T26a Bleue</text>
+    <text x="44" y="315" class="etka-subtitle">Flachkontaktgehäuse 26-polig blau</text>
+    <line x1="8" y1="322" x2="302" y2="322" stroke="#f1f5f9" />
+
+    <!-- Ligne 10 -->
+    <text x="16" y="340" class="etka-tbl-ref">10</text>
+    <text x="44" y="340" class="etka-tbl-ref">N 017 751 2</text>
+    <text x="170" y="340" class="etka-tbl-row">Ampoule 1.2W B8.5d</text>
+    <text x="44" y="353" class="etka-subtitle">Glühlampe 12V 1.2W (x12)</text>
+    <line x1="8" y1="360" x2="302" y2="360" stroke="#f1f5f9" />
+
+    <!-- Guide broches T26 / T26a -->
+    <g transform="translate(10, 375)">
+      <rect width="290" height="170" fill="#eff6ff" stroke="#bfdbfe" rx="5" />
+      <text x="10" y="18" font-family="ui-monospace, monospace" font-size="10" font-weight="bold" fill="#1e40af">BROCHAGE CRITIQUE COMBINÉ</text>
+      <text x="10" y="34" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26/13 (br) : Masse châssis étoile (32)</text>
+      <text x="10" y="48" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26/12 (bl/sw) : +15 Après Contact (S12 15A)</text>
+      <text x="10" y="62" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26/4 (ro) : +30 Permanent horloge (S4 15A)</text>
+      <text x="10" y="76" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26/11 (gr/bl) : Éclairage instruments (S14)</text>
+      <text x="10" y="90" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26/5 (gn) : Signal compte-tours borne 1</text>
+      <text x="10" y="104" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26a/18 (bl) : Témoin charge D+ alternateur</text>
+      <text x="10" y="118" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26a/19 (bl/sw) : Témoin pression huile 0.3b</text>
+      <text x="10" y="132" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• T26a/21 (bl/ws) : Témoin plein phare</text>
+      <text x="10" y="146" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• J6 broche centrale : Masse (32) impérative</text>
+      <text x="10" y="160" font-family="ui-monospace, monospace" font-size="9" fill="#1e3a8a">• RTA page 91 : Schéma combiné &amp; jauges</text>
+    </g>
+  </g>
+</svg>

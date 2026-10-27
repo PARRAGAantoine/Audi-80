@@ -1,4 +1,5 @@
-export const rta = {
+window.AUDI80_DATA = window.AUDI80_DATA || {};
+window.AUDI80_DATA.rta = {
     refroidissement: { label: "RTA refroidissement", file: "docs/rta/024_refroidissement.jpg" },
     moteurDonnees: { label: "RTA données moteur/refroidissement", file: "docs/rta/007_moteur-donnees-allumage-refroidissement-alimentation.jpg" },
     distribution: { label: "RTA distribution", file: "docs/rta/017_reglages-moteur-distribution.jpg" },

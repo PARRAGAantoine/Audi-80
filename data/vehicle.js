@@ -1,4 +1,5 @@
-export const vehicle = {
+window.AUDI80_DATA = window.AUDI80_DATA || {};
+window.AUDI80_DATA.vehicle = {
     title: "Audi 80 B3 1.8S",
     year: "1988",
     modelYear: "millésime 1989",
