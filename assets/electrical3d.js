@@ -69,6 +69,7 @@
     constructor(containerEl) {
       this.container = containerEl;
       this.currentZone = "all";
+      this.displayMode = "realistic"; // "realistic" (Blanc Alpinweiß L90E opaque) ou "ghost" (transparence technique)
       this.wireframeOnly = false;
       this.ghostOpacity = 0.22;
       this.isolateZone = false;
@@ -167,8 +168,80 @@
     // Palette de matériaux techniques pour le fantôme
     getMaterial(role = "body", isHighlighted = false) {
       const dark = this.isDark;
-      let color, edgeColor, opacity;
+      const isRealistic = this.displayMode === "realistic";
 
+      // 1. Matériaux Mode Réaliste (Peinture officielle Blanc Alpinweiß L90E d'usine)
+      if (isRealistic) {
+        switch (role) {
+          case "body":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: isHighlighted ? 0xe0f2fe : 0xf4f5f0, // Blanc Alpinweiß L90E pur
+                roughness: 0.25,
+                metalness: 0.12,
+                transparent: false,
+                opacity: 1.0,
+                side: THREE.DoubleSide
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: isHighlighted ? 0x0284c7 : 0xd1d5db,
+                transparent: true,
+                opacity: isHighlighted ? 0.9 : 0.35,
+                linewidth: 1
+              })
+            };
+          case "glass":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: 0x1e293b,
+                roughness: 0.1,
+                metalness: 0.8,
+                transparent: true,
+                opacity: 0.65,
+                depthWrite: false,
+                side: THREE.DoubleSide
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: 0x64748b,
+                transparent: true,
+                opacity: 0.4
+              })
+            };
+          case "wheel":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: 0x18181b, // Pneu noir et jante tôle
+                roughness: 0.8,
+                metalness: 0.2,
+                transparent: false,
+                opacity: 1.0
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: 0x3f3f46,
+                transparent: true,
+                opacity: 0.5
+              })
+            };
+          case "light":
+            return {
+              mesh: new THREE.MeshStandardMaterial({
+                color: isHighlighted ? 0xfef08a : 0xffedd5,
+                roughness: 0.2,
+                metalness: 0.3,
+                transparent: true,
+                opacity: 0.85
+              }),
+              edges: new THREE.LineBasicMaterial({
+                color: 0xf59e0b,
+                transparent: true,
+                opacity: 0.7
+              })
+            };
+        }
+      }
+
+      // 2. Matériaux Mode Transparent / Fantôme Technique
+      let color, edgeColor, opacity;
       switch (role) {
         case "body":
           color = dark ? (isHighlighted ? 0x38bdf8 : 0x224168) : (isHighlighted ? 0x0284c7 : 0x94a3b8);
@@ -273,24 +346,6 @@
       traverseAV.position.set(2.0, 0.35, 0);
       gMoteur.add(traverseAV);
 
-      // Calandre & Pare-chocs avant aérodynamique B3
-      const pareChocsAV = this.createTechMesh(new THREE.BoxGeometry(0.24, 0.22, 1.62), "body", "moteur");
-      pareChocsAV.position.set(2.1, 0.32, 0);
-      gMoteur.add(pareChocsAV);
-
-      const calandre = this.createTechMesh(new THREE.BoxGeometry(0.08, 0.18, 0.8), "body", "moteur");
-      calandre.position.set(2.06, 0.52, 0);
-      gMoteur.add(calandre);
-
-      // Optiques rectangulaires H4 Audi 80
-      const phareG = this.createTechMesh(new THREE.BoxGeometry(0.12, 0.16, 0.32), "glass", "moteur");
-      phareG.position.set(2.05, 0.52, 0.58);
-      gMoteur.add(phareG);
-
-      const phareD = this.createTechMesh(new THREE.BoxGeometry(0.12, 0.16, 0.32), "glass", "moteur");
-      phareD.position.set(2.05, 0.52, -0.58);
-      gMoteur.add(phareD);
-
       // Radiateur frontal & Ventilateur V7
       const radiateur = this.createTechMesh(new THREE.BoxGeometry(0.06, 0.36, 0.52), "engine", "moteur");
       radiateur.position.set(1.88, 0.5, 0.18);
@@ -339,23 +394,6 @@
       const batterie = this.createTechMesh(new THREE.BoxGeometry(0.26, 0.2, 0.18), "electric", "moteur");
       batterie.position.set(1.58, 0.62, 0.62);
       gMoteur.add(batterie);
-
-      // Capot moteur plongeant B3
-      const capotGeom = new THREE.PlaneGeometry(1.25, 1.48, 4, 4);
-      capotGeom.rotateY(Math.PI / 2);
-      capotGeom.rotateX(-0.1);
-      const capot = this.createTechMesh(capotGeom, "body", "moteur");
-      capot.position.set(1.45, 0.84, 0);
-      gMoteur.add(capot);
-
-      // Ailes avant galbées B3
-      const aileAVG = this.createTechMesh(new THREE.BoxGeometry(1.25, 0.46, 0.06), "body", "moteur");
-      aileAVG.position.set(1.45, 0.62, 0.76);
-      gMoteur.add(aileAVG);
-
-      const aileAVD = this.createTechMesh(new THREE.BoxGeometry(1.25, 0.46, 0.06), "body", "moteur");
-      aileAVD.position.set(1.45, 0.62, -0.76);
-      gMoteur.add(aileAVD);
 
       // ==========================================
       // ZONE 2 : AUVENT & BOÎTE À FUSIBLES (X: 0.6 -> 0.9)
@@ -490,44 +528,6 @@
       // ==========================================
       const gHabitacle = this.zoneGroups.habitacle;
 
-      // Pare-brise profilé aérodynamique (inclinaison B3)
-      const pareBriseGeom = new THREE.PlaneGeometry(0.85, 1.34);
-      pareBriseGeom.rotateY(Math.PI / 2);
-      pareBriseGeom.rotateZ(0.72);
-      const pareBrise = this.createTechMesh(pareBriseGeom, "glass", "habitacle");
-      pareBrise.position.set(0.38, 1.18, 0);
-      gHabitacle.add(pareBrise);
-
-      // Pavillon / Toit
-      const toit = this.createTechMesh(new THREE.BoxGeometry(1.6, 0.04, 1.28), "body", "habitacle");
-      toit.position.set(-0.55, 1.4, 0);
-      gHabitacle.add(toit);
-
-      // Lunette arrière galbée B3
-      const lunetteGeom = new THREE.PlaneGeometry(0.75, 1.28);
-      lunetteGeom.rotateY(Math.PI / 2);
-      lunetteGeom.rotateZ(-0.62);
-      const lunette = this.createTechMesh(lunetteGeom, "glass", "habitacle");
-      lunette.position.set(-1.45, 1.18, 0);
-      gHabitacle.add(lunette);
-
-      // Flancs et Portes latérales (avec vitres affleurantes type 89)
-      const flancG = this.createTechMesh(new THREE.BoxGeometry(2.1, 0.58, 0.04), "body", "habitacle");
-      flancG.position.set(-0.55, 0.62, 0.78);
-      gHabitacle.add(flancG);
-
-      const vitresG = this.createTechMesh(new THREE.BoxGeometry(1.9, 0.42, 0.03), "glass", "habitacle");
-      vitresG.position.set(-0.55, 1.12, 0.68);
-      gHabitacle.add(vitresG);
-
-      const flancD = this.createTechMesh(new THREE.BoxGeometry(2.1, 0.58, 0.04), "body", "habitacle");
-      flancD.position.set(-0.55, 0.62, -0.78);
-      gHabitacle.add(flancD);
-
-      const vitresD = this.createTechMesh(new THREE.BoxGeometry(1.9, 0.42, 0.03), "glass", "habitacle");
-      vitresD.position.set(-0.55, 1.12, -0.68);
-      gHabitacle.add(vitresD);
-
       // Soufflets de passage de câbles porte conducteur & passager
       const souffletG = this.createTechMesh(new THREE.CylinderGeometry(0.025, 0.025, 0.1, 8), "electric", "habitacle");
       souffletG.rotation.z = Math.PI / 2;
@@ -552,21 +552,6 @@
       // ZONE 6 : COFFRE & MALLE ARRIÈRE (X: -1.4 -> -2.2)
       // ==========================================
       const gCoffre = this.zoneGroups.coffre;
-
-      // Malle de coffre haute caractéristique de la B3
-      const malle = this.createTechMesh(new THREE.BoxGeometry(0.72, 0.05, 1.42), "body", "coffre");
-      malle.position.set(-1.82, 0.98, 0);
-      gCoffre.add(malle);
-
-      // Panneau arrière vertical
-      const panneauAR = this.createTechMesh(new THREE.BoxGeometry(0.06, 0.38, 1.54), "body", "coffre");
-      panneauAR.position.set(-2.18, 0.72, 0);
-      gCoffre.add(panneauAR);
-
-      // Pare-chocs arrière enveloppant
-      const pareChocsAR = this.createTechMesh(new THREE.BoxGeometry(0.24, 0.22, 1.62), "body", "coffre");
-      pareChocsAR.position.set(-2.22, 0.42, 0);
-      gCoffre.add(pareChocsAR);
 
       // Bandeau de feux arrière Audi 80 (feux d'ailes + feux de malle)
       const feuxGauche = this.createTechMesh(new THREE.BoxGeometry(0.08, 0.16, 0.38), "electric", "coffre");
@@ -637,9 +622,12 @@
             let role = "body";
             let zone = "habitacle";
 
-            if (nameL.includes("bonnet") || nameL.includes("hood") || nameL.includes("bump_front") || nameL.includes("fari") || nameL.includes("bamper02-mesh_004") || nameL.includes("bamper02-mesh_001")) {
+            if (nameL.includes("bonnet") || nameL.includes("hood") || nameL.includes("bump_front") || nameL.includes("bamper02-mesh_004") || nameL.includes("bamper02-mesh_001")) {
               zone = "moteur";
-            } else if (nameL.includes("boot") || nameL.includes("trunk") || nameL.includes("bump_rear") || nameL.includes("fari2")) {
+            } else if (nameL.includes("fari")) {
+              role = "light";
+              zone = nameL.includes("fari2") ? "coffre" : "moteur";
+            } else if (nameL.includes("boot") || nameL.includes("trunk") || nameL.includes("bump_rear")) {
               zone = "coffre";
             } else if (nameL.includes("door_lf") || nameL.includes("door_rf")) {
               zone = "soustrd";
@@ -777,6 +765,11 @@
 
     setGhostOpacity(val) {
       this.ghostOpacity = Math.max(0.05, Math.min(0.85, val));
+      this.selectZone(this.currentZone);
+    }
+
+    setDisplayMode(mode) {
+      this.displayMode = (mode === "ghost") ? "ghost" : "realistic";
       this.selectZone(this.currentZone);
     }
 

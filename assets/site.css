@@ -749,6 +749,39 @@ html[data-theme="light"] .viewer-cam-btn {
   font-size: 0.85rem;
 }
 
+.viewer-mode-selector {
+  display: inline-flex;
+  gap: 6px;
+  background: rgba(15, 23, 42, 0.4);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color, #334155);
+}
+
+.viewer-mode-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-color, #94a3b8);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.viewer-mode-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.viewer-mode-btn.active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #38bdf8;
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.35);
+}
+
 .viewer-setting-item {
   display: inline-flex;
   align-items: center;

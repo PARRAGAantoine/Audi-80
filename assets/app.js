@@ -616,7 +616,15 @@
         </div>
 
         <div class="viewer-settings-bar">
-          <label class="viewer-setting-item">
+          <div class="viewer-mode-selector">
+            <button type="button" class="viewer-mode-btn active" data-mode="realistic" title="Carrosserie opaque Blanc Alpinweiß L90E">
+              🚘 Vue normale (Blanc Alpinweiß L90E)
+            </button>
+            <button type="button" class="viewer-mode-btn" data-mode="ghost" title="Vue fantôme transparente pour repérage technique des faisceaux">
+              🔬 Vue transparente (Fantôme technique)
+            </button>
+          </div>
+          <label class="viewer-setting-item" id="viewer-opacity-container" style="display:none;">
             <span>Transparence :</span>
             <input id="viewer-opacity-slider" type="range" min="5" max="75" value="22">
           </label>
@@ -837,7 +845,21 @@
       });
     });
 
-    // Réglages
+    // Réglages & Modes de Vue
+    const modeButtons = document.querySelectorAll(".viewer-mode-btn");
+    const opacityContainer = document.querySelector("#viewer-opacity-container");
+
+    modeButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mode = btn.dataset.mode;
+        modeButtons.forEach(b => b.classList.toggle("active", b === btn));
+        if (opacityContainer) {
+          opacityContainer.style.display = (mode === "ghost") ? "inline-flex" : "none";
+        }
+        activeGhost3D.setDisplayMode(mode);
+      });
+    });
+
     const opacitySlider = document.querySelector("#viewer-opacity-slider");
     if (opacitySlider) {
       opacitySlider.addEventListener("input", (e) => {
