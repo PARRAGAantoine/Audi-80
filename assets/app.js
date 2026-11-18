@@ -287,11 +287,34 @@
       .slice(0, 8);
   }
 
+  function searchRevueItems(query) {
+    if (!repair.revue?.families) return [];
+    const items = [];
+    repair.revue.families.forEach(fam => {
+      fam.pages.forEach(pg => {
+        const blockText = (pg.blocks || []).map(b => [
+          b.title || "",
+          b.text || "",
+          ...(b.items || []),
+          ...(b.rows || []).flat()
+        ].join(" ")).join(" ");
+        const score = scoreSearch({
+          title: `Page ${pg.page} ${pg.title}`,
+          primary: [pg.page, `P.${pg.page}`, pg.title, fam.code, fam.title, pg.summary],
+          secondary: [blockText]
+        }, query);
+        if (score > 0) items.push({ fam, pg, score });
+      });
+    });
+    return items.sort((a, b) => b.score - a.score).slice(0, 10);
+  }
+
   function searchAll(query) {
     return {
       problems: searchProblemItems(query),
       controls: searchControlItems(query),
-      pieces: searchPieceItems(query)
+      pieces: searchPieceItems(query),
+      revue: searchRevueItems(query)
     };
   }
 
@@ -303,17 +326,26 @@
       app.hidden = false;
       return;
     }
-    const total = matches.problems.length + matches.controls.length + matches.pieces.length;
+    const total = matches.problems.length + matches.controls.length + matches.pieces.length + matches.revue.length;
     app.hidden = true;
     results.hidden = false;
     results.innerHTML = `
       <h1>${total} résultat(s)</h1>
       ${total ? `
+        ${resultSection("Revue Technique", matches.revue, item => revueCard(item))}
         ${resultSection("Pannes", matches.problems, item => problemCard(item.problem))}
         ${resultSection("Contrôles", matches.controls, item => controlCard(item.id, item.control))}
         ${resultSection("Pièces", matches.pieces, item => pieceCard(item.id, item.piece))}
       ` : `<p>Aucune fiche de réparation disponible pour cette recherche.</p>`}
     `;
+  }
+
+  function revueCard(item) {
+    return `<a class="card" href="#revue/${esc(item.pg.page)}">
+      <div class="tag-row"><span class="tag">${esc(item.fam.code)} · P.${esc(item.pg.page)}</span></div>
+      <h3>${esc(item.pg.title)}</h3>
+      <p>${esc(item.pg.summary || item.fam.title)}</p>
+    </a>`;
   }
 
   function resultSection(title, items, renderer) {
@@ -1125,14 +1157,16 @@
       return `
         <details class="revue-family" ${isOpen ? "open" : ""}>
           <summary>
-            <span class="revue-fam-code">${esc(fam.code)}</span>
+            <span class="revue-fam-code">${esc(fam.code)} · ${esc(fam.pagesRange || "")}</span>
             <span class="revue-fam-title">${esc(fam.title)}</span>
           </summary>
           <div class="revue-page-list">
             ${fam.pages.map(pg => {
               const isAct = pg.page === p.page;
               const badge = pg.type === "rta" ? "RTA" : pg.type === "etka" ? "ETKA" : "FICHE";
-              return `<a class="revue-page-link ${isAct ? "is-active" : ""}" href="#revue/${esc(pg.page)}" data-filter-text="${esc((pg.page + " " + pg.title + " " + fam.title).toLowerCase())}">
+              const blockTxt = (pg.blocks || []).map(b => [b.title || "", b.text || "", ...(b.items || []), ...(b.rows || []).flat()].join(" ")).join(" ");
+              const filterTxt = (pg.page + " p." + pg.page + " " + pg.title + " " + (pg.summary || "") + " " + fam.title + " " + blockTxt).toLowerCase();
+              return `<a class="revue-page-link ${isAct ? "is-active" : ""}" href="#revue/${esc(pg.page)}" data-filter-text="${esc(filterTxt)}">
                 <span class="revue-pg-num">P.${esc(pg.page)}</span>
                 <span class="revue-pg-name">${esc(pg.title)}</span>
                 <span class="revue-pg-badge">${badge}</span>
