@@ -90,17 +90,17 @@ window.AUDI80_DATA.revue = {
           page: "004",
           title: "Tableau des lubrifiants, fluides & contenances",
           type: "fiche",
-          summary: "Quantités exactes et spécifications VAG pour toutes les vidanges.",
+          summary: "Quantités exactes et spécifications VAG / RTA pour toutes les vidanges.",
           blocks: [
             {
               kind: "table",
               title: "Fluides & Capacités (Moteur NE / Boîte AKM)",
               headers: ["Organe", "Spécification / Norme", "Contenance"],
               rows: [
-                ["Huile moteur (avec filtre)", "10W40 semi-synthèse ou 15W40 (VW 501 01 / 505 00)", "3,0 litres"],
+                ["Huile moteur (avec filtre)", "10W40 semi-synthèse ou 15W40 (API SF / VW 501 01)", "3,0 litres (2,5 L + 0,5 L filtre)"],
                 ["Huile moteur (sans filtre)", "10W40 / 15W40", "2,5 litres"],
-                ["Liquide de refroidissement", "Antigel sans silicate (G11 bleu/vert ou G12+)", "~6,5 litres"],
-                ["Huile boîte de vitesses (012 AKM)", "SAE 75W90 synthétique norme API GL-4", "2,35 litres"],
+                ["Liquide de refroidissement", "Antigel sans silicate (G11 bleu/vert ou G12+)", "~6,0 litres"],
+                ["Huile boîte de vitesses (012 AKM)", "SAE 75W90 synthétique norme API GL-4", "~2,25 litres (7 mm sous bord)"],
                 ["Liquide de frein & embrayage", "DOT 4 (remplacement tous les 2 ans)", "~0,5 litre (purge)"],
                 ["Carburant", "Sans Plomb 98 (SP98 recommandé) ou SP95", "68 litres"]
               ]
@@ -124,7 +124,7 @@ window.AUDI80_DATA.revue = {
                 ["Liquide de frein (circuit + embrayage)", "Tous les 2 ans", "Purger aussi le récepteur d'embrayage"],
                 ["Liquide de refroidissement", "Tous les 2 à 3 ans", "Vérifier le bouchon du vase et le thermocontact"],
                 ["Courroie de distribution + galet", "60 000 km ou 5 ans max", "Contrôler pompe à eau et jeu des galets"],
-                ["Huile de boîte 5 vitesses", "60 000 km ou contrôle annuel", "Niveau à ras du bouchon latéral (clé Allen 17)"]
+                ["Huile de boîte 5 vitesses", "60 000 km ou contrôle annuel", "Niveau à 7 mm sous le bord du trou de remplissage (clé Allen 17)"]
               ]
             }
           ]
@@ -133,7 +133,7 @@ window.AUDI80_DATA.revue = {
           page: "006",
           title: "Couples de serrage types (Moteur & Châssis)",
           type: "fiche",
-          summary: "Valeurs de serrage les plus courantes en Nm pour la visserie de l'Audi 80 B3.",
+          summary: "Valeurs de serrage officielles RTA / VAG en Nm pour la visserie de l'Audi 80 B3.",
           blocks: [
             {
               kind: "table",
@@ -144,10 +144,13 @@ window.AUDI80_DATA.revue = {
                 ["Bouchon de vidange huile moteur", "30 Nm"],
                 ["Bougies d'allumage dans culasse alu", "25 Nm"],
                 ["Cache-culbuteurs (écrous M6)", "10 Nm"],
+                ["Pignon de vilebrequin", "200 Nm"],
+                ["Poulie d'arbre à cames / arbre intermédiaire", "80 Nm"],
                 ["Galet tendeur de distribution", "45 Nm"],
-                ["Poulie d'arbre à cames", "80 Nm"],
-                ["Étriers de frein avant sur chape (colonnettes)", "35 Nm"],
-                ["Chape d'étrier sur porte-fusée", "125 Nm"],
+                ["Volant moteur (avec produit de scellement)", "75 Nm"],
+                ["Étriers AV sur chape (Girling / Teves)", "35 Nm (Girling) / 25 Nm (Teves)"],
+                ["Support d'étrier AV sur porte-fusée", "125 Nm"],
+                ["Maître-cylindre sur servofrein", "25 Nm"],
                 ["Rotule de direction sur biellette / levier", "35 Nm"],
                 ["Bouchon vidange / niveau boîte 012", "25 Nm"]
               ]
@@ -174,13 +177,16 @@ window.AUDI80_DATA.revue = {
               title: "Synthèse technique directe — Moteur NE 1.8S (90 ch)",
               headers: ["Caractéristique", "Valeur officielle"],
               rows: [
-                ["Type / Code moteur", "4 cylindres en ligne — Code NE"],
+                ["Type / Code moteur", "4 cylindres en ligne — Code NE (marqué 'L' sur arbre à cames)"],
                 ["Cylindrée", "1 781 cm³ (Alésage 81,0 mm × Course 86,4 mm)"],
                 ["Rapport volumétrique", "9,0 : 1 (Essence SP98 / SP95)"],
-                ["Puissance maxi", "66 kW (90 ch DIN) à 5 200 tr/min"],
-                ["Couple maxi", "150 Nm (15,3 m.kg) à 3 300 tr/min"],
+                ["Puissance / Couple", "66 kW (90 ch DIN) à 5 200 tr/min — 150 Nm à 3 300 tr/min"],
                 ["Ordre d'allumage", "1 - 3 - 4 - 2 (cylindre n°1 côté distribution/avant)"],
-                ["Jeu aux soupapes", "Rattrapage hydraulique automatique (aucun réglage)"]
+                ["Jeu aux soupapes", "Rattrapage hydraulique automatique (aucun réglage)"],
+                ["Thermostat refroidissement", "Début d'ouverture 85 °C — Pleine ouverture 105 °C (course 7 mm)"],
+                ["Thermocontact ventilateur", "Enclenchement 92 à 97 °C — Arrêt 84 à 91 °C"],
+                ["Manocontacts huile", "0,3 bar (isolant brun) et 1,8 bar à 2 100 tr/min (isolant blanc)"],
+                ["Courroie alternateur / pompe à eau", "Gates 9,5 × 950 La (flexion 10 à 15 mm sous pression pouce)"]
               ]
             }
           ]
@@ -271,8 +277,8 @@ window.AUDI80_DATA.revue = {
               rows: [
                 ["Alésage cylindres (nominal)", "81,01 mm (cotes réparation +0,25 / +0,50 mm)"],
                 ["Diamètre tourillons vilebrequin", "54,00 mm (couple chapeaux paliers : 65 Nm)"],
-                ["Diamètre manetons bielles", "47,80 mm (chapeaux bielles : 30 Nm + 90° vis neuves)"],
-                ["Jeu à la coupe des segments", "0,20 à 0,40 mm (maxi d'usure 1,0 mm)"]
+                ["Diamètre manetons bielles", "47,80 mm (chapeaux bielles : 30 Nm + 180° vis neuves)"],
+                ["Jeu à la coupe (feu / étanchéité / racleur)", "0,30 à 0,45 mm (feu/étanch.) — 0,25 à 0,45 mm (racleur) — Maxi 1,0 mm"]
               ]
             }
           ]
@@ -319,10 +325,28 @@ window.AUDI80_DATA.revue = {
       pages: [
         {
           page: "010",
-          title: "Alimentation & calage carburateur Keihin",
+          title: "Alimentation & calage carburateur Keihin 26-30 DC",
           type: "rta",
           rtaKey: "carburateur10",
-          summary: "Planche RTA sur le circuit d'alimentation essence et les réglages de base."
+          summary: "Planche RTA sur le circuit d'alimentation essence et les réglages de base.",
+          blocks: [
+            {
+              kind: "table",
+              title: "Valeurs de réglage — Carburateur Keihin 26-30 DC (026 129 016 N)",
+              headers: ["Paramètre", "1er corps", "2e corps"],
+              rows: [
+                ["Diffuseur", "20", "26"],
+                ["Gicleur principal", "110", "150"],
+                ["Ajutage d'automaticité", "90", "120"],
+                ["Gicleur de ralenti / Ajutage d'air", "52 / 115", "—"],
+                ["Niveau de cuve / Pointeau", "9,0 ± 1 mm / 2,5", "—"],
+                ["Entrebâillement volet de départ", "4,6 ± 0,15 mm", "—"],
+                ["Ralenti accéléré à froid", "3 200 ± 200 tr/min", "—"],
+                ["Régime de ralenti à chaud", "900 ± 50 tr/min", "—"],
+                ["Teneur en CO", "1,0 ± 0,5 %", "—"]
+              ]
+            }
+          ]
         },
         {
           page: "011",
@@ -421,15 +445,32 @@ window.AUDI80_DATA.revue = {
               headers: ["Élément", "Valeur / Spécification"],
               rows: [
                 ["Type / Code", "Boîte mécanique 5 vitesses + MA — Type 012, code AKM"],
-                ["Huile préconisée", "2,35 litres de SAE 75W90 norme API GL-4 (ne pas mettre de GL-5 agressif pour les synchros laiton)"],
+                ["Huile préconisée", "~2,25 litres de SAE 75W90 norme API GL-4 (ne pas mettre de GL-5 agressif pour les synchros laiton)"],
                 ["Bouchon de vidange", "Sous le carter différentiel (empreinte 6 pans creux 17 mm ou XZN 16 avec téton)"],
-                ["Bouchon de niveau / remplissage", "Sur le flanc gauche de la boîte (6 pans creux 17 mm) — Niveau à ras de l'orifice"],
+                ["Bouchon de niveau / remplissage", "Sur le flanc gauche de la boîte (6 pans creux 17 mm) — Niveau à ~7 mm sous le bord inférieur de l'orifice"],
                 ["Couple de serrage bouchons", "25 Nm"]
               ]
             },
             {
               kind: "warning",
               text: "Toujours débloquer le bouchon de remplissage/niveau AVANT de vidanger la boîte, pour être sûr de pouvoir la remplir ensuite !"
+            }
+          ]
+        },
+        {
+          page: "029",
+          title: "Dépose-repose de la boîte de vitesses (012 / AKM)",
+          type: "fiche",
+          summary: "Points clés pour déposer la boîte longitudinale sans déposer le moteur.",
+          blocks: [
+            {
+              kind: "list",
+              title: "Couples et étapes principales",
+              items: [
+                "Débrancher la batterie, déposer le démarreur et le récepteur hydraulique d'embrayage (sans ouvrir le circuit).",
+                "Désaccoupler les deux cardans côté flasques de boîte (vis XZN M8) et la tringlerie de commande.",
+                "Maintenir l'arrière du moteur avec une traverse ou cric, déposer les vis de tour de cloche (M8 : 25 Nm, M10 : 45 Nm, M12 : 65 Nm) et le support arrière de boîte (40 Nm)."
+              ]
             }
           ]
         },
@@ -469,10 +510,23 @@ window.AUDI80_DATA.revue = {
       pages: [
         {
           page: "038",
-          title: "Direction mécanique à crémaillère : caractéristiques",
+          title: "Direction mécanique (sans assistance) & référence colonne",
           type: "rta",
           rtaKey: "direction",
-          summary: "Planche RTA : cotes et réglages de la direction mécanique (sans assistance)."
+          summary: "Caractéristiques de votre direction mécanique (Note : la planche RTA 038 ci-dessous illustre la variante assistée pour la colonne).",
+          blocks: [
+            {
+              kind: "table",
+              title: "Spécifications Direction Mécanique (Audi 80 1.8S sans DA)",
+              headers: ["Élément", "Donnée constructeur"],
+              rows: [
+                ["Type", "Crémaillère mécanique fixée sur tablier (sans pompe ni huile)"],
+                ["Nombre de tours de volant (butée à butée)", "4,2 tours"],
+                ["Couple fixation crémaillère sur caisse", "40 Nm"],
+                ["Couple rotule de direction sur jambe de force", "35 Nm"]
+              ]
+            }
+          ]
         },
         {
           page: "039",
@@ -593,7 +647,22 @@ window.AUDI80_DATA.revue = {
           title: "Système de freinage : caractéristiques générales",
           type: "rta",
           rtaKey: "freins",
-          summary: "Planche RTA : cotes disques avant, tambours arrière, épaisseurs mini et servofrein."
+          summary: "Planche RTA : cotes disques avant, tambours arrière, épaisseurs mini et servofrein.",
+          blocks: [
+            {
+              kind: "table",
+              title: "Cotes officielles de freinage (Audi 80 B3 1.8S)",
+              headers: ["Élément", "Valeur nominale", "Limite d'usure / Couple"],
+              rows: [
+                ["Disques avant pleins (Girling / Teves)", "Ø 256 mm × épaisseur 13 mm", "Épaisseur mini : 11 mm (voile maxi 0,03 mm)"],
+                ["Plaquettes avant", "Épaisseur totale 14 mm", "Épaisseur mini : 2 mm"],
+                ["Tambours arrière (Fag)", "Ø 200 mm", "Ø maxi alésage : 201 mm (garnitures mini 2,5 mm)"],
+                ["Cylindres de roue arrière", "Ø 19,05 mm", "Vis fixation plateau : 10 Nm"],
+                ["Maître-cylindre / Servofrein", "Tandem Ø 22,2 mm / Isovac 9\"", "Fixation maître-cylindre : 25 Nm"],
+                ["Limiteur / Frein de stationnement", "Limiteur double non asservi à la charge", "Course mini levier : 2 crans"]
+              ]
+            }
+          ]
         },
         {
           page: "065",
@@ -792,8 +861,10 @@ window.AUDI80_DATA.revue = {
               title: "Valeurs d'allumage Moteur NE (TSZ-H)",
               headers: ["Paramètre", "Valeur constructeur"],
               rows: [
-                ["Calage initial (avance statique/stroboscope)", "18° ± 1° avant PMH à 900 ± 50 tr/min (dépression débranchée et obturée)"],
-                ["Bougies préconisées", "Bosch W7DTC ou NGK BUR6ET (écartement électrodes : 0,7 à 0,9 mm)"],
+                ["Allumeur / Module TSZ-H", "Allumeur Bosch 0237 020 153 — Module Bosch 0227 100 143 (depuis 11-86)"],
+                ["Calage initial (au ralenti)", "18° ± 1° avant PMH (dépression débranchée, selon RTA 008)"],
+                ["Bougies préconisées", "Bosch W7 DTC, Beru 14-7 DTU ou Champion N7 BYC (écartement 0,7 à 0,9 mm)"],
+                ["Bobine d'allumage", "Bosch 0221 122 380 ou Magneti-Marelli"],
                 ["Résistance primaire bobine (bornes 1 et 15)", "0,52 à 0,76 Ω"],
                 ["Résistance secondaire bobine (bornes 15 et 4 HT)", "2,4 à 3,5 kΩ"],
                 ["Résistance doigt d'allumeur (rotor)", "1,0 kΩ (± 20 %)"]
@@ -820,26 +891,30 @@ window.AUDI80_DATA.revue = {
               title: "Affectation des fusibles S1 à S21 (Boîte d'auvent Audi 80 B3)",
               headers: ["N°", "Calibre", "Circuits protégés"],
               rows: [
-                ["S1", "15 A (Bleu)", "Antibrouillards avant et feu antibrouillard arrière (E18)"],
-                ["S2", "15 A (Bleu)", "Feux de détresse (warning)"],
-                ["S3", "25 A (Blanc)", "Avertisseur sonore, feux stop"],
-                ["S4", "15 A (Bleu)", "Montre analogique, éclairage coffre/boîte à gants, autoradio (+30), verrouillage centralisé"],
-                ["S5", "30 A (Vert)", "Moto-ventilateur de radiateur (V7)"],
-                ["S6", "5 A (Marron)", "Feux de position gauche & feu arrière gauche"],
-                ["S7", "5 A (Marron)", "Feux de position droit & feu arrière droit"],
-                ["S8", "10 A (Rouge)", "Feu de route gauche"],
-                ["S9", "10 A (Rouge)", "Feu de route droit & témoin bleu plein phare"],
-                ["S10", "10 A (Rouge)", "Feu de croisement gauche"],
-                ["S11", "10 A (Rouge)", "Feu de croisement droit"],
-                ["S12", "15 A (Bleu)", "Combiné d'instruments (+15), feux de recul, témoins, indicateurs"],
-                ["S13", "15 A (Bleu)", "Éclairage plaque police, éclairage compartiment moteur"],
-                ["S14", "5 A (Marron)", "Éclairage cadrans combiné, console centrale, cendrier (58b)"],
-                ["S15", "25 A (Blanc)", "Essuie-glaces et lave-glace avant"],
-                ["S16", "30 A (Vert)", "Dégivrage lunette arrière (Z1) & rétroviseurs dégivrants"],
-                ["S17", "30 A (Vert)", "Soufflante de chauffage / ventilation & lève-vitres électriques"],
-                ["S18", "15 A (Bleu)", "Clignotants (+15)"],
-                ["S19", "15 A (Bleu)", "Allume-cigare"],
-                ["S20 / S21", "15 A / 30 A", "Options (sièges chauffants / toit / pompe carburant selon versions)"]
+                ["1", "15 A (Bleu)", "Projecteurs antibrouillard*, feu de brouillard AR (E18)"],
+                ["2", "15 A (Bleu)", "Centrale clignotante"],
+                ["3", "25 A (Blanc)", "Avertisseur sonore, feu stop"],
+                ["4", "15 A (Bleu)", "Montre, éclairage coffre, plafonnier, miroir de courtoisie*, allume-cigare AV, radio, ordinateur de bord*, lecteur de carte*"],
+                ["5", "30 A (Vert)", "Motoventilateur (pleine charge)"],
+                ["6", "5 A (Marron)", "Feu de position DROIT AV et AR"],
+                ["7", "5 A (Marron)", "Feu de position GAUCHE AV et AR"],
+                ["8", "10 A (Rouge)", "Projecteur route DROIT et témoin"],
+                ["9", "10 A (Rouge)", "Projecteur route GAUCHE"],
+                ["10", "10 A (Rouge)", "Projecteur code DROIT"],
+                ["11", "10 A (Rouge)", "Projecteur code GAUCHE"],
+                ["12", "15 A (Bleu)", "Combiné d'instruments, feu de recul, régulateur de vitesse*, ordinateur de bord*, dispositif ABS*"],
+                ["13", "15 A (Bleu)", "Pompe à carburant (moteur injection)"],
+                ["14", "5 A (Marron)", "Feu de plaque de police, éclairage compartiment moteur, éclairage boîte à gants"],
+                ["15", "25 A (Blanc)", "Essuie-glace"],
+                ["16", "30 A (Vert)", "Dégivrage de lunette AR et des rétroviseurs*"],
+                ["17", "30 A (Vert)", "Ventilateur de chauffage (et lève-vitres selon montage)"],
+                ["18", "5 A (Marron)", "Rétroviseurs extérieurs (Audi 90)"],
+                ["19", "10 A (Rouge)", "Rétroviseurs extérieurs (Audi 80), verrouillage central"],
+                ["20", "30 A (Vert)", "Motoventilateur (1re vitesse)"],
+                ["21", "25 A (Blanc)", "Allume-cigare AR*"],
+                ["22 / 24", "—", "Non utilisé"],
+                ["23", "30 A (Vert)", "Sièges électriques*"],
+                ["25", "30 A (Vert)", "Sièges chauffants*"]
               ]
             }
           ]
