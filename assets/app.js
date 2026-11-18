@@ -31,6 +31,31 @@
     ).join("");
   }
 
+  function revueLinksForRta(keys) {
+    if (!repair.revue?.families || !keys?.length) return "";
+    const keySet = new Set(keys);
+    const matched = [];
+    repair.revue.families.forEach(fam => {
+      fam.pages.forEach(pg => {
+        if (pg.rtaKey && keySet.has(pg.rtaKey)) {
+          matched.push(pg);
+        }
+      });
+    });
+    if (keySet.has("instruments") || keySet.has("projecteursEssuieCombine")) {
+      const t26 = repair.revue.families.flatMap(f => f.pages).find(pg => pg.page === "074C");
+      if (t26 && !matched.some(m => m.page === "074C")) matched.push(t26);
+    }
+    if (keySet.has("fusibles") || keySet.has("masses")) {
+      const vag = repair.revue.families.flatMap(f => f.pages).find(pg => pg.page === "123");
+      if (vag && !matched.some(m => m.page === "123")) matched.push(vag);
+    }
+    if (!matched.length) return "";
+    return matched.map(pg =>
+      `<a class="btn-secondary" href="#revue/${esc(pg.page)}">Revue P.${esc(pg.page)} · ${esc(pg.title)}</a>`
+    ).join("");
+  }
+
   function rtaImages(keys) {
     return (keys || []).map(key => repair.rta[key]).filter(Boolean).map(doc =>
       `<div class="panel"><h3>${esc(doc.label)}</h3><a href="${doc.file}" target="_blank"><img class="rta-img" src="${doc.file}" alt="${esc(doc.label)}"></a></div>`
@@ -397,9 +422,9 @@
           <h2>Mode réparation</h2>
           <p>Diagnostics, contrôles cliquables, fiches pièces et extraits RTA ciblés.</p>
         </a>
-        <a class="card action-card" href="#electricite-3d">
-          <h2>Électricité 3D</h2>
-          <p>Vue éclatée, circuits électriques et repérage des pièces en 3D.</p>
+        <a class="card action-card" href="#voiture-3d">
+          <h2>Voiture 3D</h2>
+          <p>Carrosserie Audi 80 B3 Alpinweiß L90E, vue éclatée et repérage des zones en 3D.</p>
         </a>
         <a class="card action-card" href="#entretien">
           <h2>Mode suivi d'entretien</h2>
@@ -448,6 +473,27 @@
             <span>Contrôler allumage, carburation Keihin et réglage richesse.</span>
           </a>
         </div>
+      </section>
+      <section class="panel" style="margin-top:14px">
+        <h2>Accès rapide Revue Technique (Valeurs &amp; Schémas de dépannage)</h2>
+        <div class="doc-links" style="margin-top:8px">
+          <a class="btn-secondary" href="#revue/006">P.006 · Couples de serrage</a>
+          <a class="btn-secondary" href="#revue/009">P.009 · Allumage TSZ-H (18°)</a>
+          <a class="btn-secondary" href="#revue/010">P.010 · Réglage Keihin 26-30 DC</a>
+          <a class="btn-secondary" href="#revue/072">P.072 · Fusibles 1 à 25</a>
+          <a class="btn-secondary" href="#revue/074C">P.074C · Brochage T26 Jaune / Bleu</a>
+          <a class="btn-secondary" href="#revue/123">P.123 · Codes couleurs VAG &amp; DIN</a>
+        </div>
+      </section>
+      <section class="panel" style="margin-top:14px">
+        <h2>Toutes les fiches de pannes répertoriées (${repair.problems.length})</h2>
+        <div class="todo-list" style="margin-top:10px">
+          ${repair.problems.map(pr => `
+            <a href="#panne/${esc(pr.id)}">
+              <strong>${esc(pr.title)}</strong>
+              <span>${esc(pr.symptom)}</span>
+            </a>`).join("")}
+        </div>
       </section>`;
     const repairSearch = document.querySelector("#repair-search-input");
     repairSearch.addEventListener("input", event => {
@@ -490,7 +536,8 @@
           </div>
         </section>
         <section class="panel">
-          <h2>RTA précise</h2>
+          <h2>Revue Technique &amp; Planches RTA</h2>
+          ${revueLinksForRta(problem.rta) ? `<div class="doc-links" style="margin-bottom:10px">${revueLinksForRta(problem.rta)}</div>` : ""}
           <div class="doc-links">${rtaLinks(problem.rta)}</div>
         </section>
         ${problem.missing ? `<section class="panel missing"><h2>Information à compléter</h2><p>${esc(problem.missing)}</p></section>` : ""}
@@ -530,6 +577,7 @@
         </section>
         ${meterGuide(control)}
         ${schematicGuide(control)}
+        ${revueLinksForRta(control.rta) ? `<section class="panel"><h2>Fiches Revue Technique associées</h2><div class="doc-links">${revueLinksForRta(control.rta)}</div></section>` : ""}
         ${control.missing ? `<section class="panel missing"><h2>Information à compléter</h2><p>${esc(control.missing)}</p></section>` : ""}
         <section class="grid two">${rtaImages(control.rta)}</section>
       </article>`;
@@ -579,8 +627,8 @@
       activeGhost3D = null;
     }
 
-    state.route = "electricite-3d";
-    setActive("electricite-3d");
+    state.route = "voiture-3d";
+    setActive("voiture-3d");
     search.value = "";
     renderResults("");
 
@@ -590,8 +638,8 @@
 
     app.innerHTML = `
       <section class="page-head">
-        <h1>Électricité 3D & Fantôme Châssis</h1>
-        <p>Audi 80 B3 1.8S (1988) · Repérage spatial interactif des 6 zones anatomiques et équipements électriques</p>
+        <h1>Voiture 3D — Audi 80 B3 Alpinweiß L90E</h1>
+        <p>Carrosserie Blender fidèle, vue éclatée / transparente et repérage spatial des zones</p>
       </section>
 
       <section class="panel viewer-3d-panel">
@@ -1150,14 +1198,14 @@
   function route() {
     const raw = location.hash.replace(/^#/, "");
     const [kind, id, problemId] = raw.split("/");
-    if (kind !== "electricite-3d" && activeGhost3D) {
+    if (kind !== "voiture-3d" && kind !== "electricite-3d" && activeGhost3D) {
       activeGhost3D.destroy();
       activeGhost3D = null;
     }
     if (!raw || kind === "accueil") return renderHome();
     if (kind === "revue") return renderRevue(id);
     if (kind === "reparation") return renderRepairHome();
-    if (kind === "electricite-3d") return renderElectrical3D(id);
+    if (kind === "voiture-3d" || kind === "electricite-3d") return renderElectrical3D(id);
     if (kind === "entretien") return renderMaintenance();
     if (kind === "panne") return renderProblem(id);
     if (kind === "controle") return renderControl(id, problemId);
