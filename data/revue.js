@@ -100,7 +100,7 @@ window.AUDI80_DATA.revue = {
                 ["Huile moteur (avec filtre)", "10W40 semi-synthèse ou 15W40 (API SF / VW 501 01)", "3,0 litres (2,5 L + 0,5 L filtre)"],
                 ["Huile moteur (sans filtre)", "10W40 / 15W40", "2,5 litres"],
                 ["Liquide de refroidissement", "Antigel sans silicate (G11 bleu/vert ou G12+)", "~6,0 litres"],
-                ["Huile boîte de vitesses (012 AKM)", "SAE 75W90 synthétique norme API GL-4", "~2,25 litres (7 mm sous bord)"],
+                ["Huile boîte de vitesses (012 AKM)", "SAE 75W90 synthétique norme API GL-4 (G90)", "2,35 litres (RTA p.44)"],
                 ["Liquide de frein & embrayage", "DOT 4 (remplacement tous les 2 ans)", "~0,5 litre (purge)"],
                 ["Carburant", "Sans Plomb 98 (SP98 recommandé) ou SP95", "68 litres"]
               ]
@@ -211,7 +211,7 @@ window.AUDI80_DATA.revue = {
               title: "Repères de calage PMH cylindre n°1 (Moteur NE)",
               items: [
                 "Vilebrequin / Volant moteur : aligner le repère '0' (ou trait) gravé sur le volant moteur face au repère fixe dans la fenêtre de cloche d'embrayage.",
-                "Arbre à cames : le point ou trait gravé sur la face arrière/avant de la poulie d'arbre à cames doit être aligné au ras du plan supérieur de culasse / cache-culbuteurs côté droit.",
+                "Arbre à cames : le point ou trait gravé sur la face arrière de la poulie d'arbre à cames doit être aligné au ras du plan de joint supérieur de culasse côté GAUCHE (conformément à la RTA 018).",
                 "Arbre intermédiaire (allumeur) : déposer la tête d'allumeur et vérifier que le doigt d'allumeur pointe exactement vers le repère du cylindre n°1 gravé sur le bord du corps d'allumeur.",
                 "Tension de courroie : le brin long (entre poulie arbre à cames et arbre intermédiaire) doit pouvoir être vrillé à 90° entre le pouce et l'index, sans plus."
               ]
@@ -240,7 +240,9 @@ window.AUDI80_DATA.revue = {
                 ["1re passe", "40 Nm", "En escargot du centre vers les extrémités (vis 1 à 10)"],
                 ["2e passe", "60 Nm", "Même ordre (1 à 10)"],
                 ["3e passe", "+ 90° (1/4 de tour)", "Même ordre (1 à 10)"],
-                ["4e passe", "+ 90° (1/4 de tour)", "Même ordre (1 à 10) — Aucun resserrage ultérieur requis"]
+                ["4e passe", "+ 90° (1/4 de tour)", "Même ordre (1 à 10) — Aucun resserrage ultérieur requis"],
+                ["Ordre exact des vis (vue dessus)", "Rangée arrière : 10 - 4 - 2 - 6 - 8", "Rangée avant : 7 - 5 - 1 - 3 - 9 (joint : repère 'Oben' vers le haut)"],
+                ["Jeu maxi guides de soupapes", "1,0 mm (admission)", "1,3 mm (échappement)"]
               ]
             }
           ]
@@ -313,7 +315,19 @@ window.AUDI80_DATA.revue = {
           title: "Circuit de refroidissement & purge",
           type: "rta",
           rtaKey: "refroidissement",
-          summary: "Thermostat, pompe à eau, vase d'expansion, radiateur et méthode de purge."
+          summary: "Thermostat (85/105 °C), pompe à eau, vase d'expansion, radiateur et vis de purge sur durite de chauffage.",
+          blocks: [
+            {
+              kind: "steps",
+              title: "Procédure officielle de vidange et purge sans bulles (RTA 023/024)",
+              items: [
+                "Vidange : moteur froid, ouvrir le bouchon du vase d'expansion et débrancher la durite inférieure de radiateur (ou déposer le boîtier de thermostat sous la pompe à eau).",
+                "Remplissage : rebrancher les durites, ouvrir le chauffage habitacle à fond sur chaud, et desserrer la VIS DE PURGE en plastique située sur la durite supérieure de chauffage au niveau du tablier.",
+                "Remplir lentement par le vase d'expansion (~6,0 L) jusqu'à ce que le liquide sorte sans bulles par la vis de purge, puis la refermer.",
+                "Démarrer le moteur et laisser chauffer jusqu'au déclenchement du moto-ventilateur (92 à 97 °C), puis contrôler et compléter le niveau à froid."
+              ]
+            }
+          ]
         }
       ]
     },
@@ -364,10 +378,25 @@ window.AUDI80_DATA.revue = {
         },
         {
           page: "013",
-          title: "Réglages détaillés carburateur Keihin",
+          title: "Réglages détaillés carburateur Keihin (Ralenti & Richesse CO)",
           type: "rta",
           fileDirect: "docs/rta/013_carburateur-keihin-reglages-injection.jpg",
-          summary: "Planche RTA sur la vis de richesse, le régime de ralenti et les contrôles d'entrebâillement."
+          summary: "Procédure RTA complète de réglage du ralenti, de la richesse CO (avec ou sans analyseur) et de la pompe de reprise.",
+          blocks: [
+            {
+              kind: "steps",
+              title: "Réglage de la richesse (CO) SANS analyseur de gaz (Méthode officielle RTA 013)",
+              items: [
+                "Conditions préalables : filtre à air propre en place, allumage calé à 18°, aucune prise d'air, aucun gros consommateur électrique (phares, dégivrage, ventilateur arrêtés), starter repoussé.",
+                "Amener le moteur à température en le faisant tourner vers 2 000 tr/min jusqu'à ouverture du thermostat (ne pas le laisser chauffer au ralenti seul).",
+                "Régler le régime de ralenti à 900 ± 50 tr/min via la vis de butée papillon.",
+                "Déposer le capuchon d'inviolabilité de la vis de richesse et tourner la vis pour obtenir le RÉGIME MAXIMUM.",
+                "Ramener le régime à 900 tr/min par la vis de butée, puis répéter jusqu'à équilibre.",
+                "Appauvrir légèrement à la vis de richesse pour faire BAISSER le régime de 50 tr/min, puis replacer le capuchon.",
+                "Contrôle pompe de reprise (en cas de trou à l'accélération) : sur 10 coups lents de papillon, recueillir 7,8 ± 1,2 cm³ (soit 0,78 ± 0,12 cm³ par pulsation)."
+              ]
+            }
+          ]
         },
         {
           page: "014",
@@ -421,55 +450,82 @@ window.AUDI80_DATA.revue = {
       pages: [
         {
           page: "026",
-          title: "Embrayage : caractéristiques & dépose",
-          type: "rta",
-          fileDirect: "docs/rta/026_embrayage-caracteristiques.jpg",
-          summary: "Planche RTA : dimensions du disque, mécanisme à diaphragme et couples de serrage."
+          title: "Embrayage : caractéristiques & remplacement",
+          type: "fiche",
+          summary: "Fiche technique complète (mécanisme à diaphragme Ø 210 mm, disque, butée et centrage).",
+          blocks: [
+            {
+              kind: "table",
+              title: "Caractéristiques embrayage — Audi 80 B3 1.8S (Moteur NE)",
+              headers: ["Élément", "Spécification constructeur"],
+              rows: [
+                ["Type", "Monodisque à sec, mécanisme à diaphragme"],
+                ["Diamètre du disque", "210 mm (23 cannelures — repère montage 'Getriebeseite' côté boîte)"],
+                ["Couple fixation mécanisme sur volant moteur", "25 Nm (serrage progressif en croix)"],
+                ["Graissage cannelures arbre primaire", "Très fine couche de graisse haute température MoS2 / lithium"]
+              ]
+            }
+          ]
         },
         {
           page: "027",
           title: "Commande hydraulique d'embrayage & purge",
-          type: "rta",
-          rtaKey: "embrayage",
-          summary: "Planche RTA : cylindre émetteur, récepteur sur boîte et purge du circuit hydraulique."
+          type: "fiche",
+          summary: "Émetteur sous pédalier, récepteur sur cloche de boîte et purge au liquide DOT 4.",
+          blocks: [
+            {
+              kind: "steps",
+              title: "Purge du circuit hydraulique d'embrayage (commun avec réservoir freins)",
+              items: [
+                "Maintenir le bocal de liquide de frein DOT 4 rempli au-dessus du repère MAXI (le piquage d'embrayage est placé en hauteur sur le bocal).",
+                "Relier la vis de purge du cylindre récepteur (sur le haut de la boîte) par un tuyau transparent vers un bocal, ou utiliser un purgeur sous pression (max 1,5 bar).",
+                "Ouvrir la vis de purge et pomper lentement (ou laisser couler sous pression) jusqu'à disparition totale des bulles d'air.",
+                "Refermer la vis de purge, vérifier le retour franc de la pédale et contrôler l'absence de fuite sous le soufflet du récepteur."
+              ]
+            }
+          ]
         },
         {
           page: "028",
           title: "Boîte mécanique 5 vitesses type 012 (Code AKM)",
-          type: "fiche",
-          summary: "Spécifications, vidange et contrôle de niveau de la boîte longitudinale 012.",
+          type: "rta",
+          fileDirect: "docs/rta/026_embrayage-caracteristiques.jpg",
+          summary: "Planche RTA officielle Page 44 : rapports AKM (89 NE2), huile 2,35 L et couples de serrage.",
           blocks: [
             {
               kind: "table",
-              title: "Caractéristiques boîte AKM (Type 012)",
-              headers: ["Élément", "Valeur / Spécification"],
+              title: "Rapports de démultiplication & données — Boîte 012 Repère AKM (RTA p.44)",
+              headers: ["Rapport / Paramètre", "Valeur officielle AKM"],
               rows: [
-                ["Type / Code", "Boîte mécanique 5 vitesses + MA — Type 012, code AKM"],
-                ["Huile préconisée", "~2,25 litres de SAE 75W90 norme API GL-4 (ne pas mettre de GL-5 agressif pour les synchros laiton)"],
-                ["Bouchon de vidange", "Sous le carter différentiel (empreinte 6 pans creux 17 mm ou XZN 16 avec téton)"],
-                ["Bouchon de niveau / remplissage", "Sur le flanc gauche de la boîte (6 pans creux 17 mm) — Niveau à ~7 mm sous le bord inférieur de l'orifice"],
-                ["Couple de serrage bouchons", "25 Nm"]
+                ["Affectation", "Audi 80 1.8S carburateur (89 NE2) — Couple conique 9/37"],
+                ["1re / 2e / 3e", "11/39 (0,2820) • 21/39 (0,5384) • 32/37 (0,8648)"],
+                ["4e / 5e / M.AR", "37/31 (1,1935) • 41/28 (1,4642) • 12/42 (0,2857)"],
+                ["Huile préconisée", "2,35 litres de SAE 75W90 (G90 / norme API GL-4 uniquement)"],
+                ["Couples boîte sur moteur", "Vis M8 : 25 Nm • Vis M10 : 45 Nm • Vis M12 : 65 Nm"],
+                ["Couples transmissions & commande", "Cardans M8 : 45 Nm / M10 : 80 Nm • Bride commande : 20 Nm • Bouchons : 25 Nm"]
               ]
             },
             {
               kind: "warning",
-              text: "Toujours débloquer le bouchon de remplissage/niveau AVANT de vidanger la boîte, pour être sûr de pouvoir la remplir ensuite !"
+              text: "Toujours débloquer le bouchon de remplissage/niveau (repère 2 sur le flanc gauche) AVANT d'ouvrir le bouchon de vidange inférieur (repère 1) !"
             }
           ]
         },
         {
           page: "029",
-          title: "Dépose-repose de la boîte de vitesses (012 / AKM)",
-          type: "fiche",
-          summary: "Points clés pour déposer la boîte longitudinale sans déposer le moteur.",
+          title: "Dépose-repose boîte de vitesses & éclaté différentiel",
+          type: "rta",
+          fileDirect: "docs/rta/027_embrayage-commande-hydraulique.jpg",
+          summary: "Planche RTA officielle Page 45 : dépose-repose de la boîte 012 et vue éclatée du différentiel.",
           blocks: [
             {
               kind: "list",
-              title: "Couples et étapes principales",
+              title: "Points clés dépose-repose boîte 012 (RTA p.44–45)",
               items: [
-                "Débrancher la batterie, déposer le démarreur et le récepteur hydraulique d'embrayage (sans ouvrir le circuit).",
-                "Désaccoupler les deux cardans côté flasques de boîte (vis XZN M8) et la tringlerie de commande.",
-                "Maintenir l'arrière du moteur avec une traverse ou cric, déposer les vis de tour de cloche (M8 : 25 Nm, M10 : 45 Nm, M12 : 65 Nm) et le support arrière de boîte (40 Nm)."
+                "Débrancher la tresse de masse batterie, la masse sur boîte, le contacteur de marche arrière et la sonde tachymétrique.",
+                "Déposer le cylindre récepteur d'embrayage SANS débrancher sa durite hydraulique.",
+                "Désaccoupler les deux cardans sur les tulipes de boîte, déposer le support arrière et maintenir le moteur.",
+                "À la repose : graisser légèrement l'arbre cannelé, enduire les vis de cardans de frein-filet et contrôler le niveau d'huile."
               ]
             }
           ]
@@ -486,8 +542,8 @@ window.AUDI80_DATA.revue = {
               items: [
                 "Placer le levier de vitesses au point mort.",
                 "Soulever le soufflet de levier dans l'habitacle et vérifier l'état de la rotule plastique et de ses bagues.",
-                "Desserrer légèrement le collier de serrage de la tringle reliant le levier au sélecteur de boîte (accessible par dessous).",
-                "Centrer le levier légèrement incliné vers la droite (~3°) au point mort, puis resserrer le collier à 20 Nm.",
+                "Desserrer légèrement la bride de tige de commande (couple 20 Nm) reliant le levier au sélecteur de boîte.",
+                "Centrer le levier légèrement incliné vers la droite (~3°) au point mort, puis resserrer la bride à 20 Nm.",
                 "Tester l'engagement souple de toutes les vitesses (1 à 5 et MA) moteur arrêté puis moteur tournant."
               ]
             }
@@ -496,9 +552,20 @@ window.AUDI80_DATA.revue = {
         {
           page: "037",
           title: "Transmissions & Cardans",
-          type: "rta",
-          rtaKey: "cardans",
-          summary: "Planche RTA : dépose des arbres de transmission, soufflets et joints homocinétiques."
+          type: "fiche",
+          summary: "Dépose des demi-arbres de transmission, soufflets et couples de serrage des tulipes.",
+          blocks: [
+            {
+              kind: "steps",
+              title: "Dépose et contrôle d'un arbre de transmission (cardan)",
+              items: [
+                "Véhicule posé au sol (frein à main serré), débloquer la vis centrale de moyeu de roue.",
+                "Lever l'avant sur chandelles, déposer la roue et dévisser les 6 vis XZN reliant le joint intérieur à la tulipe de boîte.",
+                "Braquer les roues à fond pour sortir l'arbre de transmission sans déposer la jambe de force (ou désaccoupler la rotule inférieure si besoin).",
+                "Au remontage : utiliser des vis de tulipe propres enduites de frein-filet (45 Nm pour vis M8, 80 Nm pour vis M10) et serrer la vis centrale de moyeu au couple roues au sol."
+              ]
+            }
+          ]
         }
       ]
     },
@@ -510,20 +577,20 @@ window.AUDI80_DATA.revue = {
       pages: [
         {
           page: "038",
-          title: "Direction mécanique (sans assistance) & référence colonne",
+          title: "Direction mécanique à crémaillère (Sans assistance)",
           type: "rta",
-          rtaKey: "direction",
-          summary: "Caractéristiques de votre direction mécanique (Note : la planche RTA 038 ci-dessous illustre la variante assistée pour la colonne).",
+          fileDirect: "docs/rta/037_transmissions-cardans.jpg",
+          summary: "Planche RTA officielle Fig. 29 : éclaté complet Direction Mécanique et cote de colonne X = 66 mm.",
           blocks: [
             {
               kind: "table",
               title: "Spécifications Direction Mécanique (Audi 80 1.8S sans DA)",
               headers: ["Élément", "Donnée constructeur"],
               rows: [
-                ["Type", "Crémaillère mécanique fixée sur tablier (sans pompe ni huile)"],
+                ["Type", "Crémaillère mécanique fixée sur tablier (Fig. 29 — sans pompe ni huile)"],
+                ["Cote de dépassement colonne sur tube enveloppe", "X = 66 mm (RTA Fig. 29)"],
                 ["Nombre de tours de volant (butée à butée)", "4,2 tours"],
-                ["Couple fixation crémaillère sur caisse", "40 Nm"],
-                ["Couple rotule de direction sur jambe de force", "35 Nm"]
+                ["Couple fixation crémaillère / rotules", "Crémaillère : 40 Nm • Rotule direction : 35 Nm"]
               ]
             }
           ]
@@ -539,8 +606,8 @@ window.AUDI80_DATA.revue = {
               title: "Contrôle et réglage de crémaillère",
               items: [
                 "Braquer les roues en ligne droite et contrôler le jeu en secouant la barre d'accouplement près du tablier.",
-                "En cas de jeu léger au point milieu, visser progressivement la vis de réglage de poussoir sur le boîtier de crémaillère jusqu'à disparition du jeu, sans créer de point dur en braquage.",
-                "Contrôler l'intégrité des soufflets accordéons et du silentbloc d'amortissement de barre."
+                "En cas de jeu léger au point milieu, visser progressivement la vis de réglage de poussoir (repère 6 sur Fig. 29) jusqu'à disparition du jeu, sans créer de point dur en braquage.",
+                "Contrôler l'intégrité du soufflet (repère 7) et de l'amortisseur de réaction (repère 2)."
               ]
             }
           ]
@@ -549,29 +616,45 @@ window.AUDI80_DATA.revue = {
           page: "040",
           title: "Direction assistée (Documentation de référence)",
           type: "rta",
-          fileDirect: "docs/rta/040_direction-assistee.jpg",
-          summary: "Planche RTA informative (non équipée sur votre véhicule)."
+          fileDirect: "docs/rta/038_direction-caracteristiques.jpg",
+          summary: "Planche RTA Fig. 30 (informative uniquement — votre véhicule n'est pas équipé de la DA)."
         },
         {
           page: "058",
-          title: "Jambe de force avant (Amortisseurs & Ressorts)",
+          title: "Suspension Train Avant (Véhicule à direction mécanique)",
           type: "rta",
-          rtaKey: "jambeForce",
-          summary: "Planche RTA : dépose de la jambe de force McPherson, cartouche d'amortisseur et coupelle."
+          fileDirect: "docs/rta/040_direction-assistee.jpg",
+          summary: "Planche RTA officielle Fig. 31 : jambe de force McPherson, triangle, barre stabilisatrice et rotule.",
+          blocks: [
+            {
+              kind: "list",
+              title: "Opérations couvertes sur la planche Fig. 31 (Direction mécanique)",
+              items: [
+                "Démontage-remontage de l'élément de suspension (compresseur de ressort + douille calotte filetée 40-201A).",
+                "Dépose-repose du triangle inférieur sur berceau (dégager les paliers de barre stabilisatrice sur version sans DA).",
+                "Remplacement rapide de la rotule de suspension sur triangle sans déposer la jambe de force (reprendre le parallélisme/carrossage ensuite)."
+              ]
+            }
+          ]
         },
         {
           page: "059",
-          title: "Train avant : bras inférieurs, rotules & silentblocs",
-          type: "rta",
-          rtaKey: "trainAvant",
-          summary: "Planche RTA : triangles inférieurs, barre stabilisatrice, biellettes et berceau."
+          title: "Silentblocs de berceau, triangles & barre stabilisatrice",
+          type: "fiche",
+          summary: "Diagnostic des claquements train avant et règles de serrage en assiette normale.",
+          blocks: [
+            {
+              kind: "warning",
+              text: "Règle d'or Audi 80 B3 : ne JAMAIS bloquer au couple les boulons de triangles et de paliers de barre stabilisatrice roues pendantes. Effectuer le serrage final uniquement lorsque la voiture repose en appui sur ses roues !"
+            }
+          ]
         },
         {
           page: "060",
           title: "Géométrie du train avant & roulement de moyeu",
           type: "rta",
           fileDirect: "docs/rta/060_train-avant-geometrie-roulement-moyeu-avant.jpg",
-          summary: "Valeurs officielles de parallélisme / carrossage et extraction du roulement avant à la presse."
+          summary: "Planche RTA officielle Page 60 : réglage parallélisme, carrossage et extraction du roulement à la presse."
         }
       ]
     },
@@ -583,17 +666,22 @@ window.AUDI80_DATA.revue = {
       pages: [
         {
           page: "061",
-          title: "Essieu arrière de torsion & barre Panhard",
-          type: "fiche",
-          summary: "Architecture de l'essieu arrière en V à bras tirés et contrôle des silentblocs.",
+          title: "Essieu arrière semi-rigide, barre Panhard & couples AR",
+          type: "rta",
+          fileDirect: "docs/rta/059_train-avant-bras-rotules.jpg",
+          summary: "Planche RTA officielle Page 61 : géométrie train AR, couples de serrage et dépose combiné AR.",
           blocks: [
             {
-              kind: "list",
-              title: "Points de contrôle sur essieu arrière B3",
-              items: [
-                "Silentblocs d'articulation principaux : vérifier l'absence de craquelures profondes ou de jeu latéral au levier.",
-                "Barre Panhard transversale : assure le guidage latéral de l'essieu ; contrôler ses deux silentblocs d'extrémité.",
-                "Serrage des boulons de silentblocs : toujours effectuer le blocage final au couple voiture posée sur ses roues (assiette normale) pour ne pas vriller le caoutchouc."
+              kind: "table",
+              title: "Géométrie & Couples de serrage Train Arrière (RTA p.61)",
+              headers: ["Paramètre / Fixation", "Valeur officielle"],
+              rows: [
+                ["Carrossage arrière", "-1° ± 20' (différence D/G maxi 30')"],
+                ["Parallélisme arrière (pincement)", "2,1 ± 2,1 mm (ou 20' ± 20')"],
+                ["Bras longitudinaux sur coque", "100 Nm (serrage roues au sol)"],
+                ["Barre Panhard sur coque / sur essieu", "80 Nm (coque) • 90 Nm (essieu)"],
+                ["Fixation amortisseur (supérieure / inférieure)", "20 Nm (supérieure) • 60 Nm (inférieure)"],
+                ["Orientation coupelle inférieure ressort", "45° vers l'avant (voir figure RTA p.61)"]
               ]
             }
           ]
@@ -694,7 +782,18 @@ window.AUDI80_DATA.revue = {
           title: "Frein de stationnement & purge du circuit hydraulique",
           type: "rta",
           rtaKey: "purgeFrein",
-          summary: "Planche RTA : réglage du levier de frein à main et ordre officiel de purge des 4 roues."
+          summary: "Planche RTA officielle Page 70 : réglage du levier de frein à main tambours (2 crans) et ordre de purge en X.",
+          blocks: [
+            {
+              kind: "steps",
+              title: "Ordre officiel de purge en X (RTA p.70)",
+              items: [
+                "Moteur arrêté (servofrein hors action), maintenir le réservoir de liquide DOT 4 plein en permanence.",
+                "Purger impérativement dans l'ordre du circuit en X : 1. Arrière Droit → 2. Avant Gauche → 3. Arrière Gauche → 4. Avant Droit.",
+                "Réglage frein à main (tambours 1.8S) : roues AR pendantes, appuyer une fois à fond sur la pédale de frein, tirer le levier de 2 crans et serrer l'écrou du palonnier jusqu'à ce que les roues tournent difficilement à la main, puis vérifier qu'elles tournent librement levier desserré."
+              ]
+            }
+          ]
         },
         {
           page: "071",
@@ -867,7 +966,20 @@ window.AUDI80_DATA.revue = {
                 ["Bobine d'allumage", "Bosch 0221 122 380 ou Magneti-Marelli"],
                 ["Résistance primaire bobine (bornes 1 et 15)", "0,52 à 0,76 Ω"],
                 ["Résistance secondaire bobine (bornes 15 et 4 HT)", "2,4 à 3,5 kΩ"],
-                ["Résistance doigt d'allumeur (rotor)", "1,0 kΩ (± 20 %)"]
+                ["Résistance doigt d'allumeur (rotor)", "1,0 kΩ (± 20 %)"],
+                ["Emplacement du module TSZ-H", "Dans l'habitacle, sur le montant avant gauche derrière le revêtement (semelle alu)"]
+              ]
+            },
+            {
+              kind: "table",
+              title: "Tableau officiel de contrôle des tensions TSZ-H (RTA p.009)",
+              headers: ["Élément contrôlé", "Mode opératoire (voltmètre)", "Valeur assignée", "Défaut si hors norme"],
+              rows: [
+                ["Faisceau d'alimentation", "Connecteur module débranché, contact mis : tension entre bornes 4 et 2", "12 V", "Coupure dans le circuit d'allumage"],
+                ["Module TSZ-H (coupure repos)", "Connecteur d'allumeur débranché, contact mis : tension entre bornes 1 et 15 bobine", "Mini 2 V puis 0 V après 1 à 2 s", "Module TSZ-H défectueux"],
+                ["Module TSZ-H (impulsion)", "Contact mis : tension bornes 1 et 15 bobine en mettant brièvement à la masse le fil central du connecteur d'allumeur", "2 V temporairement", "Continuité câble ou module TSZ-H"],
+                ["Alimentation capteur Hall", "Tension entre les 2 câbles extérieurs du connecteur d'allumeur", "Mini 5 V", "Continuité câbles ou module TSZ-H"],
+                ["Capteur Hall (transmetteur)", "Secondaire bobine à la masse, connecteur module branché : tension bornes 6 et 3 en tournant le moteur à la main", "Alternance 0 à 2 V", "Capteur Hall d'allumeur HS"]
               ]
             }
           ]
@@ -955,37 +1067,40 @@ window.AUDI80_DATA.revue = {
           blocks: [
             {
               kind: "table",
-              title: "Connecteur T26 — JAUNE (26 broches)",
-              headers: ["Broche", "Fonction / Signal", "Type / Note"],
+              title: "Connecteur T26 — JAUNE (26 broches — vérifié RTA p.091)",
+              headers: ["Broche", "Couleur fil (RTA 091)", "Fonction / Signal"],
               rows: [
-                ["1", "Alimentation éclairage cadrans (depuis commodo)", "+58 / Rhéostat"],
-                ["2", "Masse sonde température liquide de refroidissement", "Signal G2"],
-                ["3", "+15 après contact (alimentation générale combiné)", "+12V contact (Fusible S12)"],
-                ["4", "Alimentation veilleuses / éclairage", "+58"],
-                ["5", "Entrée variateur d'intensité (rhéostat)", "58b"],
-                ["8", "Masse témoins clignotants / voyants", "Masse 31"],
-                ["9", "Témoin clignotant gauche", "+12V pulsé"],
-                ["10", "Alerte température / niveau liquide refroidissement", "Masse par sonde"],
-                ["11", "Témoin défaut système de freinage", "Masse par contacteur niveau"],
-                ["13", "Témoin charge alternateur (D+) / alerte eau", "Fil bleu D+"],
-                ["19", "+30 permanent montre analogique", "+12V permanent (Fusible S4)"],
-                ["22", "Signal compte-tours (depuis borne 1 bobine / TSZ-H)", "Impulsions moteur"],
-                ["23", "Masse compte-tours", "Masse 31"],
-                ["25", "Témoin frein à main tiré", "Masse par contacteur levier"]
+                ["1", "gr/gn (0,5)", "Entrée rhéostat d'éclairage E20 (+58)"],
+                ["2", "bl/br (0,5)", "Signal sonde température liquide de refroidissement (G3)"],
+                ["3", "sw/bl", "+15 après contact (alimentation combiné / Fusible S12)"],
+                ["4", "—", "Sortie éclairage instruments (58b)"],
+                ["5", "gr/bl (0,5)", "Alimentation ampoules d'éclairage cadrans (L10)"],
+                ["8", "br (0,5)", "Masse éclairage / témoins (Borne 31)"],
+                ["9", "sw/ws", "Témoin clignotant gauche"],
+                ["10", "—", "Alerte température / niveau liquide refroidissement"],
+                ["13", "bl (0,5)", "Témoin de charge alternateur (K2 / Borne D+)"],
+                ["19", "ro", "+30 permanent montre analogique (Fusible S4)"],
+                ["22", "gn", "Signal compte-tours (depuis borne 1 bobine / TSZ-H)"],
+                ["24", "bl/sw (0,5)", "Témoin de pression d'huile (K3)"],
+                ["25", "br/ws (0,5)", "Témoin de frein à main (K14)"],
+                ["26", "br/gn (0,5)", "Témoin de starter tiré (K15)"]
               ]
             },
             {
               kind: "table",
-              title: "Connecteur T26a — BLEU (26 broches)",
-              headers: ["Broche", "Fonction / Signal", "Type / Note"],
+              title: "Connecteur T26a — BLEU (26 broches — vérifié RTA p.091 & p.121)",
+              headers: ["Broche", "Couleur fil (RTA 091)", "Fonction / Signal"],
               rows: [
-                ["15", "Signal sonde jauge carburant (réservoir)", "Résistance variable vers masse"],
-                ["16", "Alimentation stabilisée / témoins combiné", "Via régulateur J6 (10V) / +15"],
-                ["17", "Témoin clignotant droit", "+12V pulsé"],
-                ["18", "Sortie signal vitesse véhicule", "Selon équipement"],
-                ["20", "Entrée capteur vitesse boîte (G22)", "Selon compteur"],
-                ["21", "Masse générale éclairage cadrans & témoin plein phare", "Masse 31"],
-                ["22", "Alimentation éclairage réglable (58b)", "+12V varié par rhéostat"]
+                ["15", "li/sw (0,5)", "Signal sonde niveau de carburant réservoir (G1)"],
+                ["16", "sw/bl (0,5)", "Alimentation +15 stabilisateur de tension J6 (10 V)"],
+                ["17", "sw/gn", "Témoin clignotant droit"],
+                ["18", "ws/bl (0,5)", "Sortie signal vitesse (Tachymètre G21)"],
+                ["20", "br/ro (0,5)", "Entrée capteur vitesse boîte (G22)"],
+                ["21", "br (0,5)", "Masse générale éclairage cadrans (L10)"],
+                ["22", "—", "Éclairage réglable cadrans"],
+                ["23", "bl/ws (0,5)", "Témoin feu de route (K1 — plein phare bleu)"],
+                ["25", "bl/gn (0,5)", "Témoin signal de détresse / warning (K6)"],
+                ["26", "br (0,5)", "Masse témoins combiné (Borne 31)"]
               ]
             },
             {
@@ -1038,10 +1153,10 @@ window.AUDI80_DATA.revue = {
         },
         {
           page: "121",
-          title: "Schéma électrique : Commandes & Moteurs d'options (Lève-vitres)",
+          title: "Schéma électrique : Soufflante air frais (V2), Tachymètre (G21/G22), Antibrouillard AR (E18) & Allume-cigare",
           type: "rta",
           rtaKey: "commandesMoteursOptions",
-          summary: "Schéma RTA officiel des circuits d'options électriques dont les lève-vitres."
+          summary: "Schémas RTA N° 40/21 et 40/22 : soufflante V2 + résistance N24 (fusible S17), capteur vitesse G22, feu antibrouillard AR E18/L20 (fusible S1) et allume-cigare U1."
         },
         {
           page: "122",

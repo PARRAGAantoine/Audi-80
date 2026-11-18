@@ -1034,7 +1034,7 @@
             <circle cx="84" cy="110" r="4" fill="var(--brand)" />
             <text x="140" y="38" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="bold">Arbre à cames</text>
             <text x="140" y="192" text-anchor="middle" fill="var(--muted)" font-size="11">Point / trait au ras du plan</text>
-            <text x="140" y="207" text-anchor="middle" fill="var(--muted)" font-size="11">de culasse (côté droit)</text>
+            <text x="140" y="207" text-anchor="middle" fill="var(--muted)" font-size="11">de culasse (côté gauche)</text>
             <!-- Poulie arbre intermédiaire / Allumeur -->
             <circle cx="320" cy="145" r="40" fill="none" stroke="var(--text)" stroke-width="2.5" />
             <circle cx="320" cy="145" r="8" fill="var(--text)" />
