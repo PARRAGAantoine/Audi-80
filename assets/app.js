@@ -939,6 +939,214 @@
     return Number.NEGATIVE_INFINITY;
   }
 
+  function renderRevueBlock(block) {
+    if (block.kind === "table") {
+      return `
+        <div class="revue-block panel">
+          ${block.title ? `<h3>${esc(block.title)}</h3>` : ""}
+          <div class="table-wrap">
+            <table class="revue-table">
+              <thead><tr>${(block.headers || []).map(h => `<th>${esc(h)}</th>`).join("")}</tr></thead>
+              <tbody>${(block.rows || []).map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+    if (block.kind === "steps") {
+      return `
+        <div class="revue-block panel">
+          ${block.title ? `<h3>${esc(block.title)}</h3>` : ""}
+          <ol class="revue-steps">${(block.items || []).map(it => `<li>${esc(it)}</li>`).join("")}</ol>
+        </div>`;
+    }
+    if (block.kind === "list") {
+      return `
+        <div class="revue-block panel">
+          ${block.title ? `<h3>${esc(block.title)}</h3>` : ""}
+          <ul class="revue-list">${(block.items || []).map(it => `<li>${esc(it)}</li>`).join("")}</ul>
+        </div>`;
+    }
+    if (block.kind === "warning") {
+      return `<div class="revue-warning"><strong>Attention atelier :</strong> ${esc(block.text)}</div>`;
+    }
+    return "";
+  }
+
+  function renderRevueSvg(key) {
+    if (key === "timing_ne") {
+      return `
+        <div class="panel revue-diagram">
+          <h3>Schéma des repères de calage PMH — Moteur NE 1.8S</h3>
+          <svg viewBox="0 0 640 280" role="img" aria-label="Repères de calage distribution moteur NE">
+            <rect x="10" y="10" width="620" height="260" rx="8" fill="var(--panel-2)" stroke="var(--line)" />
+            <!-- Poulie arbre à cames -->
+            <circle cx="140" cy="110" r="56" fill="none" stroke="var(--text)" stroke-width="3" />
+            <circle cx="140" cy="110" r="10" fill="var(--text)" />
+            <line x1="65" y1="110" x2="90" y2="110" stroke="var(--brand)" stroke-width="3" />
+            <circle cx="84" cy="110" r="4" fill="var(--brand)" />
+            <text x="140" y="38" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="bold">Arbre à cames</text>
+            <text x="140" y="192" text-anchor="middle" fill="var(--muted)" font-size="11">Point / trait au ras du plan</text>
+            <text x="140" y="207" text-anchor="middle" fill="var(--muted)" font-size="11">de culasse (côté droit)</text>
+            <!-- Poulie arbre intermédiaire / Allumeur -->
+            <circle cx="320" cy="145" r="40" fill="none" stroke="var(--text)" stroke-width="2.5" />
+            <circle cx="320" cy="145" r="8" fill="var(--text)" />
+            <line x1="320" y1="145" x2="352" y2="122" stroke="var(--brand)" stroke-width="3" />
+            <text x="320" y="38" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="bold">Allumeur (Cyl. 1)</text>
+            <text x="320" y="210" text-anchor="middle" fill="var(--muted)" font-size="11">Doigt pointé sur</text>
+            <text x="320" y="225" text-anchor="middle" fill="var(--muted)" font-size="11">encoche cylindre n°1</text>
+            <!-- Volant moteur / Vilebrequin -->
+            <circle cx="500" cy="135" r="52" fill="none" stroke="var(--text)" stroke-width="3" />
+            <line x1="490" y1="83" x2="510" y2="83" stroke="var(--brand)" stroke-width="3" />
+            <text x="500" y="75" text-anchor="middle" fill="var(--brand)" font-size="14" font-weight="bold">0 (PMH)</text>
+            <text x="500" y="38" text-anchor="middle" fill="var(--text)" font-size="13" font-weight="bold">Volant moteur</text>
+            <text x="500" y="212" text-anchor="middle" fill="var(--muted)" font-size="11">Repère 0 face au</text>
+            <text x="500" y="227" text-anchor="middle" fill="var(--muted)" font-size="11">bord de fenêtre cloche</text>
+          </svg>
+        </div>`;
+    }
+    return "";
+  }
+
+  function renderRevue(pageId) {
+    state.route = "revue";
+    setActive("revue");
+    search.value = "";
+    renderResults("");
+
+    const revue = repair.revue;
+    if (!revue?.families?.length) {
+      app.innerHTML = `<section class="panel"><h1>Revue Technique indisponible</h1></section>`;
+      return;
+    }
+
+    const flatPages = [];
+    revue.families.forEach(fam => {
+      fam.pages.forEach(p => flatPages.push({ fam, page: p }));
+    });
+
+    const activeIndex = Math.max(0, flatPages.findIndex(item => item.page.page.toLowerCase() === String(pageId || "").toLowerCase()));
+    const current = flatPages[activeIndex];
+    const prevItem = activeIndex > 0 ? flatPages[activeIndex - 1] : null;
+    const nextItem = activeIndex < flatPages.length - 1 ? flatPages[activeIndex + 1] : null;
+
+    let mediaHtml = "";
+    const p = current.page;
+    if (p.diagramSvg) {
+      mediaHtml += renderRevueSvg(p.diagramSvg);
+    }
+    if (p.type === "rta") {
+      const rtaDoc = p.rtaKey ? repair.rta[p.rtaKey] : null;
+      const imgFile = rtaDoc?.file || p.fileDirect;
+      if (imgFile) {
+        mediaHtml += `
+          <div class="panel">
+            <div class="revue-media-head">
+              <h3>Planche RTA d'origine (Page ${esc(p.page)})</h3>
+              <a class="btn-secondary" href="${esc(imgFile)}" target="_blank">Ouvrir en plein écran ↗</a>
+            </div>
+            <a href="${esc(imgFile)}" target="_blank">
+              <img class="rta-img" src="${esc(imgFile)}" alt="${esc(p.title)}">
+            </a>
+          </div>`;
+      }
+    } else if (p.type === "etka" && repair.etka?.plates?.[p.etkaId]) {
+      const plate = repair.etka.plates[p.etkaId];
+      mediaHtml += `
+        <div class="panel">
+          <div class="revue-media-head">
+            <h3>Planche officielle ETKA ${esc(plate.id)} — ${esc(plate.title)}</h3>
+            <a class="btn-secondary" href="${esc(plate.svg)}" target="_blank">Ouvrir SVG ↗</a>
+          </div>
+          <p class="muted">${esc(plate.location || "")}</p>
+          <a href="${esc(plate.svg)}" target="_blank">
+            <img class="rta-img" src="${esc(plate.svg)}" alt="${esc(plate.title)}">
+          </a>
+          <div class="table-wrap" style="margin-top:14px">
+            <table class="revue-table">
+              <thead><tr><th>Rep.</th><th>Référence OEM VAG</th><th>Désignation</th><th>Note atelier</th></tr></thead>
+              <tbody>
+                ${(plate.parts || []).map(pt => `<tr><td><strong>${esc(pt.rep)}</strong></td><td><code>${esc(pt.ref)}</code></td><td>${esc(pt.name)}</td><td>${esc(pt.note || "")}</td></tr>`).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>`;
+    }
+
+    const menuHtml = revue.families.map(fam => {
+      const isOpen = fam.id === current.fam.id;
+      return `
+        <details class="revue-family" ${isOpen ? "open" : ""}>
+          <summary>
+            <span class="revue-fam-code">${esc(fam.code)}</span>
+            <span class="revue-fam-title">${esc(fam.title)}</span>
+          </summary>
+          <div class="revue-page-list">
+            ${fam.pages.map(pg => {
+              const isAct = pg.page === p.page;
+              const badge = pg.type === "rta" ? "RTA" : pg.type === "etka" ? "ETKA" : "FICHE";
+              return `<a class="revue-page-link ${isAct ? "is-active" : ""}" href="#revue/${esc(pg.page)}" data-filter-text="${esc((pg.page + " " + pg.title + " " + fam.title).toLowerCase())}">
+                <span class="revue-pg-num">P.${esc(pg.page)}</span>
+                <span class="revue-pg-name">${esc(pg.title)}</span>
+                <span class="revue-pg-badge">${badge}</span>
+              </a>`;
+            }).join("")}
+          </div>
+        </details>`;
+    }).join("");
+
+    app.innerHTML = `
+      <section class="page-head revue-head">
+        <div>
+          <p class="eyebrow">${esc(revue.meta.title)}</p>
+          <h1>Revue Technique d'Atelier</h1>
+          <p class="muted">${esc(revue.meta.subtitle)}</p>
+        </div>
+        <button id="revue-print-btn" class="btn-secondary" type="button">Imprimer / Export PDF</button>
+      </section>
+
+      <div class="revue-layout">
+        <aside class="revue-menu panel">
+          <input id="revue-filter" type="search" placeholder="Filtrer par page, organe, code...">
+          <div id="revue-menu-list" class="revue-menu-list">${menuHtml}</div>
+        </aside>
+
+        <article class="revue-reader">
+          <div class="panel revue-page-header">
+            <div class="revue-meta-row">
+              <span class="pill">${esc(current.fam.code)} : ${esc(current.fam.title)}</span>
+              <span class="pill">Page ${esc(p.page)}</span>
+            </div>
+            <h2>${esc(p.title)}</h2>
+            ${p.summary ? `<p class="muted">${esc(p.summary)}</p>` : ""}
+          </div>
+
+          ${(p.blocks || []).map(renderRevueBlock).join("")}
+          ${mediaHtml}
+
+          <div class="revue-pager">
+            ${prevItem ? `<a class="btn-secondary" href="#revue/${esc(prevItem.page.page)}">← Page ${esc(prevItem.page.page)} : ${esc(prevItem.page.title)}</a>` : `<span></span>`}
+            ${nextItem ? `<a class="btn-secondary" href="#revue/${esc(nextItem.page.page)}">Page ${esc(nextItem.page.page)} : ${esc(nextItem.page.title)} →</a>` : `<span></span>`}
+          </div>
+        </article>
+      </div>`;
+
+    document.querySelector("#revue-print-btn")?.addEventListener("click", () => window.print());
+
+    document.querySelector("#revue-filter")?.addEventListener("input", (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      document.querySelectorAll(".revue-family").forEach(det => {
+        let hasMatch = false;
+        det.querySelectorAll(".revue-page-link").forEach(link => {
+          const match = !q || link.dataset.filterText.includes(q);
+          link.style.display = match ? "" : "none";
+          if (match) hasMatch = true;
+        });
+        det.style.display = hasMatch ? "" : "none";
+        if (q && hasMatch) det.open = true;
+      });
+    });
+  }
+
   function route() {
     const raw = location.hash.replace(/^#/, "");
     const [kind, id, problemId] = raw.split("/");
@@ -947,6 +1155,7 @@
       activeGhost3D = null;
     }
     if (!raw || kind === "accueil") return renderHome();
+    if (kind === "revue") return renderRevue(id);
     if (kind === "reparation") return renderRepairHome();
     if (kind === "electricite-3d") return renderElectrical3D(id);
     if (kind === "entretien") return renderMaintenance();

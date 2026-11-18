@@ -5,5 +5,6 @@ window.AUDI80_REPAIR = {
   controls: window.AUDI80_DATA.controls,
   pieces: window.AUDI80_DATA.pieces,
   problems: window.AUDI80_DATA.problems,
-  etka: window.AUDI80_DATA.etka
+  etka: window.AUDI80_DATA.etka,
+  revue: window.AUDI80_DATA.revue
 };

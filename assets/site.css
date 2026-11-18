@@ -1072,3 +1072,248 @@ html[data-theme="light"] .etka-oem-code {
 }
 
 
+
+/* ==================== REVUE TECHNIQUE D'ATELIER ==================== */
+.revue-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.revue-layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1050px) {
+  .revue-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.revue-menu {
+  display: grid;
+  gap: 12px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  position: sticky;
+  top: 20px;
+}
+
+.revue-menu-list {
+  display: grid;
+  gap: 8px;
+}
+
+.revue-family {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+
+.revue-family summary {
+  cursor: pointer;
+  padding: 10px 12px;
+  display: grid;
+  gap: 2px;
+  font-weight: 700;
+  list-style: none;
+  user-select: none;
+}
+
+.revue-family summary::-webkit-details-marker {
+  display: none;
+}
+
+.revue-family[open] summary {
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.revue-fam-code {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand);
+  font-weight: 800;
+}
+
+.revue-fam-title {
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.revue-page-list {
+  display: grid;
+  padding: 6px;
+  gap: 4px;
+}
+
+.revue-page-link {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.82rem;
+  color: var(--text);
+  border: 1px solid transparent;
+}
+
+.revue-page-link:hover {
+  background: var(--panel-2);
+}
+
+.revue-page-link.is-active {
+  background: rgba(176, 0, 20, 0.12);
+  border-color: var(--brand);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .revue-page-link.is-active {
+  background: rgba(255, 69, 91, 0.16);
+}
+
+.revue-pg-num {
+  font-family: ui-monospace, monospace;
+  font-weight: 800;
+  color: var(--blue);
+  font-size: 0.78rem;
+}
+
+.revue-pg-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.revue-pg-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: var(--panel-2);
+  color: var(--muted);
+}
+
+.revue-reader {
+  display: grid;
+  gap: 16px;
+}
+
+.revue-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.revue-block h3,
+.revue-diagram h3 {
+  margin-top: 0;
+}
+
+.revue-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.revue-table th,
+.revue-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 9px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.revue-table th {
+  background: var(--panel-2);
+  font-weight: 800;
+}
+
+.revue-steps,
+.revue-list {
+  margin: 0;
+  padding-left: 20px;
+  display: grid;
+  gap: 8px;
+}
+
+.revue-warning {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid var(--warn);
+  background: rgba(239, 183, 97, 0.12);
+  color: var(--text);
+  font-size: 0.92rem;
+}
+
+.revue-media-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.revue-media-head h3 {
+  margin: 0;
+}
+
+.revue-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  border-color: var(--brand);
+}
+
+@media print {
+  .sidebar,
+  .revue-menu,
+  .revue-pager,
+  #revue-print-btn {
+    display: none !important;
+  }
+  body {
+    grid-template-columns: 1fr !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .revue-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .panel {
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+}
