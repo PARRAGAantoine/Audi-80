@@ -413,6 +413,15 @@ window.AUDI80_DATA.revue = {
                 "Inspecter les petites durites tressées de dépression à l'arrière du carburateur (vers capsule d'allumeur, volet d'air chaud et servofrein).",
                 "Remplacer systématiquement toute durite craquelée ou durcie par de la durite carburant/dépression 3,2 mm ou 4 mm neuve."
               ]
+            },
+            {
+              kind: "list",
+              title: "Retours forums Audi 80 (Traduction audi-80-wiki.de / audi-80-scene.de)",
+              items: [
+                "Étouffoir électromagnétique de ralenti (Leerlaufabschaltventil, repère 15 sur éclaté P.012) : débrancher puis rebrancher son fil +12 V contact mis — un 'clic' net doit se faire entendre. S'il reste muet, le moteur cale immédiatement au ralenti.",
+                "Semelle caoutchouc (Vergaserflansch) : même une micro-fissure invisible à l'œil nu provoque une prise d'air qui dérègle le taux de CO au contrôle technique.",
+                "Démarrage à froid / coupure en décélération : contrôler la membrane de la capsule de dénoyage (Pull-Down) en aspirant dans sa durite (elle doit maintenir la dépression sans fuite)."
+              ]
             }
           ]
         },
@@ -937,6 +946,15 @@ window.AUDI80_DATA.revue = {
                 "Débrancher le connecteur 2 broches du moteur et dévisser les fixations du rail de guidage.",
                 "Contrôler en direct sur 12V la rotation du moteur et lubrifier les glissières de vitre au spray silicone."
               ]
+            },
+            {
+              kind: "list",
+              title: "Pannes électriques classiques lève-vitres B3 (Traduction audi-80-wiki.de)",
+              items: [
+                "Relais / Boîtier confort n° 203 (réf. OEM 8A0 951 253 A, sur le porte-relais auxiliaire sous le tableau de bord côté conducteur) : cause n°1 des lève-vitres en panne intermittente ou totale. Ouvrir le boîtier et reprendre au fer à souder les soudures froides/fissurées sur la platine.",
+                "Coupure de faisceau dans le soufflet de passage de porte (Kabelbruch Türdurchführung) : retirer le soufflet caoutchouc entre le montant A et la porte conducteur pour inspecter les fils sectionnés à force d'ouvrir/fermer.",
+                "Interrupteurs de porte oxydés : déclipser les boutons et nettoyer les contacts internes au nettoyant contact."
+              ]
             }
           ]
         }
@@ -1105,7 +1123,16 @@ window.AUDI80_DATA.revue = {
             },
             {
               kind: "warning",
-              text: "Si la jauge à essence ET le thermomètre d'eau tombent tous les deux à zéro simultanément, vérifier le régulateur de tension 10V J6 (composant 3 pattes TCA700Y vissé au dos du combiné) et ses soudures."
+              text: "Si la jauge à essence ET le thermomètre d'eau tombent tous les deux à zéro simultanément, vérifier le régulateur de tension 10V J6 (composant 3 pattes TCA700Y, réf. OEM 171 919 803) et ses soudures."
+            },
+            {
+              kind: "list",
+              title: "Pannes chroniques & Réparations combiné B3 (Traduction audi-80-wiki.de / audi-80-scene.de)",
+              items: [
+                "Remplacement économique du régulateur J6 (TCA700Y / 171 919 803) : utilisable avec un régulateur standard LM2940T-10.0 (~2 € en magasin d'électronique). ATTENTION : son brochage (I-G-O) est inversé par rapport au TCA700Y d'origine — il doit être monté retourné (face arrière vers l'avant) avec une petite rondelle d'appui sous la vis.",
+                "Soudures froides & Buzzer de pression d'huile intempestif : les vibrations fissurent les soudures des broches T26/T26a et de la platine. Avant de soupçonner le moteur, refaire les soudures au fer avec de l'étain neuf et resserrer les petits écrous laiton au dos des jauges.",
+                "Compteur kilométrique / journalier bloqué (aiguille vitesse OK) : maladie classique VDO due au petit pignon plastique E15 (15 dents) qui s'effrite avec l'âge. Se remplace sans changer le combiné par un pignon renforcé (type Partworks/Gearworks)."
+              ]
             }
           ]
         },
@@ -1163,7 +1190,13 @@ window.AUDI80_DATA.revue = {
           title: "Schéma électrique : Antibrouillard arrière & Dégivrage lunette",
           type: "rta",
           rtaKey: "antibrouillard",
-          summary: "Schéma RTA officiel des circuits E18 (antibrouillard) et E15 (lunette chauffante)."
+          summary: "Schéma RTA officiel des circuits E18 (antibrouillard) et E15 (lunette chauffante).",
+          blocks: [
+            {
+              kind: "warning",
+              text: "Maladie classique Audi 80 B3 (Traduction audi-80-scene.de — Kabelbruch Heckklappe) : si le feu antibrouillard arrière (L20), les feux de recul ou l'éclairage de plaque ne fonctionnent plus alors que le bouton E18 et le fusible S1 sont bons, ouvrir la gaine caoutchouc du faisceau qui longe la charnière GAUCHE du couvercle de coffre — les fils s'y cisaillent très fréquemment à force d'ouvrir la malle !"
+            }
+          ]
         },
         {
           page: "123",
